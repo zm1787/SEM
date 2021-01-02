@@ -1,11 +1,13 @@
 import mongoose from 'mongoose';
 import User from '../models/user.js';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 // SEE ALL STATUS CODES HERE: https://www.restapitutorial.com/httpstatuscodes.html
 
-// @route
-// @desc
-// @access
+// @route   GET Users
+// @desc    Get All Users
+// @access  Public
 export const getUsers = async (req, res) => {
     try {
         // Find all objecs that follows/fits the User model
@@ -18,25 +20,88 @@ export const getUsers = async (req, res) => {
     }
 }
 
-// @route   POST users
-// @desc    Create A User
+// @route   POST users/register
+// @desc    Register A User
 // @access  Public
-export const createUser = async (req, res) => {
-    const user = req.body; // Info from form sent from front-end
-    
-    const newUser = new User(user); // Transform received front-end user info to a User Mongoose Model/Schema
-
+export const registerUser = async (req, res) => {
     try {
-        await newUser.save(); // Saving to DB
-        res.status(201).json(newUser); // Responding with 201 => successful creation, And the newly built object
+        const { email, password, passwordCheck, firstName, lastName, userType } = req.body;
+
+        // Validation
+
+        if (!email || !password || !passwordCheck || !firstName || !lastName || !userType) {
+            return res.status(400).json({ msg: "Not all fields have been entered." });
+        }
+        if (password.length < 5) {
+            return res.status(400).json({ msg: "The password needs to be at least 5 characters long." });
+        }
+        if (password !== passwordCheck) {
+            return res.status(400).json({ msg: "Enter the same password twice for verification." });
+        }
+
+        const existingUser = await User.findOne({ email: email });
+        if (existingUser) {
+            return res.status(400).json({ msg: "An account with this email already exists." });
+        }
+
+        const salt = await bcrypt.genSalt(); // used to generate the hash
+        const passwordHash = await bcrypt.hash(password, salt);
+
+        const newUser = new User({
+            email,
+            password: passwordHash,
+            firstName,
+            lastName,
+            userType,
+        });
+        const savedUser = await newUser.save();
+        res.json(savedUser);
+
     } catch (error) {
-        res.status(409).json({ message: error.message }); // 409 => Conflict
+        res.status(500).json({ error: error.message });
+    }
+}
+
+// @route   POST users/login
+// @desc    Login A User
+// @access  Public
+export const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // Validate
+        if (!email || !password) {
+            return res.status(400).json({ msg: "Not all fields have been entered." });
+        }
+
+        const user = await User.findOne({ email: email });
+        if (!user) {
+            return res.status(400).json({ msg: "No account with this email has been registered." });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ msg: "Invalid credentials" });
+        }
+
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        res.json({
+            token,
+            user: {
+                id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+            },
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 }
 
 // @route   POST users/:id
-// @desc
-// @access
+// @desc    Update User Info
+// @access  Private  **Add Auth**
 export const updateUser = async (req, res) => {
     const { id: _id } = req.params; // request looks like "users/123". That 123 (the id) will fill id
     const user = req.body;
@@ -51,7 +116,7 @@ export const updateUser = async (req, res) => {
 
 // @route   DELETE users/:id
 // @desc    Delete a user
-// @access  
+// @access  Private  **Add Auth**
 export const deleteUser = async (req, res) => {
     const { id } = req.params;
 

@@ -11,6 +11,18 @@ const userSchema = mongoose.Schema({
         required: true
     },
 
+    email: {
+        type: String, 
+        required: true,
+        unique: true
+    },
+
+    password: {
+        type: String, 
+        required: true,
+        minlength: 5
+    },
+
     // userType: Specialist(bronze, silver, gold) or seeker
     userType: {
         type : String,
