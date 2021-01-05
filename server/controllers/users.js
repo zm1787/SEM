@@ -5,13 +5,27 @@ import bcrypt from 'bcryptjs';
 
 // SEE ALL STATUS CODES HERE: https://www.restapitutorial.com/httpstatuscodes.html
 
-// @route   GET Users
+// @state   Working
+// @route   GET users/load
+// @desc    Get User Info
+// @access  Auth only
+export const loadUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.user).select('email firstName lastName profession'); // req.user is the user id set by auth.js
+        if (!user) throw Error('User does not exist');
+        res.json(user);
+    } catch (error) {
+        res.status(400).json({ msg: error.message });
+    }
+}
+
+// @route   users
 // @desc    Get All Users
 // @access  Public
 export const getUsers = async (req, res) => {
     try {
         // Find all objecs that follows/fits the User model
-        const users = await User.find(); 
+        const users = await User.find().select('email firstName lastName userType profession'); 
 
         // Return status 200 (Ok), and .json array of found user object in database to front-end
         res.status(200).json(users); 
@@ -25,7 +39,7 @@ export const getUsers = async (req, res) => {
 // @access  Public
 export const registerUser = async (req, res) => {
     try {
-        const { email, password, passwordCheck, firstName, lastName, userType } = req.body;
+        const { email, password, passwordCheck, firstName, lastName, userType, profession } = req.body;
 
         // Validation
 
@@ -53,8 +67,10 @@ export const registerUser = async (req, res) => {
             firstName,
             lastName,
             userType,
+            profession
         });
-        const savedUser = await newUser.save();
+        let savedUser = await newUser.save();
+        savedUser.password = undefined;
         res.json(savedUser);
 
     } catch (error) {
@@ -101,14 +117,13 @@ export const loginUser = async (req, res) => {
 
 // @route   POST users/:id
 // @desc    Update User Info
-// @access  Private  **Add Auth**
+// @access  Auth only
 export const updateUser = async (req, res) => {
     const { id: _id } = req.params; // request looks like "users/123". That 123 (the id) will fill id
     const user = req.body;
 
     if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No user with that id')
     
-
     const updatedUser = await User.findByIdAndUpdate(_id, { ...user, _id }, { new: true });
 
     res.json(updatedUser);
@@ -116,7 +131,7 @@ export const updateUser = async (req, res) => {
 
 // @route   DELETE users/:id
 // @desc    Delete a user
-// @access  Private  **Add Auth**
+// @access  Auth only
 export const deleteUser = async (req, res) => {
     const { id } = req.params;
 
