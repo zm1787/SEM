@@ -42,8 +42,7 @@ export const registerUser = async (req, res) => {
         const { email, password, passwordCheck, firstName, lastName, userType, profession } = req.body;
 
         // Validation
-
-        if (!email || !password || !passwordCheck || !firstName || !lastName || !userType) {
+        if (!email || !password || !passwordCheck || !firstName || !lastName /*|| !userType*/) {
             return res.status(400).json({ msg: "Not all fields have been entered." });
         }
         if (password.length < 5) {

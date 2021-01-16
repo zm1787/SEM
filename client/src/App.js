@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getUsers } from './actions/userActions';
 import { loadUser } from './actions/authActions';
 
+import RegisterModal from './components/auth/RegisterModal';
+
 
 const App = () => {
     const dispatch = useDispatch();
@@ -18,13 +20,18 @@ const App = () => {
 
     return (
         <>
-            {users.map((user) => (
-                <div key={user.id}>
-                    <h2>{user.firstName} {user.lastName}</h2>
-                    <h2>{user.userType}</h2>
-                    <h2>{user.profession}</h2>
-                </div>
-            ))}
+            <RegisterModal />
+            {users.map((user) => {
+                return (
+                    <div key={user._id}>
+                        <hr/>
+                        <h2>{user.firstName} {user.lastName}</h2>
+                        <h2>{user.userType}</h2>
+                        <h2>{user.profession}</h2>
+                        <hr/>
+                    </div>
+                )
+            })}
         </>
     )
 }

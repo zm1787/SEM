@@ -26,7 +26,7 @@ const userSchema = mongoose.Schema({
     // userType: Specialist(bronze, silver, gold) or seeker
     userType: {
         type : String,
-        required: true
+        //required: true
     },
 
     profession: String,

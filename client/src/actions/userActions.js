@@ -10,7 +10,7 @@ import * as api from '../api';
 export const getUsers = () => async (dispatch) => {
     try {
         // Fetch all the data from the api
-        const { data } = await api.fetchUsers(); // Fetch list of users
+        const { data } = await api.getUsers(); // Fetch list of users
 
         dispatch({ type: FETCH_ALL, payload: data }); // Dispatch action
     } catch (error) {
@@ -18,6 +18,8 @@ export const getUsers = () => async (dispatch) => {
     }
 }
 
+// Old register user function
+/* 
 export const createUser = (user) => async (dispatch) => {
     try {
         const { data } = await api.createUser(user);
@@ -27,6 +29,7 @@ export const createUser = (user) => async (dispatch) => {
         console.log(error);
     }
 }
+*/
 
 export const updateUser = (id, user) => async (dispatch) => {
     try {

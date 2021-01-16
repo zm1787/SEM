@@ -25,6 +25,28 @@ export const loadUser = () => async (dispatch, getState) => {
     }
 }
 
+// Register User
+export const registerUser = ({ firstName, lastName, email, password, passwordCheck }) => async (dispatch) => {
+    // Headers
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    // Request body
+    const body = JSON.stringify({ firstName, lastName, email, password, passwordCheck })
+
+    try {
+        const { data } = await api.registerUser(body, config);
+        dispatch({ type: REGISTER_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch(returnErrors(error.response.data, error.response.status, 'REGISTER_FAIL'));
+        dispatch({ type: REGISTER_FAIL });
+    }
+
+}
+
 // Setup config/headers with the token
 export const tokenConfig = getState => {
     // Get token from localStorage
@@ -38,7 +60,7 @@ export const tokenConfig = getState => {
     }
 
     // If token, add to headers
-    if(token) {
+    if (token) {
         config.headers['x-auth-token'] = token;
     }
 
