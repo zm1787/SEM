@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import User from '../models/user.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { isOldEnough } from './helperFunctions.js';
 
 // SEE ALL STATUS CODES HERE: https://www.restapitutorial.com/httpstatuscodes.html
 
@@ -25,7 +26,7 @@ export const loadUser = async (req, res) => {
 export const getUsers = async (req, res) => {
     try {
         // Find all objecs that follows/fits the User model
-        const users = await User.find().select('email firstName lastName userType profession'); 
+        const users = await User.find().select('email firstName lastName userType profession dateOfBirth location'); 
 
         // Return status 200 (Ok), and .json array of found user object in database to front-end
         res.status(200).json(users); 
@@ -34,10 +35,62 @@ export const getUsers = async (req, res) => {
     }
 }
 
-// @route   POST users/register
-// @desc    Register A User
+// @route   POST users/registerSeeker
+// @desc    Register A Seeker
 // @access  Public
-export const registerUser = async (req, res) => {
+export const registerSeeker = async (req, res) => {
+    try {
+        const { firstName, lastName, dateOfBirth, location, email, password, passwordCheck, policyChecked } = req.body;
+
+        // Validation
+        if (!firstName || !lastName || !dateOfBirth || !location || !email || !password || !passwordCheck) {
+            return res.status(400).json({ msg: "Not all fields have been entered." });
+        }
+        if(!isOldEnough(dateOfBirth)) {
+            return res.status(400).json({ msg: "Age must be between 18 and 125" });
+        }
+        if (password.length < 5) {
+            return res.status(400).json({ msg: "The password needs to be at least 5 characters long." });
+        }
+        if (password !== passwordCheck) {
+            return res.status(400).json({ msg: "Please verify that the same password was entered twice for verification." });
+        }
+        if(!policyChecked) {
+            return res.status(400).json({ msg: "Please agree to the Terms of Service" });
+        }
+        
+
+        const existingUser = await User.findOne({ email: email });
+        if (existingUser) {
+            return res.status(400).json({ msg: "An account with this email already exists." });
+        }
+
+        const salt = await bcrypt.genSalt(); // used to generate the hash
+        const passwordHash = await bcrypt.hash(password, salt);
+
+        const newUser = new User({
+            email,
+            password: passwordHash,
+            firstName,
+            lastName,
+            dateOfBirth,
+            location, 
+            userType: "Seeker"
+        });
+        let savedUser = await newUser.save();
+        savedUser.password = undefined;
+        res.json(savedUser);
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+
+// @route   POST users/register/specialist
+// @desc    Register A Specialist
+// @access  Public
+export const registerSpecialist = async (req, res) => {
     try {
         const { email, password, passwordCheck, firstName, lastName, userType, profession } = req.body;
 

@@ -1,0 +1,14 @@
+.App {
+    text-align: center;
+    margin-top: 55px;
+}
+
+.mainApp {
+    width: 100px;
+    max-width: 100%;
+    width: 100vw;
+    min-height: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}

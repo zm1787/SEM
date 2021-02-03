@@ -26,7 +26,7 @@ export const loadUser = () => async (dispatch, getState) => {
 }
 
 // Register User
-export const registerUser = ({ firstName, lastName, email, password, passwordCheck }) => async (dispatch) => {
+export const registerSeeker = ({ firstName, lastName, dateOfBirth, location, email, password, passwordCheck, policyChecked }) => async (dispatch) => {
     // Headers
     const config = {
         headers: {
@@ -35,10 +35,10 @@ export const registerUser = ({ firstName, lastName, email, password, passwordChe
     }
 
     // Request body
-    const body = JSON.stringify({ firstName, lastName, email, password, passwordCheck })
+    const body = JSON.stringify({ firstName, lastName, dateOfBirth, location, email, password, passwordCheck, policyChecked })
 
     try {
-        const { data } = await api.registerUser(body, config);
+        const { data } = await api.registerSeeker(body, config);
         dispatch({ type: REGISTER_SUCCESS, payload: data });
     } catch (error) {
         dispatch(returnErrors(error.response.data, error.response.status, 'REGISTER_FAIL'));

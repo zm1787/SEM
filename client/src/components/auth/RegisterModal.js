@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Button,
     Modal,
@@ -14,7 +14,7 @@ import {
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { registerUser } from '../../actions/authActions';
+import { registerSeeker } from '../../actions/authActions';
 import { clearErrors } from '../../actions/errorActions';
 
 
@@ -60,7 +60,7 @@ function RegisterModal( props /*{error, clearErrors, registerUser, isAuthenticat
         };
 
         // Attempt to register
-        props.registerUser(newUser);
+        props.registerSeeker(newUser);
 
     }
 
@@ -152,7 +152,7 @@ function RegisterModal( props /*{error, clearErrors, registerUser, isAuthenticat
 RegisterModal.propTypes = {
     isAuthenticated: PropTypes.bool,
     error: PropTypes.object.isRequired,
-    registerUser: PropTypes.func.isRequired,
+    registerSeeker: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired
 }
 
@@ -164,5 +164,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { registerUser, clearErrors }
+    { registerSeeker, clearErrors }
 )(RegisterModal);

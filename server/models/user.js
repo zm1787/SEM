@@ -23,10 +23,20 @@ const userSchema = mongoose.Schema({
         minlength: 5
     },
 
+    location: {
+        type: String, 
+        required: true,
+    },
+
+    dateOfBirth: {
+        type: Date,
+        required: true,
+    },
+
     // userType: Specialist(bronze, silver, gold) or seeker
     userType: {
         type : String,
-        //required: true
+        required: true,
     },
 
     profession: String,
