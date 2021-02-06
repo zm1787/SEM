@@ -21,6 +21,7 @@ const CostomDatePicker = withStyles(theme => ({
         },
         '& .MuiFormHelperText-contained': {
             marginLeft: '21px',
+            fontSize: '.9rem',
         },
         '& label.Mui-focused': {
             color: theme.palette.text.white,

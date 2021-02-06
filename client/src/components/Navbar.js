@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
         margin: 0,
     },
     logoText: {
-        color: theme.palette.primary.main,
+        color: theme.palette.background.contrastText,
         textAlign: 'center',
 
     },
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRight: `2px solid ${theme.palette.background.darker}`,
+        borderRight: `2px solid ${theme.palette.background.default}`,
     },
 
 }))

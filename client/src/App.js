@@ -14,22 +14,16 @@ import { light, dark } from './themes/colorPalettes';
 // Material UI
 import { Grid, makeStyles, CssBaseline, createMuiTheme, ThemeProvider } from '@material-ui/core';
 
-const selectedTheme = dark;
+const selectedTheme = light;
 
 const theme = createMuiTheme({
     palette: selectedTheme,
     typography: {
-        root: {
-            color: '#dee5ed',
-        },
         h4: {
             fontWeight: 500,
         }
     },
-    paper:
-    {
-        backgroundColor: '#3d5876',
-    }
+
 
 })
 
@@ -60,7 +54,6 @@ const App = () => {
                 <NavBar />
                 <Grid container>
                     <Grid item sm={12} md={6}>
-                        <RegisterModal />
                         <RegisterSeekerForm />
                     </Grid>
                     <Grid item sm={12} md={6}>

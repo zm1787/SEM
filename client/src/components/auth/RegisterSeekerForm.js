@@ -27,9 +27,9 @@ const useStyles = makeStyles(theme => ({
         textAlign: 'center',
     },
     paper: {
-        margin: theme.spacing(1),
+        margin: `${theme.spacing(5)}px`,
         padding: theme.spacing(3),
-        backgroundColor: theme.palette.background.dark,
+        backgroundColor: theme.palette.background.paper,
 
         [theme.breakpoints.down('sm')]: {
             margin: theme.spacing(1),
@@ -67,7 +67,9 @@ const initialFieldValues = {
     firstName: '',
     lastName: '',
     dateOfBirth: new Date(2000, 0, 1),
-    location: '',
+    country: '', 
+    province: '', 
+    city: '',
     policyChecked: false,
 }
 
@@ -105,14 +107,14 @@ function RegisterForm(props) {
 
     function readyToSubmit() {
         var isReady = true;
-        const { firstName, lastName, dateOfBirth, location, email, password, passwordCheck, policyChecked } = formFieldValues;
+        const { firstName, lastName, dateOfBirth, country, province, city, email, password, passwordCheck, policyChecked } = formFieldValues;
         if (!isOldEnough(dateOfBirth)) {
             isReady = false;
         }
         if (!policyChecked) {
             isReady = false;
         }
-        if (!firstName || !lastName || !location || !email || !password || !passwordCheck) {
+        if (!firstName || !lastName || !country || !province || !city || !email || !password || !passwordCheck) {
             isReady = false;
         }
 
@@ -124,14 +126,14 @@ function RegisterForm(props) {
         props.clearErrors();
 
         // Get values
-        const { firstName, lastName, dateOfBirth, location, email, password, passwordCheck, policyChecked } = formFieldValues;
+        const { firstName, lastName, dateOfBirth, country, province, city, email, password, passwordCheck, policyChecked } = formFieldValues;
 
         // Create user object
         const newUser = {
             firstName,
             lastName,
             dateOfBirth,
-            location,
+            country, province, city,
             email,
             password,
             passwordCheck,
@@ -177,17 +179,47 @@ function RegisterForm(props) {
                             value={formFieldValues.dateOfBirth}
                             onChange={onInputChange}
                         />
-                        <Controls.TextField
-                            variant={textFieldVariant}
-                            label="Location"
-                            name="location"
-                            value={formFieldValues.location}
-                            placeholder="Country/Province/City"
-                            onChange={onInputChange}
-                            InputProps={{
-                                //startAdornment: <InputPersonIcon />
-                            }}
-                        />
+                        <Grid container>
+                            <Grid item xs={12} sm={4}>
+                                <Controls.TextField
+                                    variant={textFieldVariant}
+                                    label="Country"
+                                    name="country"
+                                    value={formFieldValues.country}
+                                    placeholder="Country"
+                                    onChange={onInputChange}
+                                    InputProps={{
+                                        //startAdornment: <InputPersonIcon />
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <Controls.TextField
+                                    variant={textFieldVariant}
+                                    label="Province/Territory"
+                                    name="province"
+                                    value={formFieldValues.province}
+                                    placeholder="Province/Territory"
+                                    onChange={onInputChange}
+                                    InputProps={{
+                                        //startAdornment: <InputPersonIcon />
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <Controls.TextField
+                                    variant={textFieldVariant}
+                                    label="City"
+                                    name="city"
+                                    value={formFieldValues.city}
+                                    placeholder="City"
+                                    onChange={onInputChange}
+                                    InputProps={{
+                                        //startAdornment: <InputPersonIcon />
+                                    }}
+                                />
+                            </Grid>
+                        </Grid>
                         <Controls.TextField
                             variant={textFieldVariant}
                             label="Email"

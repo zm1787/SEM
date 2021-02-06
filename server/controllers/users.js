@@ -26,10 +26,10 @@ export const loadUser = async (req, res) => {
 export const getUsers = async (req, res) => {
     try {
         // Find all objecs that follows/fits the User model
-        const users = await User.find().select('email firstName lastName userType profession dateOfBirth location'); 
+        const users = await User.find().select('email firstName lastName userType profession dateOfBirth location');
 
         // Return status 200 (Ok), and .json array of found user object in database to front-end
-        res.status(200).json(users); 
+        res.status(200).json(users);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
@@ -40,13 +40,13 @@ export const getUsers = async (req, res) => {
 // @access  Public
 export const registerSeeker = async (req, res) => {
     try {
-        const { firstName, lastName, dateOfBirth, location, email, password, passwordCheck, policyChecked } = req.body;
-
+        const { firstName, lastName, dateOfBirth, country, province, city, email, password, passwordCheck, policyChecked } = req.body;
+        console.log("test");
         // Validation
-        if (!firstName || !lastName || !dateOfBirth || !location || !email || !password || !passwordCheck) {
+        if (!firstName || !lastName || !dateOfBirth || !country || !province || !city || !email || !password || !passwordCheck) {
             return res.status(400).json({ msg: "Not all fields have been entered." });
         }
-        if(!isOldEnough(dateOfBirth)) {
+        if (!isOldEnough(dateOfBirth)) {
             return res.status(400).json({ msg: "Age must be between 18 and 125" });
         }
         if (password.length < 5) {
@@ -55,29 +55,35 @@ export const registerSeeker = async (req, res) => {
         if (password !== passwordCheck) {
             return res.status(400).json({ msg: "Please verify that the same password was entered twice for verification." });
         }
-        if(!policyChecked) {
+        if (!policyChecked) {
             return res.status(400).json({ msg: "Please agree to the Terms of Service" });
         }
-        
+        console.log("test2");
 
         const existingUser = await User.findOne({ email: email });
         if (existingUser) {
             return res.status(400).json({ msg: "An account with this email already exists." });
         }
-
+        console.log("test3");
         const salt = await bcrypt.genSalt(); // used to generate the hash
         const passwordHash = await bcrypt.hash(password, salt);
-
+        console.log("test4");
         const newUser = new User({
             email,
             password: passwordHash,
             firstName,
             lastName,
             dateOfBirth,
-            location, 
+            location: {
+                country,
+                province,
+                city,
+            },
             userType: "Seeker"
         });
+        console.log("test5");
         let savedUser = await newUser.save();
+        console.log("test6");
         savedUser.password = undefined;
         res.json(savedUser);
 
@@ -174,8 +180,8 @@ export const updateUser = async (req, res) => {
     const { id: _id } = req.params; // request looks like "users/123". That 123 (the id) will fill id
     const user = req.body;
 
-    if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No user with that id')
-    
+    if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No user with that id')
+
     const updatedUser = await User.findByIdAndUpdate(_id, { ...user, _id }, { new: true });
 
     res.json(updatedUser);
@@ -187,7 +193,7 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
     const { id } = req.params;
 
-    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('No user with that id')
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('No user with that id')
 
     await User.findByIdAndRemove(id);
 

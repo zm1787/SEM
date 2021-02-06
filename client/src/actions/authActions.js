@@ -26,7 +26,7 @@ export const loadUser = () => async (dispatch, getState) => {
 }
 
 // Register User
-export const registerSeeker = ({ firstName, lastName, dateOfBirth, location, email, password, passwordCheck, policyChecked }) => async (dispatch) => {
+export const registerSeeker = ({ firstName, lastName, dateOfBirth, country, province, city, email, password, passwordCheck, policyChecked }) => async (dispatch) => {
     // Headers
     const config = {
         headers: {
@@ -35,7 +35,7 @@ export const registerSeeker = ({ firstName, lastName, dateOfBirth, location, ema
     }
 
     // Request body
-    const body = JSON.stringify({ firstName, lastName, dateOfBirth, location, email, password, passwordCheck, policyChecked })
+    const body = JSON.stringify({ firstName, lastName, dateOfBirth, country, province, city, email, password, passwordCheck, policyChecked })
 
     try {
         const { data } = await api.registerSeeker(body, config);
