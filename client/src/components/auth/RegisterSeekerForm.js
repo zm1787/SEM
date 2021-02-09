@@ -93,9 +93,12 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(3),
         width: '200px',
         maxWidth: '100%',
-        margin: '0 auto',
+        margin: 0,
         display: 'block',
         fontSize: '1rem',
+        [theme.breakpoints.down('xs')]: {
+            margin: '0 auto',
+        },
     },
 }));
 
@@ -185,7 +188,7 @@ function RegisterForm(props) {
     }
 
     // standard (unspecified), outlined, filled,
-    const textFieldVariant = "outlined";
+    const textFieldVariant = "filled";
     return (
         <Paper className={classes.paper} elevation={3}>
             <Typography className={classes.formHeader} variant="h4">Register</Typography>
