@@ -53,10 +53,10 @@ const App = () => {
             <div className="mainApp">
                 <NavBar />
                 <Grid container>
-                    <Grid item sm={12} md={6}>
+                    <Grid item sm={12} >
                         <RegisterSeekerForm />
                     </Grid>
-                    <Grid item sm={12} md={6}>
+                    <Grid item sm={12} >
                         <SpecialistCardsList users={users} />
                     </Grid>
                 </Grid>

@@ -44,19 +44,19 @@ export const registerSeeker = async (req, res) => {
         console.log("test");
         // Validation
         if (!firstName || !lastName || !dateOfBirth || !country || !province || !city || !email || !password || !passwordCheck) {
-            return res.status(400).json({ msg: "Not all fields have been entered." });
+            return res.status(400).json({ msg: "Please make sure all fields have been correctly filled before signing up." });
         }
         if (!isOldEnough(dateOfBirth)) {
-            return res.status(400).json({ msg: "Age must be between 18 and 125" });
+            return res.status(400).json({ msg: "Must be between the ages of 18 and 125." });
         }
         if (password.length < 5) {
-            return res.status(400).json({ msg: "The password needs to be at least 5 characters long." });
+            return res.status(400).json({ msg: "The password needs to be at least 5 characters long. Please try a new password." });
         }
         if (password !== passwordCheck) {
-            return res.status(400).json({ msg: "Please verify that the same password was entered twice for verification." });
+            return res.status(400).json({ msg: "Password verification does not match. Please try again." });
         }
         if (!policyChecked) {
-            return res.status(400).json({ msg: "Please agree to the Terms of Service" });
+            return res.status(400).json({ msg: "Please read and agree to the Terms of Service." });
         }
         console.log("test2");
 

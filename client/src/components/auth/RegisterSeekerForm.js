@@ -27,17 +27,60 @@ const useStyles = makeStyles(theme => ({
         textAlign: 'center',
     },
     paper: {
-        margin: `${theme.spacing(5)}px`,
-        padding: theme.spacing(3),
+        maxWidth: '950px',
+        margin: `${theme.spacing(5)}px auto`,
+        padding: `${theme.spacing(3)}px ${theme.spacing(6)}px`,
         backgroundColor: theme.palette.background.paper,
 
-        [theme.breakpoints.down('sm')]: {
-            margin: theme.spacing(1),
-            padding: theme.spacing(1),
+        [theme.breakpoints.down('xs')]: {
+            margin: 0,
+            padding: `${theme.spacing(3)}px ${theme.spacing(2)}px`,
         },
     },
     gridContainer: {
         flexGrow: 1,
+    },
+    multiTxtFieldContainer: {
+        width: '100%',
+        margin: '0 auto',
+
+        display: 'flex',
+        justifyContent: 'space-between',
+        '& .MuiTextField-root': {
+            //width: '100%',
+        }
+    },
+    multiTxtField2: {
+        [theme.breakpoints.down('xs')]: {
+            maxWidth: 'none',
+            width: '100%',
+        },
+        [theme.breakpoints.up('sm')]: {
+            width: '400px',
+            maxWidth: '48%',
+            minWidth: '200px',
+        },
+    },
+    multiTxtField3: {
+        [theme.breakpoints.down('xs')]: {
+            maxWidth: 'none',
+            width: '100%',
+        },
+        [theme.breakpoints.up('sm')]: {
+            width: '400px',
+            maxWidth: '48%',
+            minWidth: '200px',
+        },
+        [theme.breakpoints.up('md')]: {
+            width: '300px',
+            maxWidth: '30%',
+            minWidth: '200px',
+        },
+        [theme.breakpoints.up('lg')]: {
+            width: '300px',
+            maxWidth: '30%',
+            minWidth: '200px',
+        },
     },
     textFieldsCell: {
         marginTop: theme.spacing(1),
@@ -67,8 +110,8 @@ const initialFieldValues = {
     firstName: '',
     lastName: '',
     dateOfBirth: new Date(2000, 0, 1),
-    country: '', 
-    province: '', 
+    country: '',
+    province: '',
     city: '',
     policyChecked: false,
 }
@@ -145,74 +188,78 @@ function RegisterForm(props) {
     }
 
     // standard (unspecified), outlined, filled,
-    const textFieldVariant = "outlined";
+    const textFieldVariant = "filled";
     return (
         <Paper className={classes.paper} elevation={3}>
             <Typography className={classes.formHeader} variant="h4">Register</Typography>
             <Form onSubmit={handleSubmit}>
                 <Grid container className={classes.gridContainer} spacing={3}>
                     <Grid item className={classes.textFieldsCell} xs={12} >
-                        <Controls.TextField
-                            variant={textFieldVariant}
-                            label="First Name"
-                            name="firstName"
-                            value={formFieldValues.firstName}
-                            onChange={onInputChange}
-                            InputProps={{
-                                //startAdornment: <InputPersonIcon />
-                            }}
-                        />
-                        <Controls.TextField
-                            variant={textFieldVariant}
-                            label="Second Name"
-                            name="lastName"
-                            value={formFieldValues.lastName}
-                            onChange={onInputChange}
-                            InputProps={{
-                                //startAdornment: <InputPersonIcon />
-                            }}
-                        />
+                        <Grid container spacing={0}>
+                            <Grid item className={classes.multiTxtField2}>
+                                <Controls.TextField
+                                    variant={textFieldVariant}
+                                    label="First Name"
+                                    name="firstName"
+                                    value={formFieldValues.firstName}
+                                    onChange={onInputChange}
+                                    InputProps={{
+                                        //startAdornment: <InputPersonIcon />
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item className={classes.multiTxtField2}>
+                                <Controls.TextField
+                                    variant={textFieldVariant}
+                                    label="Second Name"
+                                    name="lastName"
+                                    value={formFieldValues.lastName}
+                                    onChange={onInputChange}
+                                    InputProps={{
+                                        //startAdornment: <InputPersonIcon />
+                                    }}
+                                />
+                            </Grid>
+                        </Grid>
                         <Controls.DatePicker
+                            variant={textFieldVariant}
                             error={!isOldEnough(formFieldValues.dateOfBirth)}
                             label="Date of Birth"
                             name="dateOfBirth"
                             value={formFieldValues.dateOfBirth}
                             onChange={onInputChange}
                         />
-                        <Grid container>
-                            <Grid item xs={12} sm={4}>
+                        <Grid container spacing={0}>
+                            <Grid item className={classes.multiTxtField3}>
                                 <Controls.TextField
                                     variant={textFieldVariant}
                                     label="Country"
                                     name="country"
                                     value={formFieldValues.country}
-                                    placeholder="Country"
                                     onChange={onInputChange}
                                     InputProps={{
                                         //startAdornment: <InputPersonIcon />
                                     }}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={4}>
+                            <Grid item className={classes.multiTxtField3}>
                                 <Controls.TextField
                                     variant={textFieldVariant}
                                     label="Province/Territory"
                                     name="province"
                                     value={formFieldValues.province}
-                                    placeholder="Province/Territory"
                                     onChange={onInputChange}
                                     InputProps={{
                                         //startAdornment: <InputPersonIcon />
                                     }}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={4}>
+                            <Grid item className={classes.multiTxtField3}>
                                 <Controls.TextField
                                     variant={textFieldVariant}
                                     label="City"
                                     name="city"
                                     value={formFieldValues.city}
-                                    placeholder="City"
                                     onChange={onInputChange}
                                     InputProps={{
                                         //startAdornment: <InputPersonIcon />
@@ -276,7 +323,7 @@ function RegisterForm(props) {
                     </Grid>
                 </Grid>
             </Form>
-        </Paper>
+        </Paper >
     )
 }
 
