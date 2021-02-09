@@ -14,7 +14,7 @@ import { light, dark } from './themes/colorPalettes';
 // Material UI
 import { Grid, makeStyles, CssBaseline, createMuiTheme, ThemeProvider } from '@material-ui/core';
 
-const selectedTheme = light;
+const selectedTheme = dark;
 
 const theme = createMuiTheme({
     palette: selectedTheme,

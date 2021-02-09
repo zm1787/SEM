@@ -46,9 +46,6 @@ const useStyles = makeStyles(theme => ({
 
         display: 'flex',
         justifyContent: 'space-between',
-        '& .MuiTextField-root': {
-            //width: '100%',
-        }
     },
     multiTxtField2: {
         [theme.breakpoints.down('xs')]: {
@@ -188,14 +185,14 @@ function RegisterForm(props) {
     }
 
     // standard (unspecified), outlined, filled,
-    const textFieldVariant = "filled";
+    const textFieldVariant = "outlined";
     return (
         <Paper className={classes.paper} elevation={3}>
             <Typography className={classes.formHeader} variant="h4">Register</Typography>
             <Form onSubmit={handleSubmit}>
                 <Grid container className={classes.gridContainer} spacing={3}>
                     <Grid item className={classes.textFieldsCell} xs={12} >
-                        <Grid container spacing={0}>
+                        <Grid container className={classes.multiTxtFieldContainer} spacing={0}>
                             <Grid item className={classes.multiTxtField2}>
                                 <Controls.TextField
                                     variant={textFieldVariant}
@@ -229,7 +226,7 @@ function RegisterForm(props) {
                             value={formFieldValues.dateOfBirth}
                             onChange={onInputChange}
                         />
-                        <Grid container spacing={0}>
+                        <Grid container className={classes.multiTxtFieldContainer} spacing={0}>
                             <Grid item className={classes.multiTxtField3}>
                                 <Controls.TextField
                                     variant={textFieldVariant}
