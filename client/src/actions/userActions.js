@@ -1,4 +1,4 @@
-import { FETCH_ALL, CREATE, UPDATE, DELETE } from '../constants/actionTypes';
+import { FETCH_ALL, CREATE, UPDATE, DELETE } from './actionTypes';
 import * as api from '../api';
 
 // Action Creators
@@ -9,10 +9,11 @@ import * as api from '../api';
 
 export const getUsers = () => async (dispatch) => {
     try {
-        // Fetch all the data from the api
-        const { data } = await api.getUsers(); // Fetch list of users
+        // Fetch all users from the api
+        const { data } = await api.getUsers();
 
-        dispatch({ type: FETCH_ALL, payload: data }); // Dispatch action
+        // Dispatch action
+        dispatch({ type: FETCH_ALL, payload: data }); 
     } catch (error) {
         console.log(error);
     }

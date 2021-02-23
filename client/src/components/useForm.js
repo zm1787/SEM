@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
         '& .MuiFormControl-root': {
             display: 'block',
             width: '100%',
-            margin: `${theme.spacing(3)}px auto 0 auto`,
+            margin: `${theme.spacing(3.5)}px auto 0 auto`,
             
             [theme.breakpoints.down('sm')]: {
                 

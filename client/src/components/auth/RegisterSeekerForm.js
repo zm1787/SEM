@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
 
 // Components
 import { useForm, Form } from '../useForm';
-import Controls from '../controls/Controls';
+import Controls from '../controls/';
 
 // Actions
 import { registerSeeker } from '../../actions/authActions';
 import { clearErrors } from '../../actions/errorActions';
+import { REGISTER_FAIL } from '../../actions/actionTypes';
 
 // Material UI
 import { makeStyles } from '@material-ui/core';
@@ -43,7 +44,6 @@ const useStyles = makeStyles(theme => ({
     multiTxtFieldContainer: {
         width: '100%',
         margin: '0 auto',
-
         display: 'flex',
         justifyContent: 'space-between',
     },
@@ -69,11 +69,6 @@ const useStyles = makeStyles(theme => ({
             minWidth: '200px',
         },
         [theme.breakpoints.up('md')]: {
-            width: '300px',
-            maxWidth: '30%',
-            minWidth: '200px',
-        },
-        [theme.breakpoints.up('lg')]: {
             width: '300px',
             maxWidth: '30%',
             minWidth: '200px',
@@ -123,20 +118,33 @@ function DisplayError(props) {
 }
 
 
-function RegisterForm(props) {
+function RegisterForm() {
+    const dispatch = useDispatch();
+    const storeError = useSelector((store) => store.error);
+    const auth = useSelector((store) => store.auth);
     const classes = useStyles();
     const { formFieldValues, setFormFieldValues, onInputChange } = useForm(initialFieldValues);
     const [msg, setMsg] = useState(null);
+    const history = useHistory();
+
 
     // Setting error message when error received
     useEffect(() => {
-        if (props.error.id === 'REGISTER_FAIL') {
-            setMsg(props.error.msg.msg);
+        if (storeError.id === REGISTER_FAIL) {
+            setMsg(storeError.msg.msg);
         } else {
             setMsg(null);
         }
-    }, [props.error])
+    }, [storeError])
 
+    // If user logged in already, go to home page
+    useEffect(() => {
+        if(auth.isAuthenticated) {
+            history.push("/");
+        }
+    }, [auth.isAuthenticated, history])
+
+    // Calculates if user is 18 or older. Returns true or false
     function isOldEnough(dateString) {
         var today = new Date();
         var birthDate = new Date(dateString);
@@ -148,7 +156,8 @@ function RegisterForm(props) {
         return age >= 18;
     }
 
-    function readyToSubmit() {
+    // Not currently used (Could be used to enable/disable Submit button for example). Returns true or false
+    /*function readyToSubmit() {
         var isReady = true;
         const { firstName, lastName, dateOfBirth, country, province, city, email, password, passwordCheck, policyChecked } = formFieldValues;
         if (!isOldEnough(dateOfBirth)) {
@@ -160,13 +169,12 @@ function RegisterForm(props) {
         if (!firstName || !lastName || !country || !province || !city || !email || !password || !passwordCheck) {
             isReady = false;
         }
-
         return isReady;
-    }
+    }*/
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        props.clearErrors();
+        dispatch(clearErrors());
 
         // Get values
         const { firstName, lastName, dateOfBirth, country, province, city, email, password, passwordCheck, policyChecked } = formFieldValues;
@@ -184,11 +192,11 @@ function RegisterForm(props) {
         };
 
         // Attempt to register
-        props.registerSeeker(newUser);
+        dispatch(registerSeeker(newUser));
     }
 
     // standard (unspecified), outlined, filled,
-    const textFieldVariant = "filled";
+    const textFieldVariant = "outlined";
     return (
         <Paper className={classes.paper} elevation={3}>
             <Typography className={classes.formHeader} variant="h4">Register</Typography>
@@ -313,7 +321,7 @@ function RegisterForm(props) {
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <Controls.Button className={classes.submitButton}
-                            type="Submit"
+                            type="submit"
                             text="Register"
                         //disabled={!readyToSubmit()}
                         />
@@ -327,21 +335,4 @@ function RegisterForm(props) {
     )
 }
 
-
-RegisterForm.propTypes = {
-    isAuthenticated: PropTypes.bool,
-    error: PropTypes.object.isRequired,
-    registerSeeker: PropTypes.func.isRequired,
-    clearErrors: PropTypes.func.isRequired
-}
-
-const mapStateToProps = state => ({
-    // Getting this from reducers/index.js
-    isAuthenticated: state.auth.isAuthenticated,
-    error: state.error
-});
-
-export default connect(
-    mapStateToProps,
-    { registerSeeker, clearErrors }
-)(RegisterForm);
+export default RegisterForm;

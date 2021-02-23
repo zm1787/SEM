@@ -12,7 +12,7 @@ import { isOldEnough } from './helperFunctions.js';
 // @access  Auth only
 export const loadUser = async (req, res) => {
     try {
-        const user = await User.findById(req.user).select('email firstName lastName profession'); // req.user is the user id set by auth.js
+        const user = await User.findById(req.user).select('email firstName lastName');
         if (!user) throw Error('User does not exist');
         res.json(user);
     } catch (error) {
@@ -41,7 +41,6 @@ export const getUsers = async (req, res) => {
 export const registerSeeker = async (req, res) => {
     try {
         const { firstName, lastName, dateOfBirth, country, province, city, email, password, passwordCheck, policyChecked } = req.body;
-        console.log("test");
         // Validation
         if (!firstName || !lastName || !dateOfBirth || !country || !province || !city || !email || !password || !passwordCheck) {
             return res.status(400).json({ msg: "Please make sure all fields have been correctly filled before signing up." });
@@ -58,16 +57,13 @@ export const registerSeeker = async (req, res) => {
         if (!policyChecked) {
             return res.status(400).json({ msg: "Please read and agree to the Terms of Service." });
         }
-        console.log("test2");
 
         const existingUser = await User.findOne({ email: email });
         if (existingUser) {
             return res.status(400).json({ msg: "An account with this email already exists." });
         }
-        console.log("test3");
         const salt = await bcrypt.genSalt(); // used to generate the hash
         const passwordHash = await bcrypt.hash(password, salt);
-        console.log("test4");
         const newUser = new User({
             email,
             password: passwordHash,
@@ -81,11 +77,14 @@ export const registerSeeker = async (req, res) => {
             },
             userType: "Seeker"
         });
-        console.log("test5");
         let savedUser = await newUser.save();
-        console.log("test6");
         savedUser.password = undefined;
-        res.json(savedUser);
+
+        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+        res.json({
+            token,
+            savedUser
+        });
 
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -96,44 +95,50 @@ export const registerSeeker = async (req, res) => {
 // @route   POST users/register/specialist
 // @desc    Register A Specialist
 // @access  Public
-export const registerSpecialist = async (req, res) => {
-    try {
-        const { email, password, passwordCheck, firstName, lastName, userType, profession } = req.body;
+// export const registerSpecialist = async (req, res) => {
+//     try {
+//         const { email, password, passwordCheck, firstName, lastName, userType, profession } = req.body;
 
-        // Validation
-        if (!email || !password || !passwordCheck || !firstName || !lastName /*|| !userType*/) {
-            return res.status(400).json({ msg: "Not all fields have been entered." });
-        }
-        if (password.length < 5) {
-            return res.status(400).json({ msg: "The password needs to be at least 5 characters long." });
-        }
-        if (password !== passwordCheck) {
-            return res.status(400).json({ msg: "Enter the same password twice for verification." });
-        }
+//         // Validation
+//         if (!email || !password || !passwordCheck || !firstName || !lastName /*|| !userType*/) {
+//             return res.status(400).json({ msg: "Not all fields have been entered." });
+//         }
+//         if (password.length < 5) {
+//             return res.status(400).json({ msg: "The password needs to be at least 5 characters long." });
+//         }
+//         if (password !== passwordCheck) {
+//             return res.status(400).json({ msg: "Enter the same password twice for verification." });
+//         }
 
-        const existingUser = await User.findOne({ email: email });
-        if (existingUser) {
-            return res.status(400).json({ msg: "An account with this email already exists." });
-        }
+//         const existingUser = await User.findOne({ email: email });
+//         if (existingUser) {
+//             return res.status(400).json({ msg: "An account with this email already exists." });
+//         }
 
-        const salt = await bcrypt.genSalt(); // used to generate the hash
-        const passwordHash = await bcrypt.hash(password, salt);
+//         const salt = await bcrypt.genSalt(); // used to generate the hash
+//         const passwordHash = await bcrypt.hash(password, salt);
 
-        const newUser = new User({
-            email,
-            password: passwordHash,
-            firstName,
-            lastName,
-            userType,
-            profession
-        });
-        let savedUser = await newUser.save();
-        savedUser.password = undefined;
-        res.json(savedUser);
+//         const newUser = new User({
+//             email,
+//             password: passwordHash,
+//             firstName,
+//             lastName,
+//             userType,
+//             profession
+//         });
+//         let savedUser = await newUser.save();
+//         savedUser.password = undefined;
+//         res.json(savedUser);
 
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// }
+
+function sleep(ms) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
 }
 
 // @route   POST users/login
@@ -159,6 +164,7 @@ export const loginUser = async (req, res) => {
         }
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        await sleep(1000);
         res.json({
             token,
             user: {

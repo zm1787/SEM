@@ -4,10 +4,11 @@ import {
     AUTH_ERROR,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
+    LOGOUT_USER,
     LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
     REGISTER_FAIL
-} from "../constants/actionTypes";
+} from "./actionTypes";
 import { returnErrors } from './errorActions';
 import * as api from '../api';
 
@@ -38,14 +39,45 @@ export const registerSeeker = ({ firstName, lastName, dateOfBirth, country, prov
     const body = JSON.stringify({ firstName, lastName, dateOfBirth, country, province, city, email, password, passwordCheck, policyChecked })
 
     try {
+        dispatch({ type: USER_LOADING});
         const { data } = await api.registerSeeker(body, config);
         dispatch({ type: REGISTER_SUCCESS, payload: data });
     } catch (error) {
         dispatch(returnErrors(error.response.data, error.response.status, 'REGISTER_FAIL'));
         dispatch({ type: REGISTER_FAIL });
     }
-
 }
+
+// Login User
+export const loginUser = ({ email, password }) => async (dispatch) => {
+    // Headers
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    // Request body
+    const body = JSON.stringify({ email, password })
+
+    try {
+        dispatch({ type: USER_LOADING});
+        const { data } = await api.loginUser(body, config);
+        dispatch({ type: LOGIN_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch(returnErrors(error.response.data, error.response.status, 'LOGIN_FAIL'));
+        dispatch({ type: LOGIN_FAIL });
+    }
+}
+
+// Logout User
+export const logoutUser = () => {
+    return {
+        type: LOGOUT_USER
+    };
+}
+
+
 
 // Setup config/headers with the token
 export const tokenConfig = getState => {

@@ -1,31 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUsers } from './actions/userActions';
 import { loadUser } from './actions/authActions';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './app.css';
 
 // Components
-import RegisterModal from './components/auth/RegisterModal';
-import RegisterSeekerForm from './components/auth/RegisterSeekerForm';
+import Register from './pages/Register';
+import Home from './pages/Home';
+import LoginForm from './components/auth/LoginForm';
 import SpecialistCardsList from './components/SpecialistCardsList';
 import NavBar from './components/Navbar';
-import { light, dark } from './themes/colorPalettes';
+import * as Themes from './themes/costomThemes';
+import ThemeSelector from './components/ThemeSelector';
 
 // Material UI
 import { Grid, makeStyles, CssBaseline, createMuiTheme, ThemeProvider } from '@material-ui/core';
-
-const selectedTheme = dark;
-
-const theme = createMuiTheme({
-    palette: selectedTheme,
-    typography: {
-        h4: {
-            fontWeight: 500,
-        }
-    },
-
-
-})
 
 const useStyles = makeStyles({
     appMain: {
@@ -36,8 +26,13 @@ const useStyles = makeStyles({
 const App = () => {
     const dispatch = useDispatch();
     const users = useSelector((store) => store.users); // Select required part of the store
+    const auth = useSelector((store) => store.auth);
 
     const classes = useStyles();
+
+    const [selectedTheme, setSelectedTheme] = React.useState(Themes.light);
+    const theme = createMuiTheme(selectedTheme)
+
 
     useEffect(() => {
         dispatch(loadUser());
@@ -49,19 +44,28 @@ const App = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            {/* TODO: Turn this grid component into a seperate file as the register page */}
-            <div className="mainApp">
-                <NavBar />
-                <Grid container>
-                    <Grid item sm={12} >
-                        <RegisterSeekerForm />
-                    </Grid>
-                    <Grid item sm={12} >
-                        <SpecialistCardsList users={users} />
-                    </Grid>
-                </Grid>
+            <Router>
                 <CssBaseline />
-            </div>
+                <div className={classes.appMain}>
+                    <NavBar />
+                    <h3>{auth.isLoading ? "Loading..." : auth.isAuthenticated ? "Authenticated" : "Not Authenticated"}</h3>
+                    <Switch>
+                        <Route exact path="/" >
+                            <Home />
+                        </Route>
+                        <Route exact path="/register" >
+                            <Register />
+                        </Route>
+                        <Route exact path="/login" >
+                            <LoginForm />
+                        </Route>
+                        <Route exact path="/listusers" >
+                            <SpecialistCardsList users={users} />
+                        </Route>
+                    </Switch>
+                    <ThemeSelector selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} Themes={Themes} />
+                </div>
+            </Router>
         </ThemeProvider>
     )
 }

@@ -6,8 +6,9 @@ import {
     LOGIN_FAIL,
     LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
-    REGISTER_FAIL
-} from "../constants/actionTypes";
+    REGISTER_FAIL,
+    LOGOUT_USER
+} from "../actions/actionTypes";
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -41,6 +42,7 @@ const authReducer = (state = initialState, action) => {
             };
         case AUTH_ERROR: 
         case LOGIN_FAIL:
+        case LOGOUT_USER:
         case LOGOUT_SUCCESS:
         case REGISTER_FAIL:
             localStorage.removeItem('token');

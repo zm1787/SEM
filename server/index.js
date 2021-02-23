@@ -15,7 +15,7 @@ app.use('/users', userRoutes); // Every route inside of userRoutes will start wi
 
 const PORT = process.env.PORT || 5000;
 
-mongoose.connect(process.env.CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
     .then(() => app.listen(process.env.PORT, () => console.log(`Server running on port: ${process.env.PORT}`)))
     .catch((error) => console.log(error.message));
 
