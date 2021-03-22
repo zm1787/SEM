@@ -1,12 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../actions/authActions';
-
-
 import Controls from './controls/';
-import { AppBar, Toolbar, Typography } from '@material-ui/core';
+
+// MUI
+import { AppBar, Toolbar, Typography, IconButton, Menu } from '@material-ui/core';
 import { Grid, makeStyles } from '@material-ui/core';
+import {
+    Menu as MenuIcon,
+    Person as PersonIcon,
+    AccountCircle,
+    Lock as LockIcon,
+    Business as BusinessIcon,
+} from '@material-ui/icons/';
+import MenuItem from '@material-ui/core/MenuItem';
+
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -32,7 +42,8 @@ const useStyles = makeStyles(theme => ({
     logoCell: {
         height: '100%',
         display: 'flex',
-        justifyContent: 'center',
+        paddingLeft: theme.spacing(2),
+        //justifyContent: 'center',
         alignItems: 'center',
         borderRight: `2px solid ${theme.palette.background.default}`,
     },
@@ -83,59 +94,128 @@ const useStyles = makeStyles(theme => ({
     buttonSpan: {
         float: 'right',
     },
+    MenuIconSpan: {
+        float: 'right',
+        paddingRight: theme.spacing(2),
+    },
+    MenuIcon: {
+        color: theme.palette.text.primary,
+        '&:focus': {
+            boxShadow: 'none',
+            outline: 'none',
+        },
+    },
+    icon: {
+        marginRight: '15px',
+        color: theme.palette.text.secondary,
+    }
 }))
 
-export default function NavBar() {
+export default function NavBar(props) {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const history = useHistory();
     const auth = useSelector((store) => store.auth);
 
-    const logout = (e) => {
-        e.preventDefault();
-        dispatch(logoutUser());
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const menuItemClick = (itemName) => {
+        if (itemName === "logout") {
+            dispatch(logoutUser());
+        }
+        if (itemName === "profile") {
+            history.push("/profile");
+        }
+        if (itemName === "myaccount") {
+            history.push("/myaccount");
+        }
+        if (itemName === "registerBusiness") {
+            history.push("/registerBusiness");
+        }
+        handleClose();
     }
 
     return (
         <div>
-            <AppBar className={classes.root} position="fixed">
-                {/* <Toolbar className={classes.gridContainer} disableGutters> */}
-                <Grid className={classes.gridContainer} container alignItems="center">
-                    <Grid className={classes.logoCell} item sm={1} >
-                        <Link to="/" className={classes.logoTextLink}>
-                            <Typography className={classes.logoText} variant="h4">SEM</Typography>
-                        </Link>
-                    </Grid>
-                    <Grid item sm={9} className={classes.buttons} >
-                        {auth.isAuthenticated ?
-                            <span className={classes.buttonSpan}>
-                                <Controls.Button className={classes.logoutButton}
-                                    variant="outlined"
-                                    text="Log out"
-                                    onClick={logout}
-                                />
+            <AppBar className={classes.root} position="fixed" >
+                <Toolbar className={classes.gridContainer} disableGutters>
+                    <Grid container className={classes.gridContainer} alignItems="center">
+                        <Grid className={classes.logoCell} item sm={1} >
+                            <Link to="/" className={classes.logoTextLink}>
+                                <Typography className={classes.logoText} variant="h4">SEM</Typography>
+                            </Link>
+                        </Grid>
+                        <Grid item md={9} className={classes.buttons} >
+                            {!auth.isAuthenticated &&
+                                <span className={classes.buttonSpan}>
+                                    <Controls.Button className={classes.loginButton}
+                                        component={Link}
+                                        to="/login"
+                                        variant="outlined"
+                                        text="Sign In"
+                                    />
+                                    <Controls.Button className={classes.RegisterButton}
+                                        component={Link}
+                                        to="/register"
+                                        variant="filled"
+                                        text="Register"
+                                    />
+                                </span>
+                            }
+                        </Grid>
+                        <Grid item sm={2} >
+                            <span className={classes.MenuIconSpan}>
+                                {auth.isAuthenticated && (
+                                    <div>
+                                        <IconButton className={classes.MenuIcon}
+                                            aria-label="account of current user"
+                                            aria-controls="menu-profile"
+                                            aria-haspopup="true"
+                                            onClick={handleMenu}
+                                        >
+                                            <MenuIcon fontSize="large" />
+                                        </IconButton>
+                                        <Menu
+                                            id="menu-profile"
+                                            anchorEl={anchorEl}
+                                            getContentAnchorEl={null}
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'right',
+                                            }}
+                                            keepMounted
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            open={open}
+                                            onClose={handleClose}
+                                        >
+                                            <MenuItem onClick={() => menuItemClick("profile")}>
+                                                <AccountCircle className={classes.icon} fontSize="large" /> My Profile
+                                            </MenuItem>
+                                            <MenuItem onClick={() => menuItemClick("registerBusiness")}>
+                                                <BusinessIcon className={classes.icon} fontSize="large" /> Register a Business
+                                            </MenuItem>
+                                            <MenuItem onClick={() => menuItemClick("logout")}>
+                                                <LockIcon className={classes.icon} fontSize="large" /> Sign Out
+                                            </MenuItem>
+                                        </Menu>
+                                    </div>
+                                )}
                             </span>
-                            :
-                            <span className={classes.buttonSpan}>
-                                <Controls.Button className={classes.loginButton}
-                                    component={Link}
-                                    to="/login"
-                                    variant="outlined"
-                                    text="Log In"
-                                />
-                                <Controls.Button className={classes.RegisterButton}
-                                    component={Link}
-                                    to="/register"
-                                    variant="filled"
-                                    text="Register"
-                                />
-                            </span>
-                        }
+                        </Grid>
                     </Grid>
-                    <Grid item sm={2} >
-
-                    </Grid>
-                </Grid>
-                {/* </Toolbar> */}
+                </Toolbar>
             </AppBar>
             <Toolbar />
         </div>

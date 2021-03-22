@@ -29,7 +29,12 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 isAuthenticated: true,
                 isLoading: false,
-                user: action.payload
+                user: action.payload,
+                /*{
+                    // only add/refresh received information, keep any other fields  
+                    ...state.user,
+                    ...action.payload,
+                },*/
             };
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:

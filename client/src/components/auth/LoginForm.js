@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from "react-router-dom";
 
 // Components
 import { useForm, Form } from '../useForm';
@@ -39,6 +38,16 @@ const useStyles = makeStyles(theme => ({
             padding: `${theme.spacing(3)}px ${theme.spacing(2)}px`,
         },
     },
+    paperlessForm: {
+        maxWidth: '500px',
+        margin: `${theme.spacing(5)}px auto`,
+        padding: `${theme.spacing(3)}px ${theme.spacing(6)}px`,
+
+        [theme.breakpoints.down('xs')]: {
+            margin: 0,
+            padding: `${theme.spacing(3)}px ${theme.spacing(2)}px`,
+        },
+    },
     gridContainer: {
         flexGrow: 1,
     },
@@ -66,15 +75,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const initialFieldValues = {
-    email: '',
-    password: '',
-}
-
 function DisplayError(props) {
     return (
         <Alert variant="outlined" severity="error">{props.msg}</Alert>
     )
+}
+
+const initialFieldValues = {
+    email: '',
+    password: '',
 }
 
 
@@ -82,14 +91,12 @@ function LoginForm() {
     // Redux
     const dispatch = useDispatch();
     const storeError = useSelector((store) => store.error);
-    const auth = useSelector((store) => store.auth);
 
     // States
     const { formFieldValues, setFormFieldValues, onInputChange } = useForm(initialFieldValues);
     const [msg, setMsg] = useState(null);
 
     // Others
-    const history = useHistory();
     const classes = useStyles();
 
     // Setting error message when error received
@@ -101,11 +108,6 @@ function LoginForm() {
         }
     }, [storeError])
 
-    useEffect(() => {
-        if(auth.isAuthenticated) {
-            history.push("/");
-        }
-    }, [auth.isAuthenticated, history])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -128,7 +130,8 @@ function LoginForm() {
     const textFieldVariant = "outlined";
     return (
         <Paper className={classes.paper} elevation={3}>
-            <Typography className={classes.formHeader} variant="h4">Login</Typography>
+        {/* <div className={classes.paperlessForm}> */}
+            <Typography className={classes.formHeader} variant="h4">Sign In</Typography>
             <Form onSubmit={handleSubmit}>
                 <Box className={classes.textFieldsCell}>
                     <Controls.TextField
@@ -159,7 +162,11 @@ function LoginForm() {
                     type="submit"
                     text="Log In"
                 />
+                <Box>
+                    {msg ? <DisplayError msg={msg} /> : null}
+                </Box>
             </Form>
+        {/* </div> */}
         </Paper >
     )
 }

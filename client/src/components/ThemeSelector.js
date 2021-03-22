@@ -20,13 +20,12 @@ const useStyles = makeStyles(theme => ({
             bottom: '0px',
             right: '0px',
         },
-
     },
 }))
 
 export default function ThemeSelector({ selectedTheme, setSelectedTheme, Themes }) {
     const classes = useStyles();
-    const [value, setValue] = React.useState('light');
+    const [value, setValue] = React.useState('dark');
 
 
     useEffect(() => {

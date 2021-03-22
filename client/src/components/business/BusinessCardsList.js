@@ -1,5 +1,5 @@
 import React from 'react'
-import SpecialistCard from './SpecialistCard';
+import BusinessCard from './BusinessCard';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -9,14 +9,14 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default function SpecialistCardsList( {users} ) {
+export default function BusinessCardsList( {users} ) {
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
             {users.map((user) => {
                 return (
-                    <SpecialistCard key={user._id} user={user} />
+                    <BusinessCard key={user._id} user={user} />
                 )
             })}
         </div>

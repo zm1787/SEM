@@ -43,7 +43,7 @@ export default function Button(props) {
             <OutlinedButton
                 variant="outlined"
                 size={size || "large"}
-                onClick={onClick}
+                onClick={onClick || undefined}
                 {...other}
             >
                 {text}

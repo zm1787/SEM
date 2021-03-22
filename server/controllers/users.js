@@ -6,13 +6,26 @@ import { isOldEnough } from './helperFunctions.js';
 
 // SEE ALL STATUS CODES HERE: https://www.restapitutorial.com/httpstatuscodes.html
 
-// @state   Working
+// @state   Unused. Use loadProfile instead
 // @route   GET users/load
 // @desc    Get User Info
 // @access  Auth only
 export const loadUser = async (req, res) => {
     try {
         const user = await User.findById(req.user).select('email firstName lastName');
+        if (!user) throw Error('User does not exist');
+        res.json(user);
+    } catch (error) {
+        res.status(400).json({ msg: error.message });
+    }
+}
+
+// @route   GET users/load
+// @desc    Get User Info
+// @access  Auth only
+export const loadProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user).select('email firstName lastName location userType');
         if (!user) throw Error('User does not exist');
         res.json(user);
     } catch (error) {
@@ -65,7 +78,7 @@ export const registerSeeker = async (req, res) => {
         const salt = await bcrypt.genSalt(); // used to generate the hash
         const passwordHash = await bcrypt.hash(password, salt);
         const newUser = new User({
-            email,
+            email: email.toLowerCase(),
             password: passwordHash,
             firstName,
             lastName,
@@ -83,7 +96,7 @@ export const registerSeeker = async (req, res) => {
         const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
         res.json({
             token,
-            savedUser
+            user: savedUser,
         });
 
     } catch (error) {
@@ -149,29 +162,33 @@ export const loginUser = async (req, res) => {
         const { email, password } = req.body;
 
         // Validate
-        if (!email || !password) {
-            return res.status(400).json({ msg: "Not all fields have been entered." });
+        if (!password && !email) {
+            return res.status(400).json({ msg: "Please enter your credentials in the fields above to log in." });
+        }
+        if (!password) {
+            return res.status(400).json({ msg: "Please enter a password." });
+        }
+        if (!email) {
+            return res.status(400).json({ msg: "Please enter an email address." });
         }
 
-        const user = await User.findOne({ email: email });
+        const user = await User.findOne({ email: email.toLowerCase() });
         if (!user) {
             return res.status(400).json({ msg: "No account with this email has been registered." });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(400).json({ msg: "Invalid credentials" });
+            return res.status(400).json({ msg: "Invalid credentials. Please try again." });
         }
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-        await sleep(1000);
+        user.password = undefined;
+
+        //await sleep(1000);
         res.json({
             token,
-            user: {
-                id: user._id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-            },
+            user,
         });
 
     } catch (error) {

@@ -19,7 +19,7 @@ const useStyles = makeStyles( theme => ({
 }))
 
 
-export default function SpecialistCard(props) {
+export default function BusinessCard(props) {
 
     const classes = useStyles();
 

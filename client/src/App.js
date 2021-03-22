@@ -1,21 +1,25 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUsers } from './actions/userActions';
-import { loadUser } from './actions/authActions';
+import { loadUserProfile } from './actions/authActions';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './app.css';
 
+// Pages
+import RegisterPage from './pages/Register';
+import HomePage from './pages/Home';
+import LoginPage from './pages/Login';
+import ProfilePage from './pages/Profile';
+import RegisterBusinessPage from './pages/RegisterBusiness';
+
 // Components
-import Register from './pages/Register';
-import Home from './pages/Home';
-import LoginForm from './components/auth/LoginForm';
-import SpecialistCardsList from './components/SpecialistCardsList';
+import BusinessCardsList from './components/business/BusinessCardsList';
 import NavBar from './components/Navbar';
 import * as Themes from './themes/costomThemes';
 import ThemeSelector from './components/ThemeSelector';
 
 // Material UI
-import { Grid, makeStyles, CssBaseline, createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { makeStyles, CssBaseline, createMuiTheme, ThemeProvider } from '@material-ui/core';
 
 const useStyles = makeStyles({
     appMain: {
@@ -30,12 +34,12 @@ const App = () => {
 
     const classes = useStyles();
 
-    const [selectedTheme, setSelectedTheme] = React.useState(Themes.light);
+    const [selectedTheme, setSelectedTheme] = React.useState(Themes.dark);
     const theme = createMuiTheme(selectedTheme)
 
 
     useEffect(() => {
-        dispatch(loadUser());
+        dispatch(loadUserProfile());
     }, [dispatch]);
 
     useEffect(() => {
@@ -51,16 +55,22 @@ const App = () => {
                     <h3>{auth.isLoading ? "Loading..." : auth.isAuthenticated ? "Authenticated" : "Not Authenticated"}</h3>
                     <Switch>
                         <Route exact path="/" >
-                            <Home />
+                            <HomePage />
+                        </Route>
+                        <Route exact path="/profile" >
+                            <ProfilePage />
                         </Route>
                         <Route exact path="/register" >
-                            <Register />
+                            <RegisterPage />
                         </Route>
                         <Route exact path="/login" >
-                            <LoginForm />
+                            <LoginPage />
                         </Route>
                         <Route exact path="/listusers" >
-                            <SpecialistCardsList users={users} />
+                            <BusinessCardsList users={users} />
+                        </Route>
+                        <Route exact path="/registerBusiness" >
+                            <RegisterBusinessPage />
                         </Route>
                     </Switch>
                     <ThemeSelector selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} Themes={Themes} />

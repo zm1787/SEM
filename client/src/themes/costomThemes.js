@@ -15,6 +15,12 @@ export const light = {
 
             paper: '#ffffff',
 
+            // light border 
+            border: '#a3a5a8',
+
+            // field glow
+            fieldGlow: '#ffffff',
+
             // nav
             nav: '#ffffff',
             navContrast: '#000000',
@@ -22,7 +28,7 @@ export const light = {
             field: '#f0f2f5',
         },
         text: {
-            primary: '#050505',
+            primary: '#050505' /*'#050505'*/,
             secondary: '#a3a5a8', // 8aa4c1, 
             text: '#e4e6eb', // light grey FB text
 
@@ -57,12 +63,18 @@ export const darkBlue = {
 
             field: '#354b64',
 
+            // light border 
+            border: '#5a6169',
+
             //darker
             darker: '#1a2632',
 
             // dark
             dark: '#233243',
             paper: '#233243',
+
+            // field glow
+            fieldGlow: '#ffffff',
 
             // nav
             nav: '#233243',
@@ -122,6 +134,12 @@ export const dark = {
             // nav
             nav: '#212731',
             navContrast: '#ffffff',
+
+            // field glow
+            fieldGlow: '#ffffff',
+
+            // light border 
+            border: '#5a6169',
 
             // light
             light: '#2f455c',

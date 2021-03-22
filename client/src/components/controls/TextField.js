@@ -1,17 +1,19 @@
 import React from 'react'
-import { TextField as MuiTextField, withStyles } from '@material-ui/core';
+import { TextField as MuiTextField, withStyles, fade } from '@material-ui/core';
+
+
 
 const FormTextFieldOutlined = withStyles(theme => ({
     root: {
-        //WebkitBoxShadow: `0 0 0px 1000px ${theme.palette.background.field} inset`,
+
         '& label.Mui-focused': {
-            color: theme.palette.text.white,
+            color: theme.palette.text.primary,
         },
         '& label': {
             marginLeft: theme.spacing(1),
         },
         '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
-            transform: 'translate(12px, -13px) scale(0.75)',
+            transform: 'translate(12px, -20px) scale(0.9)',
         },
         '& .MuiFormHelperText-contained': {
             marginLeft: '21px',
@@ -31,13 +33,15 @@ const FormTextFieldOutlined = withStyles(theme => ({
             '&:hover': {
                 //backgroundColor: theme.palette.background.lighter,
             },
+            '&:focus-within': {
+                boxShadow: `${fade(theme.palette.primary.main, 0.6)} 0 0 4px 2px`,
+            },
         },
     },
 }))(MuiTextField);
 
 const FormTextFieldFilled = withStyles(theme => ({
     root: {
-        //WebkitBoxShadow: `0 0 0px 1000px ${theme.palette.background.field} inset`,
         '& label.Mui-focused': {
             color: theme.palette.text.white,
         },
@@ -69,31 +73,51 @@ const FormTextFieldFilled = withStyles(theme => ({
     },
 }))(MuiTextField);
 
-export default function TextField(props) {
-    const { variant, label, name, type, value, placeholder, onChange, InputProps } = props
+function TextField(props) {
+    const { variant, label, name, type, value, placeholder, onChange, InputProps, ...rest } = props
 
     return (
         variant === "outlined" ?
-        <FormTextFieldOutlined
-            variant="outlined"
-            label={label}
-            name={name}
-            type={type}
-            value={value}
-            placeholder={placeholder}
-            onChange={onChange}
-            InputProps={InputProps}
-        />
-        :
-        <FormTextFieldFilled
-            variant="filled"
-            label={label}
-            name={name}
-            type={type}
-            value={value}
-            placeholder={placeholder}
-            onChange={onChange}
-            InputProps={InputProps}
-        />
+            rest.multiline ?
+                <MuiTextField
+                    variant="outlined"
+                    label={label}
+                    name={name}
+                    type={type}
+                    value={value}
+                    placeholder={placeholder}
+                    onChange={onChange}
+                    InputProps={InputProps}
+                    autoComplete="off"
+                    {...rest}
+                />
+                :
+                <FormTextFieldOutlined
+                    variant="outlined"
+                    label={label}
+                    name={name}
+                    type={type}
+                    value={value}
+                    placeholder={placeholder}
+                    onChange={onChange}
+                    InputProps={InputProps}
+                    autoComplete="off"
+                    {...rest}
+                />
+            :
+            <FormTextFieldFilled
+                variant="filled"
+                label={label}
+                name={name}
+                type={type}
+                value={value}
+                placeholder={placeholder}
+                onChange={onChange}
+                InputProps={InputProps}
+                autoComplete="off"
+                {...rest}
+            />
     )
 }
+
+export default TextField;

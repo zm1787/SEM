@@ -11,7 +11,7 @@ const auth = (req, res, next) => {
         // Verify token
         const verified = jwt.verify(token, process.env.JWT_SECRET);
         if (!verified) {
-            return res.status(401).json({ msg: "Token verification ffailed, authorization denied." });
+            return res.status(401).json({ msg: "Token verification failed, authorization denied." });
         }
 
         // Add user from payload

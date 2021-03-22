@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
-import RegisterSeekerForm from '../components/seeker/RegisterSeekerForm';
+import LoginForm from '../components/auth/LoginForm';
 
-export default function Register() {
+
+export default function Login() {
     const history = useHistory();
     const auth = useSelector((store) => store.auth);
 
@@ -13,10 +14,10 @@ export default function Register() {
             history.push("/profile");
         }
     }, [auth.isAuthenticated, history])
-    
+
     return (
         <div>
-            <RegisterSeekerForm />
+            <LoginForm />
         </div>
     )
 }

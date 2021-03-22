@@ -12,13 +12,27 @@ import {
 import { returnErrors } from './errorActions';
 import * as api from '../api';
 
-// Check token and load user
+// auth only: Gets first name, last name and email
 export const loadUser = () => async (dispatch, getState) => {
     // User loading 
     dispatch({ type: USER_LOADING });
 
     try {
         const { data } = await api.loadUser(tokenConfig(getState));
+        dispatch({ type: USER_LOADED, payload: data });
+    } catch (error) {
+        dispatch(returnErrors(error.response.data, error.response.status));
+        dispatch({ type: AUTH_ERROR });
+    }
+}
+
+// auth only: Gets firstName, lastName, email, userType and location
+export const loadUserProfile = () => async (dispatch, getState) => {
+    // User loading 
+    dispatch({ type: USER_LOADING });
+
+    try {
+        const { data } = await api.loadUserProfile(tokenConfig(getState));
         dispatch({ type: USER_LOADED, payload: data });
     } catch (error) {
         dispatch(returnErrors(error.response.data, error.response.status));
