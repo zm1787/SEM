@@ -192,7 +192,7 @@ function RegisterForm() {
     const textFieldVariant = "outlined";
     return (
         <Paper className={classes.paper} elevation={3}>
-            <Typography className={classes.formHeader} variant="h4">Register</Typography>
+            <Typography className={classes.formHeader} variant="h4">Create your SEM account</Typography>
             <Form onSubmit={handleSubmit}>
                 <Grid container className={classes.gridContainer} spacing={3}>
                     <Grid item className={classes.textFieldsCell} xs={12} >

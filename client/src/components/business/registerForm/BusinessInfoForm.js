@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux';
-
-import { COUNTRIES, CANADIAN_PROVINCES, US_STATES, FIELD_VARIANT} from '../../constants/AppConstants';
+import { COUNTRIES, CANADIAN_PROVINCES, US_STATES, FIELD_VARIANT } from '../../../constants/AppConstants';
 
 // Components
-import Controls from '../controls';
-import IconTextPopover from '../iconFunctions/IconTextPopover';
-import DeletableListItem from '../DeletableListItem';
+import Controls from '../../controls';
+import IconTextPopover from '../../iconFunctions/IconTextPopover';
+import DeletableListItem from './DeletableListItem';
 import WagesRadio from './WagesRadio';
 
-// Actions
-import { REGISTER_BUSINESS_FAIL } from '../../actions/actionTypes';
+
 
 // Material UI
 import { makeStyles } from '@material-ui/core';
@@ -40,6 +37,7 @@ const useStyles = makeStyles(theme => ({
         textAlign: 'left',
     },
     paper: {
+        overflow: 'auto', 
         width: '50vw',
         maxWidth: '700px',
         margin: `${theme.spacing(5)}px auto`,
@@ -67,7 +65,7 @@ const useStyles = makeStyles(theme => ({
             padding: `${theme.spacing(3)}px ${theme.spacing(2)}px`,
         },
     },
-   
+
     gridContainer: {
         flexGrow: 1,
     },
@@ -107,16 +105,6 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(3),
         marginBottom: theme.spacing(3),
         paddingBottom: theme.spacing(0),
-    },
-    submitButton: {
-        marginBottom: theme.spacing(3),
-        width: '250px',
-        maxWidth: '100%',
-        margin: '32px 0',
-        display: 'block',
-        [theme.breakpoints.down('md')]: {
-            margin: '0 auto',
-        },
     },
     searchTermsOuterContainer: {
 
@@ -184,6 +172,16 @@ const useStyles = makeStyles(theme => ({
     moneySign: {
         color: theme.palette.text.primary,
     },
+    nextButton: {
+        marginBottom: theme.spacing(2),
+        float: 'right',
+        padding: '8px 14px', 
+        [theme.breakpoints.down('xs')]: {
+            display: 'block',
+            float: 'none',
+            margin: '0 auto',
+        },
+    },
 }));
 
 // Checks that string is not empty or all whitespaces
@@ -197,26 +195,13 @@ function DisplayError(props) {
     )
 }
 
-export default function RegisterSpecialistForm({ formFieldValues, setFormFieldValues, managedErrors, setManagedErrors, onInputChange, formatPhoneNumber }) {
-    // Hooks
-    const storeError = useSelector((store) => store.error);
-
-    // States
-    const [serverErrMsg, setServerErrMsg] = useState(null);
-
+export default function RegisterSpecialistForm({ formFieldValues, setFormFieldValues, managedErrors, setManagedErrors, onInputChange, formatPhoneNumber, setCurrentSection, formSections }) {
     // Styles
     const classes = useStyles();
 
-    // Setting error message when error received
-    useEffect(() => {
-        if (storeError.id === REGISTER_BUSINESS_FAIL) {
-            setServerErrMsg(storeError.msg.msg);
-        } else {
-            setServerErrMsg(null);
-        }
-    }, [storeError])
-
-
+    const onClickNext = (e) => {
+        setCurrentSection(formSections.TierSelector);
+    }
 
     const onMoneyFieldKeyPressed = (e, state, setState) => {
         const re = /^[(0-9|.)\b]+$/;
@@ -287,6 +272,7 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
             <Grid item className={classes.gridItem} lg={6} md={12} sm={12} >
                 {/* <div className={classes.paperlessForm}> */}
                 <Paper className={classes.paper} elevation={3}>
+                    <Typography variant="h5">Business Information</Typography>
                     <Box className={classes.textFieldsCell}>
                         <Controls.TextField
                             variant={textFieldVariant}
@@ -297,7 +283,7 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
                             InputProps={{
                                 endAdornment:
                                     <IconTextPopover
-                                        msg={"If you are advertising yourself alone and don't have a business name, you can use your name here."}
+                                        msg={"If you are advertising as an individual and don't have a business name, you can simply your name here."}
                                         icon={HelpOutlineIcon}
                                     />
                             }}
@@ -310,6 +296,16 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
                             label="Street Address of Business"
                             name="streetAddress"
                             value={formFieldValues.streetAddress}
+                            onChange={onInputChange}
+                            inputProps={{
+                                autoComplete: 'new-password', // disable autocomplete and autofill
+                            }}
+                        />
+                        <Controls.TextField
+                            variant={textFieldVariant}
+                            label="City"
+                            name="city"
+                            value={formFieldValues.city}
                             onChange={onInputChange}
                             inputProps={{
                                 autoComplete: 'new-password', // disable autocomplete and autofill
@@ -416,7 +412,7 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
                             InputProps={{
                                 endAdornment:
                                     <IconTextPopover
-                                        msg={"The type of service you or your business provides, or your title. Example: Plumber"}
+                                        msg={"The type of service you proviode, or your profession. Example: Plumber or plumbing"}
                                         icon={HelpOutlineIcon}
                                     />
                             }}
@@ -435,7 +431,7 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
                                         InputProps={{
                                             endAdornment:
                                                 <IconTextPopover
-                                                    msg={"List keywords that will help people find you or your business."}
+                                                    msg={"List keywords that will help people find you."}
                                                     icon={HelpOutlineIcon}
                                                 />
                                         }}
@@ -480,7 +476,7 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
                             InputProps={{
                                 endAdornment:
                                     <IconTextPopover
-                                        msg={"Here you can describe what type of service you or your business can provide."}
+                                        msg={"Here you can describe in more details what type of service you provide."}
                                         icon={HelpOutlineIcon}
                                     />,
                                 classes: {
@@ -552,14 +548,15 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
                             label="I agree to the Terms of Service"
                         />
                     </Box>
-                    <Box>
-                        {serverErrMsg ? <DisplayError msg={serverErrMsg} /> : null}
-                    </Box>
+                    <div>
+                        <Controls.Button className={classes.nextButton}
+                            color='secondary'
+                            text="Next"
+                            onClick={onClickNext}
+                        />
+                    </div>
                 </Paper>
-                <Controls.Button className={classes.submitButton}
-                    type="submit"
-                    text="Register Business!"
-                />
+
                 {/* </div> */}
             </Grid>
         </Grid>

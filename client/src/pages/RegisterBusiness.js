@@ -1,14 +1,21 @@
 import React, { useState } from 'react'
-import RegisterBusinessForm from '../components/business/RegisterBusinessForm';
-import TierSelector from '../components/business/TierSelector';
-import CreditCardForm from '../components/CreditCardForm';
+
+// Form Section Components
+import BusinessInfoForm from '../components/business/registerForm/BusinessInfoForm';
+import TierSelector from '../components/business/registerForm/TierSelector';
+import CreditCardForm from '../components/business/registerForm/CreditCardForm';
+import ReviewForm from '../components/business/registerForm/ReviewForm';
+
+// Other Components/Hooks
 import { useForm } from '../components/useForm';
-import { makeStyles } from '@material-ui/core';
-import { clearErrors } from '../actions/errorActions';
+
+// Redux and actions
 import { useDispatch } from 'react-redux';
+import { clearErrors } from '../actions/errorActions';
 import { registerBusiness } from '../actions/businessActions';
 
-
+// Material UI
+import { makeStyles } from '@material-ui/core';
 
 const initialValues = {
     businessName: "",
@@ -24,9 +31,25 @@ const initialValues = {
     policyChecked: false,
 }
 
+const initialCreditCardValues = {
+    number: '',
+    name: '',
+    expiry: '',
+    cvc: '',
+    focus: '',
+}
+
 const initialManagedErrors = {
     phoneNumber: "",
     wage: "",
+    cardDate: "",
+}
+
+const formSections = {
+    BusinessInfoForm: "BusinessInfoForm",
+    TierSelector: "TierSelector",
+    CreditCardForm: "CreditCardForm",
+    Review: "Review",
 }
 
 const useStyles = makeStyles(theme => ({
@@ -44,30 +67,34 @@ export default function RegisterBusiness() {
     // Styles
     const classes = useStyles();
 
-    // States and form functions of Section 1
+    // States and form functions of business info section
     const {
         formFieldValues,
         setFormFieldValues,
         managedErrors,
         setManagedErrors,
         onInputChange,
-        formatPhoneNumber
+        formatPhoneNumber,
+        format_MMYY_Date,
     } = useForm(initialValues, initialManagedErrors);
 
-    // Credit Card States
-    const [number, setNumber] = useState('') // card number
-    const [name, setName] = useState('') // name of card owner
-    const [expiry, setExpiry] = useState('') // card expiry date
-    const [cvc, setCvc] = useState('') // cvc number on card
-    const [focus, setFocus] = useState('') // for react-credit-cards' sty;eing and animation
-    const creditCardStates = {number, setNumber, name, setName, expiry, setExpiry, cvc, setCvc, focus, setFocus}
+    // State of Tier Selector section
+    const [selectedTier, setSelectedTier] = useState('bronze');
+
+    // State of Credit Card section
+    const [creditCardState, setCreditCardState] = useState(initialCreditCardValues);
+
+    // State holding the current form section to display 
+    const [currentSection, setCurrentSection] = useState(formSections.BusinessInfoForm);
 
     const onSubmit = (e) => {
         e.preventDefault();
+        if (e.key === 'Enter') return;
         dispatch(clearErrors()); // clear server errors
         const {
             businessName,
             streetAddress,
+            city,
             country,
             subdivision,
             phoneNumber,
@@ -78,6 +105,13 @@ export default function RegisterBusiness() {
             businessDescription,
             policyChecked,
         } = formFieldValues;
+
+        const {
+            number,
+            name,
+            expiry,
+            cvc,
+        } = creditCardState;
 
         // Error cleaning
         if (wageType === "contract") {
@@ -93,6 +127,7 @@ export default function RegisterBusiness() {
             businessName,
             address: {
                 streetAddress,
+                city,
                 subdivisionName: subdivision.name,
                 subdivisionCode: subdivision.code,
                 country,
@@ -103,6 +138,7 @@ export default function RegisterBusiness() {
             businessDescription,
             wageType,
             policyChecked,
+            selectedTier,
         }
         if (wageType === "contract") {
             newBusiness.hourlyWage = undefined;
@@ -111,26 +147,64 @@ export default function RegisterBusiness() {
             newBusiness.hourlyWage = wage;
         }
 
-        //console.log(newBusiness);
+        console.log("New Business Info: ", newBusiness);
+        console.log("Selected Tier: ", selectedTier);
+        console.log("Credit Card Information: ", creditCardState);
 
         // Request new business creation on server
         dispatch(registerBusiness(newBusiness));
     }
 
+    // Prevent form submit from an "Enter" key press
+    const onFormKeyPress = (e) => {
+        if(e.key === 'Enter') e.preventDefault()
+    }
+
+
     return (
         <div>
-            <form className={classes.form} onSubmit={onSubmit} autoComplete="off" >
-                <RegisterBusinessForm
-                    formFieldValues={formFieldValues}
-                    setFormFieldValues={setFormFieldValues}
-                    managedErrors={managedErrors}
-                    setManagedErrors={setManagedErrors}
-                    onInputChange={onInputChange}
-                    formatPhoneNumber={formatPhoneNumber}
-                />
-                <TierSelector />
-                <CreditCardForm states={creditCardStates}/>
+            <form className={classes.form} onSubmit={onSubmit} onKeyPress={onFormKeyPress} autoComplete="off" >
+                <div style={currentSection === formSections.BusinessInfoForm ? {} : { display: 'none' }}>
+                    <BusinessInfoForm
+                        formFieldValues={formFieldValues}
+                        setFormFieldValues={setFormFieldValues}
+                        managedErrors={managedErrors}
+                        setManagedErrors={setManagedErrors}
+                        onInputChange={onInputChange}
+                        formatPhoneNumber={formatPhoneNumber}
+                        setCurrentSection={setCurrentSection}
+                        formSections={formSections}
+                    />
+                </div>
+                <div style={currentSection === formSections.TierSelector ? {} : { display: 'none' }}>
+                    <TierSelector
+                        selectedTier={selectedTier}
+                        setSelectedTier={setSelectedTier}
+                        setCurrentSection={setCurrentSection}
+                        formSections={formSections}
+                    />
+                </div>
+                <div style={currentSection === formSections.CreditCardForm ? {} : { display: 'none' }}>
+                    <CreditCardForm
+                        state={creditCardState}
+                        setState={setCreditCardState}
+                        managedErrors={managedErrors}
+                        setManagedErrors={setManagedErrors}
+                        setCurrentSection={setCurrentSection}
+                        formSections={formSections}
+                        format_MMYY_Date={format_MMYY_Date}
+                    />
+                </div>
+                <div style={currentSection === formSections.Review ? {} : { display: 'none' }}>
+                    <ReviewForm
+                        businessInfo={formFieldValues}
+                        selectedTier={selectedTier}
+                        creditCardInfo={creditCardState}
+                        formSections={formSections}
+                        setCurrentSection={setCurrentSection}
+                    />
+                </div>
             </form>
-        </div>
+        </div >
     )
 }

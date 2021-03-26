@@ -36,6 +36,18 @@ function formatPhoneNumber(phoneNumberString) {
     return null
 }
 
+function format_MMYY_Date(dateNumberString) {
+    var cleaned = ('' + dateNumberString).replace(/\D/g, '')
+    var match
+    if (cleaned.length === 4) {
+        match = cleaned.match(/^(\d{2})(\d{2})$/)
+        if (match) {
+            return match[1] + '/' + match[2] 
+        }
+    }
+    return null
+}
+
 const normalizeCardNumber = (value) => {
     return value.replace(/\s/g).match(/.{1,4}/g).join(" ").substr(0, 19) || ""
 }
@@ -86,6 +98,7 @@ export function useForm(initialFieldValues, initialManagedErrors) {
         managedErrors,
         setManagedErrors,
         formatPhoneNumber,
+        format_MMYY_Date,
     }
 }
 

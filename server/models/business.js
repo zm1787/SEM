@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 
 const businessSchema = mongoose.Schema({
 
-    //owners: [Schema.Types.ObjectId], // all rights to R/W operations
-    //employees: [Schema.Types.ObjectId], // restricted rights to R/W operations
+    owners: [mongoose.Schema.Types.ObjectId], // List of user IDs of people that have all rights to R/W operations on the business info
+    employees: [mongoose.Schema.Types.ObjectId], // List of user IDs of people that have restricted rights to R/W operations
 
     name: {
         type: String,
@@ -13,6 +13,10 @@ const businessSchema = mongoose.Schema({
     // Address to be changed as required for google map api
     address: { 
         streetAddress: { 
+            type: String,
+            required: true
+        },
+        city: {
             type: String,
             required: true
         },
@@ -59,6 +63,11 @@ const businessSchema = mongoose.Schema({
     },
 
     keySearchTerms: [String],
+
+    selectedTier: {
+        type: String,
+        required: true
+    },
 
     createdAt: {
         type: Date,

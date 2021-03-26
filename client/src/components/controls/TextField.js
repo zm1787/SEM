@@ -74,7 +74,7 @@ const FormTextFieldFilled = withStyles(theme => ({
 }))(MuiTextField);
 
 function TextField(props) {
-    const { variant, label, name, type, value, placeholder, onChange, InputProps, ...rest } = props
+    const { variant, label, name, type, value, placeholder, onChange, InputProps, disableEnterSubmit, ...rest } = props
 
     return (
         variant === "outlined" ?
@@ -87,6 +87,9 @@ function TextField(props) {
                     value={value}
                     placeholder={placeholder}
                     onChange={onChange}
+                    onKeyPress={e => {
+                        if(e.key === 'Enter' && disableEnterSubmit) e.preventDefault();
+                    }}
                     InputProps={InputProps}
                     autoComplete="off"
                     {...rest}
@@ -100,6 +103,9 @@ function TextField(props) {
                     value={value}
                     placeholder={placeholder}
                     onChange={onChange}
+                    onKeyPress={e => {
+                        if(e.key === 'Enter' && disableEnterSubmit) e.preventDefault();
+                    }}
                     InputProps={InputProps}
                     autoComplete="off"
                     {...rest}
@@ -113,6 +119,9 @@ function TextField(props) {
                 value={value}
                 placeholder={placeholder}
                 onChange={onChange}
+                onKeyPress={e => {
+                    if(e.key === 'Enter' && disableEnterSubmit) e.preventDefault();
+                }}
                 InputProps={InputProps}
                 autoComplete="off"
                 {...rest}

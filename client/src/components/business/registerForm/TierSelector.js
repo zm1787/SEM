@@ -5,6 +5,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import Controls from '../../controls';
 
 import TierCard from './TierCard';
 
@@ -13,6 +14,7 @@ import {
     Paper,
     Grid,
 } from '@material-ui/core';
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -26,8 +28,8 @@ const useStyles = makeStyles(theme => ({
         },
     },
     paper: {
+        overflow: 'auto', 
         maxWidth: '700px',
-        height: '700px',
         margin: `${theme.spacing(5)}px auto`,
         padding: `${theme.spacing(3)}px ${theme.spacing(6)}px`,
         backgroundColor: theme.palette.background.paper,
@@ -39,8 +41,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
     title: {
-        marginTop: theme.spacing(1),
-        color: theme.palette.primary.main,
+        marginBottom: theme.spacing(4),
         textAlign: 'center',
     },
     gridRoot: {
@@ -58,6 +59,18 @@ const useStyles = makeStyles(theme => ({
     },
     formControl: {
         // paddingTop: '100px',
+    },
+    bottomButtons: {
+        margin: '32px 0'
+    },
+    backButton: {
+        padding: '8px 14px', 
+    },
+    nextButton: {
+        marginBottom: theme.spacing(2),
+        float: 'right',
+        padding: '8px 14px', 
+
     },
 }))
 
@@ -82,13 +95,19 @@ const styles = {
     },
 }
 
-export default function TierSelector() {
+export default function TierSelector({ selectedTier, setSelectedTier, setCurrentSection, formSections }) {
     const classes = useStyles();
-    const [value, setValue] = React.useState('bronze');
 
     const handleChange = (event) => {
-        setValue(event.target.value);
+        setSelectedTier(event.target.value);
     };
+
+    const onClickNext = (e) => {
+        setCurrentSection(formSections.CreditCardForm);
+    }
+    const onClickPrev = (e) => {
+        setCurrentSection(formSections.BusinessInfoForm);
+    }
 
     return (
         <div className={classes.root}>
@@ -98,7 +117,7 @@ export default function TierSelector() {
                     <Grid item sm={12} md={4} className={classes.radioGridItem}>
                         <FormControl component="fieldset" className={classes.formControl}>
                             {/* <FormLabel component="legend">Business Tier</FormLabel> */}
-                            <RadioGroup aria-label="tier" name="tier" value={value} onChange={handleChange}>
+                            <RadioGroup aria-label="tier" name="tier" value={selectedTier} onChange={handleChange}>
                                 <FormControlLabel
                                     value="bronze"
                                     control={<Radio style={styles.bronze} />}
@@ -115,9 +134,21 @@ export default function TierSelector() {
                         </FormControl>
                     </Grid>
                     <Grid item sm={12} md={8} className={classes.tierCardGridItem}>
-                        <TierCard tier={value}/>
+                        <TierCard tier={selectedTier} />
                     </Grid>
                 </Grid>
+                <div className={classes.bottomButtons}>
+                    <Controls.Button className={classes.backButton}
+                        color='secondary'
+                        text="Back"
+                        onClick={onClickPrev}
+                    />
+                    <Controls.Button className={classes.nextButton}
+                        color='secondary'
+                        text="Next"
+                        onClick={onClickNext}
+                    />
+                </div>
             </Paper>
         </div>
     );

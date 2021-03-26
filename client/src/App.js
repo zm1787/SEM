@@ -17,6 +17,7 @@ import BusinessCardsList from './components/business/BusinessCardsList';
 import NavBar from './components/Navbar';
 import * as Themes from './themes/costomThemes';
 import ThemeSelector from './components/ThemeSelector';
+import StripeContainer from './components/business/registerForm/stripePayment/StripeContainer';
 
 // Material UI
 import { makeStyles, CssBaseline, createMuiTheme, ThemeProvider } from '@material-ui/core';
@@ -36,6 +37,9 @@ const App = () => {
 
     const [selectedTheme, setSelectedTheme] = React.useState(Themes.dark);
     const theme = createMuiTheme(selectedTheme)
+
+    // test stripe state
+    const [showItem, setShowItem] = React.useState(false);
 
 
     useEffect(() => {
@@ -71,6 +75,12 @@ const App = () => {
                         </Route>
                         <Route exact path="/registerBusiness" >
                             <RegisterBusinessPage />
+                        </Route>
+                        <Route exact path="/testStripePay" >
+                            <div className="spatula">
+                                <h1>The Spatula Store</h1>
+                                {showItem ? <StripeContainer /> : <> <h3>$10.00</h3> <button className="testBtn" onClick={() => setShowItem(true)}>Purchase Spatula</button></>}
+                            </div>
                         </Route>
                     </Switch>
                     <ThemeSelector selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} Themes={Themes} />

@@ -1,10 +1,11 @@
 import express from 'express';
 import auth from '../middleware/auth.js';
 
-import { registerSeeker } from "../controllers/businesses.js";
+import { registerBusiness, payment } from "../controllers/businesses.js";
 
 const router = express.Router();
 
-router.post('/register', auth, registerSeeker);
+router.post('/register', auth, registerBusiness);
+router.post('/payment', payment);
 
 export default router;

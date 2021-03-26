@@ -1,4 +1,4 @@
-import { blue, lightBlue, amber, orange, yellow, green } from '@material-ui/core/colors';
+import { blue, lightBlue, amber, orange, yellow, cyan, teal, green } from '@material-ui/core/colors';
 
 export const light = {
     palette: {
@@ -115,7 +115,7 @@ export const dark = {
         },
 
         secondary: {
-            main: '#008ddb',
+            main: lightBlue['600'],
         },
 
         background: {

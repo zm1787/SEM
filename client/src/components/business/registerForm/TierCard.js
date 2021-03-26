@@ -4,7 +4,7 @@ import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        width: '300px',
+        width: '280px',
         minHeight: '390px',
         borderRadius: '8px',
         paddingTop: '15px',
