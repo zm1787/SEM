@@ -59,7 +59,7 @@ export const registerBusiness = async (req, res) => {
                     ...address,
                     full: `${address.streetAddress}, ${address.city}, ${address.subdivisionCode}, ${address.country}`,
                 },
-                
+                owners: [req.user], // Add userID to owners
                 phoneNumber,
                 serviceType,
                 keySearchTerms: [...searchTerms],

@@ -20,6 +20,7 @@ import { makeStyles } from '@material-ui/core';
 const initialValues = {
     businessName: "",
     streetAddress: "",
+    city: "",
     country: "",
     subdivision: {},
     phoneNumber: "",
@@ -147,9 +148,9 @@ export default function RegisterBusiness() {
             newBusiness.hourlyWage = wage;
         }
 
-        console.log("New Business Info: ", newBusiness);
-        console.log("Selected Tier: ", selectedTier);
-        console.log("Credit Card Information: ", creditCardState);
+        // console.log("New Business Info: ", newBusiness);
+        // console.log("Selected Tier: ", selectedTier);
+        // console.log("Credit Card Information: ", creditCardState);
 
         // Request new business creation on server
         dispatch(registerBusiness(newBusiness));

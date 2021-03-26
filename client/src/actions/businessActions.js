@@ -10,10 +10,10 @@ import { useSelector, useDispatch } from 'react-redux';
 
 
 // Register business
-export const registerBusiness = (formInfo) => async (dispatch, getState) => {
+export const registerBusiness = (newBusinessInfo) => async (dispatch, getState) => {
 
     // Request body
-    const body = JSON.stringify(formInfo)
+    const body = JSON.stringify(newBusinessInfo)
 
     try {
         dispatch({ type: BUSINESS_LOADING});
