@@ -540,13 +540,13 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
                         }
                     </Box>
                     <Box>
-                        <Controls.Checkbox className={classes.checkbox}
+                        {/* <Controls.Checkbox className={classes.checkbox}
                             checked={formFieldValues.policyChecked}
                             onChange={onInputChange}
                             name="policyChecked"
                             color="secondary"
                             label="I agree to the Terms of Service"
-                        />
+                        /> */}
                     </Box>
                     <div>
                         <Controls.Button className={classes.nextButton}

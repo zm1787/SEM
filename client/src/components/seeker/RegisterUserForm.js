@@ -6,7 +6,7 @@ import { useForm, Form } from '../useForm';
 import Controls from '../controls';
 
 // Actions
-import { registerSeeker } from '../../actions/authActions';
+import { registerUser } from '../../actions/authActions';
 import { clearErrors } from '../../actions/errorActions';
 import { REGISTER_FAIL } from '../../actions/actionTypes';
 
@@ -120,7 +120,7 @@ function DisplayError(props) {
 }
 
 
-function RegisterForm() {
+function RegisterUserForm() {
     const dispatch = useDispatch();
     const storeError = useSelector((store) => store.error);
     const classes = useStyles();
@@ -185,14 +185,14 @@ function RegisterForm() {
         };
 
         // Attempt to register
-        dispatch(registerSeeker(newUser));
+        dispatch(registerUser(newUser));
     }
 
     // standard (unspecified), outlined, filled,
     const textFieldVariant = "outlined";
     return (
         <Paper className={classes.paper} elevation={3}>
-            <Typography className={classes.formHeader} variant="h4">Create your SEM account</Typography>
+            <Typography className={classes.formHeader} variant="h4">Create Your SEM Account</Typography>
             <Form onSubmit={handleSubmit}>
                 <Grid container className={classes.gridContainer} spacing={3}>
                     <Grid item className={classes.textFieldsCell} xs={12} >
@@ -359,7 +359,7 @@ function RegisterForm() {
     )
 }
 
-export default RegisterForm;
+export default RegisterUserForm;
 
 
 

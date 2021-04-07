@@ -10,9 +10,9 @@ import ReviewForm from '../components/business/registerForm/ReviewForm';
 import { useForm } from '../components/useForm';
 
 // Redux and actions
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {registerBusiness} from '../actions/businessActions';
 import { clearErrors } from '../actions/errorActions';
-import { registerBusiness } from '../actions/businessActions';
 
 // Material UI
 import { makeStyles } from '@material-ui/core';
@@ -67,6 +67,7 @@ export default function RegisterBusiness() {
 
     // Styles
     const classes = useStyles();
+
 
     // States and form functions of business info section
     const {
@@ -158,7 +159,7 @@ export default function RegisterBusiness() {
 
     // Prevent form submit from an "Enter" key press
     const onFormKeyPress = (e) => {
-        if(e.key === 'Enter') e.preventDefault()
+        if (e.key === 'Enter') e.preventDefault()
     }
 
 
@@ -203,6 +204,7 @@ export default function RegisterBusiness() {
                         creditCardInfo={creditCardState}
                         formSections={formSections}
                         setCurrentSection={setCurrentSection}
+                        setPolicyChecked={onInputChange}
                     />
                 </div>
             </form>

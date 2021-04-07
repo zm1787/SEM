@@ -141,6 +141,9 @@ export default function NavBar(props) {
         if (itemName === "registerBusiness") {
             history.push("/registerBusiness");
         }
+        if (itemName === "myBusinessList") {
+            history.push("/myBusinessList");
+        }
         handleClose();
     }
 
@@ -149,13 +152,13 @@ export default function NavBar(props) {
             <AppBar className={classes.root} position="fixed" >
                 <Toolbar className={classes.gridContainer} disableGutters>
                     <Grid container className={classes.gridContainer} alignItems="center">
-                        <Grid className={classes.logoCell} item sm={1} >
+                        <Grid className={classes.logoCell} item xs={1} >
                             <Link to="/" className={classes.logoTextLink}>
                                 <Typography className={classes.logoText} variant="h4">SEM</Typography>
                             </Link>
                         </Grid>
-                        <Grid item md={9} className={classes.buttons} >
-                            {!auth.isAuthenticated &&
+                        <Grid item xs={11} className={classes.buttons} >
+                            {!auth.isAuthenticated ?
                                 <span className={classes.buttonSpan}>
                                     <Controls.Button className={classes.loginButton}
                                         component={Link}
@@ -170,49 +173,51 @@ export default function NavBar(props) {
                                         text="Register"
                                     />
                                 </span>
+                                :
+                                <span className={classes.MenuIconSpan}>
+                                    {auth.isAuthenticated && (
+                                        <div>
+                                            <IconButton className={classes.MenuIcon}
+                                                aria-label="account of current user"
+                                                aria-controls="menu-profile"
+                                                aria-haspopup="true"
+                                                onClick={handleMenu}
+                                            >
+                                                <MenuIcon fontSize="large" />
+                                            </IconButton>
+                                            <Menu
+                                                id="menu-profile"
+                                                anchorEl={anchorEl}
+                                                getContentAnchorEl={null}
+                                                anchorOrigin={{
+                                                    vertical: 'bottom',
+                                                    horizontal: 'right',
+                                                }}
+                                                keepMounted
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'right',
+                                                }}
+                                                open={open}
+                                                onClose={handleClose}
+                                            >
+                                                <MenuItem onClick={() => menuItemClick("profile")}>
+                                                    <AccountCircle className={classes.icon} fontSize="large" /> My Profile
+                                            </MenuItem>
+                                                <MenuItem onClick={() => menuItemClick("myBusinessList")}>
+                                                    <BusinessIcon className={classes.icon} fontSize="large" /> My Businesses
+                                            </MenuItem>
+                                                <MenuItem onClick={() => menuItemClick("registerBusiness")}>
+                                                    <BusinessIcon className={classes.icon} fontSize="large" /> Register a Business
+                                            </MenuItem>
+                                                <MenuItem onClick={() => menuItemClick("logout")}>
+                                                    <LockIcon className={classes.icon} fontSize="large" /> Sign Out
+                                            </MenuItem>
+                                            </Menu>
+                                        </div>
+                                    )}
+                                </span>
                             }
-                        </Grid>
-                        <Grid item sm={2} >
-                            <span className={classes.MenuIconSpan}>
-                                {auth.isAuthenticated && (
-                                    <div>
-                                        <IconButton className={classes.MenuIcon}
-                                            aria-label="account of current user"
-                                            aria-controls="menu-profile"
-                                            aria-haspopup="true"
-                                            onClick={handleMenu}
-                                        >
-                                            <MenuIcon fontSize="large" />
-                                        </IconButton>
-                                        <Menu
-                                            id="menu-profile"
-                                            anchorEl={anchorEl}
-                                            getContentAnchorEl={null}
-                                            anchorOrigin={{
-                                                vertical: 'bottom',
-                                                horizontal: 'right',
-                                            }}
-                                            keepMounted
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right',
-                                            }}
-                                            open={open}
-                                            onClose={handleClose}
-                                        >
-                                            <MenuItem onClick={() => menuItemClick("profile")}>
-                                                <AccountCircle className={classes.icon} fontSize="large" /> My Profile
-                                            </MenuItem>
-                                            <MenuItem onClick={() => menuItemClick("registerBusiness")}>
-                                                <BusinessIcon className={classes.icon} fontSize="large" /> Register a Business
-                                            </MenuItem>
-                                            <MenuItem onClick={() => menuItemClick("logout")}>
-                                                <LockIcon className={classes.icon} fontSize="large" /> Sign Out
-                                            </MenuItem>
-                                        </Menu>
-                                    </div>
-                                )}
-                            </span>
                         </Grid>
                     </Grid>
                 </Toolbar>

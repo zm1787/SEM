@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
-import RegisterSeekerForm from '../components/seeker/RegisterSeekerForm';
+import RegisterUserForm from '../components/seeker/RegisterUserForm';
 
 export default function Register() {
     const history = useHistory();
@@ -16,7 +16,7 @@ export default function Register() {
     
     return (
         <div>
-            <RegisterSeekerForm />
+            <RegisterUserForm />
         </div>
     )
 }

@@ -5,12 +5,13 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { loadUserProfile } from '../../actions/authActions';
 
+import profilePic from '../../images/Profile Pic1.png';
 
 const useStyles = makeStyles(theme => ({
     root: {
         padding: theme.spacing(2),
         margin: '0 auto 30px auto',
-        maxWidth: '700px',
+        maxWidth: '500px',
         backgroundColor: theme.palette.background.dark,
     },
     cardInfo: {
@@ -18,8 +19,22 @@ const useStyles = makeStyles(theme => ({
     },
     cardText: {
         //color: '#e4e6eb',
-        color: theme.palette.text.main,
-    }
+        color: theme.palette.text.primary,
+    },
+    imgContainer: {
+        height: '200px',
+        width: '200px',
+        margin: '0 auto',
+        overflow: 'hidden',
+        border: `2px solid ${theme.palette.text.primary}`,
+        borderRadius: '50%',
+    },
+    img: {
+        margin: '0 auto',
+        height: 'auto',
+        width: '100%',
+    },
+
 }))
 
 function DisplayError(props) {
@@ -48,6 +63,9 @@ export default function SeekerProfileCard() {
                 <div className={classes.cardInfo}>
                     {user ?
                         <>
+                        <div className={classes.imgContainer}>
+                            <img className={classes.img} src={profilePic} alt=""/>
+                        </div>
                             <Typography className={classes.cardText} variant="h5">{user.firstName} {user.lastName}</Typography>
                             <Typography className={classes.cardText} variant="h5">{user.email}</Typography>
                             <Typography className={classes.cardText} variant="h5">{user.userType}</Typography>

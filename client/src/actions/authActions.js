@@ -41,7 +41,7 @@ export const loadUserProfile = () => async (dispatch, getState) => {
 }
 
 // Register User
-export const registerSeeker = ({ firstName, lastName, dateOfBirth, country, province, city, email, password, passwordCheck, policyChecked }) => async (dispatch) => {
+export const registerUser = ({ firstName, lastName, dateOfBirth, country, province, city, email, password, passwordCheck, policyChecked }) => async (dispatch) => {
     // Headers
     const config = {
         headers: {
@@ -54,7 +54,7 @@ export const registerSeeker = ({ firstName, lastName, dateOfBirth, country, prov
 
     try {
         dispatch({ type: USER_LOADING});
-        const { data } = await api.registerSeeker(body, config);
+        const { data } = await api.registerUser(body, config);
         dispatch({ type: REGISTER_SUCCESS, payload: data });
     } catch (error) {
         dispatch(returnErrors(error.response.data, error.response.status, 'REGISTER_FAIL'));

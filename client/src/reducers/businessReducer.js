@@ -1,47 +1,91 @@
 import {
-    BUSINESS_LOADING,
-    BUSINESS_LOADED,
     REGISTER_BUSINESS_SUCCESS,
     REGISTER_BUSINESS_FAIL,
-    FETCH_BUSINESS_FAIL,
-    FETCH_BUSINESS,
+    REGISTER_BUSINESS,
+    CLEAR_REGISTER_SUCCESS,
+
+    FETCH_BUSINESS_DETAILS,
+    FETCH_BUSINESS_DETAILS_FAIL,
+    FETCH_BUSINESS_DETAILS_SUCCESS,
+
+    FETCH_MY_BUSINESSES_FAIL,
+    FETCH_MY_BUSINESSES,
+    FETCH_MY_BUSINESSES_SUCCESS,
 } from "../actions/actionTypes";
 
 const initialState = {
-    isLoading: false,
-    business: null,
+    businessDetailsIsLoading: false,
+    businessDetails: null,
+
+    myBusinessesIsLoading: false,
+    myBusinessList: [],
 };
 
 
 const businessReducer = (state = initialState, action) => {
     switch (action.type) {
-        case FETCH_BUSINESS:
-        case BUSINESS_LOADING:
+        case FETCH_BUSINESS_DETAILS:
             return {
                 ...state,
-                isLoading: true
+                businessDetailsIsLoading: true
             };
-        case BUSINESS_LOADED:
+        case FETCH_BUSINESS_DETAILS_SUCCESS:
             return {
                 ...state,
-                isLoading: false,
-                business: action.payload,
+                businessDetailsIsLoading: false,
+                businessDetails: action.payload,
+            };
+        case FETCH_BUSINESS_DETAILS_FAIL:
+            return {
+                ...state,
+                businessDetails: null,
+                businessDetailsIsLoading: false
+            }
+
+
+
+
+        case REGISTER_BUSINESS:
+            return {
+                ...state,
+                businessDetailsIsLoading: true
             };
         case REGISTER_BUSINESS_SUCCESS:
-            console.log("Business created: ", action.payload);
             return {
                 ...state,
-                ...action.payload,
-                isLoading: false,
+                businessDetails: action.payload,
+                businessDetailsIsLoading: false,
             };
-        case FETCH_BUSINESS_FAIL:
         case REGISTER_BUSINESS_FAIL:
-            console.log("Business Creation Failed.");
-
             return {
                 ...state,
-                business: null,
-                isLoading: false
+                businessDetails: null,
+                businessDetailsIsLoading: false,
+            }
+        case CLEAR_REGISTER_SUCCESS:
+            return {
+                ...state,
+            }
+
+
+
+
+        case FETCH_MY_BUSINESSES:
+            return {
+                ...state,
+                myBusinessesIsLoading: false
+            }
+        case FETCH_MY_BUSINESSES_SUCCESS:
+            return {
+                ...state,
+                myBusinessesIsLoading: false,
+                myBusinessList: action.payload,
+            };
+        case FETCH_MY_BUSINESSES_FAIL:
+            return {
+                ...state,
+                myBusinessesIsLoading: false,
+                myBusinessList: [],
             }
         default:
             return state;

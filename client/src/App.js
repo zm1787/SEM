@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUsers } from './actions/userActions';
 import { loadUserProfile } from './actions/authActions';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import './app.css';
 
 // Pages
@@ -11,6 +11,8 @@ import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
 import ProfilePage from './pages/Profile';
 import RegisterBusinessPage from './pages/RegisterBusiness';
+import MyBusinessList from './pages/MyBusinessList';
+import ViewMyBusinessPage from './pages/ViewMyBusiness';
 
 // Components
 import BusinessCardsList from './components/business/BusinessCardsList';
@@ -27,6 +29,7 @@ const useStyles = makeStyles({
 
     }
 })
+
 
 const App = () => {
     const dispatch = useDispatch();
@@ -52,40 +55,49 @@ const App = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Router>
-                <CssBaseline />
-                <div className={classes.appMain}>
-                    <NavBar />
-                    <h3>{auth.isLoading ? "Loading..." : auth.isAuthenticated ? "Authenticated" : "Not Authenticated"}</h3>
-                    <Switch>
-                        <Route exact path="/" >
-                            <HomePage />
-                        </Route>
-                        <Route exact path="/profile" >
-                            <ProfilePage />
-                        </Route>
-                        <Route exact path="/register" >
-                            <RegisterPage />
-                        </Route>
-                        <Route exact path="/login" >
-                            <LoginPage />
-                        </Route>
-                        <Route exact path="/listusers" >
-                            <BusinessCardsList users={users} />
-                        </Route>
-                        <Route exact path="/registerBusiness" >
-                            <RegisterBusinessPage />
-                        </Route>
-                        <Route exact path="/testStripePay" >
-                            <div className="spatula">
-                                <h1>The Spatula Store</h1>
-                                {showItem ? <StripeContainer /> : <> <h3>$10.00</h3> <button className="testBtn" onClick={() => setShowItem(true)}>Purchase Spatula</button></>}
-                            </div>
-                        </Route>
-                    </Switch>
-                    <ThemeSelector selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} Themes={Themes} />
-                </div>
-            </Router>
+            <CssBaseline />
+            <div className={classes.appMain}>
+                <NavBar />
+                <h3>{auth.isLoading ? "Loading..." : auth.isAuthenticated ? "Authenticated" : "Not Authenticated"}</h3>
+                <Switch>
+                    <Route exact path="/" >
+                        <HomePage />
+                    </Route>
+                    <Route exact path="/profile" >
+                        <ProfilePage />
+                    </Route>
+                    <Route exact path="/register" >
+                        <RegisterPage />
+                    </Route>
+                    <Route exact path="/login" >
+                        <LoginPage />
+                    </Route>
+
+                    {/* TO BE REMOVED */}
+                    {/* ####################################### */}
+                    <Route exact path="/listusers" >
+                        <BusinessCardsList users={users} />
+                    </Route>
+                    {/* ####################################### */}
+
+                    <Route exact path="/registerBusiness" >
+                        <RegisterBusinessPage />
+                    </Route>
+                    <Route exact path="/myBusinessList" >
+                        <MyBusinessList />
+                    </Route>
+
+                    <Route exact path="/view-my-business" component={ViewMyBusinessPage} />
+                    
+                    <Route exact path="/testStripePay" >
+                        <div className="spatula">
+                            <h1>The Spatula Store</h1>
+                            {showItem ? <StripeContainer /> : <> <h3>$10.00</h3> <button className="testBtn" onClick={() => setShowItem(true)}>Purchase Spatula</button></>}
+                        </div>
+                    </Route>
+                </Switch>
+                <ThemeSelector selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} Themes={Themes} />
+            </div>
         </ThemeProvider>
     )
 }

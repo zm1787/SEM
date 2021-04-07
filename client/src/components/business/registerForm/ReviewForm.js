@@ -16,6 +16,7 @@ import {
     Typography,
     Paper,
     Box,
+    Divider,
 } from '@material-ui/core';
 
 
@@ -47,12 +48,27 @@ const useStyles = makeStyles(theme => ({
     capitalize: {
         textTransform: 'capitalize',
     },
+    formInfoContainer: {
+        margin: '20px 0',
+    },
+    tierInfoContainer: {
+        margin: '20px 0',
+    },
+    policyCheckedContainer: {
+        margin: '20px 0',
+    },
     reviewElement: {
         margin: '12px 0',
         textTransform: 'capitalize',
     },
     reviewElementValue: {
         color: theme.palette.text.primary
+    },
+    changeButton: {
+        borderRadius: '27px',
+        minHeight: '40px',
+        fontSize: '14px',
+
     },
     bottomButtons: {
         marginTop: '36px',
@@ -91,13 +107,13 @@ function DisplayError(props) {
     )
 }
 
-export default function ReviewForm({ businessInfo, selectedTier, creditCardInfo, formSections, setCurrentSection }) {
+export default function ReviewForm({ businessInfo, selectedTier, creditCardInfo, formSections, setCurrentSection, setPolicyChecked }) {
     // States
     const [serverErrMsg, setServerErrMsg] = useState(null);
-    
-    // Hooks
+
+    // Redux Store
     const storeError = useSelector((store) => store.error);
-    
+
     // Material UI
     const classes = useStyles();
 
@@ -110,6 +126,12 @@ export default function ReviewForm({ businessInfo, selectedTier, creditCardInfo,
         }
     }, [storeError])
 
+    const onClickChangeTier = (e) => {
+        setCurrentSection(formSections.TierSelector);
+    }
+    const onClickChangeInfo = (e) => {
+        setCurrentSection(formSections.BusinessInfoForm);
+    }
     const onClickPrev = (e) => {
         setCurrentSection(formSections.CreditCardForm);
     }
@@ -125,7 +147,6 @@ export default function ReviewForm({ businessInfo, selectedTier, creditCardInfo,
         wageType,
         wage,
         businessDescription,
-        policyChecked,
     } = businessInfo;
     const searchTerms = businessInfo.searchTerms.join(", ");
 
@@ -141,49 +162,62 @@ export default function ReviewForm({ businessInfo, selectedTier, creditCardInfo,
     return (
         <div className={classes.root}>
             <Paper className={classes.paper} elevation={3} >
-                <Typography variant="h4" className={classes.title}>Review Business Information</Typography>
-                <Typography variant="body1" color="primary" className={classes.reviewElement}>
-                    Name of business: <span className={classes.reviewElementValue}>{businessName || <Incomplete />}</span>
-                </Typography>
-                <Typography variant="body1" color="primary" className={classes.reviewElement}>
-                    Business address: <span className={classes.reviewElementValue}>{streetAddress || <Incomplete />},  {city || <Incomplete />}, {subdivision.code || <Incomplete />}, {country || <Incomplete />}</span>
-                </Typography>
-                <Typography variant="body1" color="primary" className={classes.reviewElement}>
-                    Business address: <span className={classes.reviewElementValue}>{streetAddress || <Incomplete />}</span>
-                </Typography>
-                <Typography variant="body1" color="primary" className={classes.reviewElement}>
-                    Phone number: <span className={classes.reviewElementValue}>{phoneNumber || <Incomplete />}</span>
-                </Typography>
-                <Typography variant="body1" color="primary" className={classes.reviewElement}>
-                    Business service type: <span className={classes.reviewElementValue}>{serviceType || <Incomplete />}</span>
-                </Typography>
-                <Typography variant="body1" color="primary" className={classes.reviewElement}>
-                    Search terms: <span className={classes.reviewElementValue}>{searchTerms || "(No search terms enterred)"}</span>
-                </Typography>
-                <Typography variant="body1" color="primary" className={`${classes.reviewElement} ${classes.capitalize}`}>
-                    Wage type: <span className={classes.reviewElementValue}>{wageType || <Incomplete />}</span>
-                </Typography>
-                {
-                    wageType === 'hourly' &&
+                <Box className={classes.formInfoContainer}>
+                    <Typography variant="h4" className={classes.title}>Review Business Information</Typography>
                     <Typography variant="body1" color="primary" className={classes.reviewElement}>
-                        Hourly wage: <span className={classes.reviewElementValue}>{wage || <Incomplete />}</span>
+                        Name of business: <span className={classes.reviewElementValue}>{businessName || <Incomplete />}</span>
                     </Typography>
-                }
-                <Typography variant="body1" color="primary" className={classes.reviewElement}>
-                    Business description: <span className={classes.reviewElementValue}>{businessDescription || <Incomplete />}</span>
-                </Typography>
-
-                <Typography variant="body1" color="primary" className={classes.reviewElement} >
-                    Subscription Tier: <span className={classes.reviewElementValue}>{selectedTier || <Incomplete />}</span>
-                </Typography>
-
-                {/* <Controls.Checkbox className={classes.checkbox}
-                    checked={formFieldValues.policyChecked}
-                    onChange={onInputChange}
-                    name="policyChecked"
-                    color="secondary"
-                    label="I agree to the Terms of Service"
-                /> */}
+                    <Typography variant="body1" color="primary" className={classes.reviewElement}>
+                        Business address: <span className={classes.reviewElementValue}>{streetAddress || <Incomplete />},  {city || <Incomplete />}, {subdivision.code || <Incomplete />}, {country || <Incomplete />}</span>
+                    </Typography>
+                    <Typography variant="body1" color="primary" className={classes.reviewElement}>
+                        Phone number: <span className={classes.reviewElementValue}>{phoneNumber || <Incomplete />}</span>
+                    </Typography>
+                    <Typography variant="body1" color="primary" className={classes.reviewElement}>
+                        Business service type: <span className={classes.reviewElementValue}>{serviceType || <Incomplete />}</span>
+                    </Typography>
+                    <Typography variant="body1" color="primary" className={classes.reviewElement}>
+                        Search terms: <span className={classes.reviewElementValue}>{searchTerms || "(No search terms enterred)"}</span>
+                    </Typography>
+                    <Typography variant="body1" color="primary" className={`${classes.reviewElement} ${classes.capitalize}`}>
+                        Wage type: <span className={classes.reviewElementValue}>{wageType || <Incomplete />}</span>
+                    </Typography>
+                    {
+                        wageType === 'hourly' &&
+                        <Typography variant="body1" color="primary" className={classes.reviewElement}>
+                            Hourly wage: <span className={classes.reviewElementValue}>{wage || <Incomplete />}</span>
+                        </Typography>
+                    }
+                    <Typography variant="body1" color="primary" className={classes.reviewElement}>
+                        Business description: <span className={classes.reviewElementValue}>{businessDescription || <Incomplete />}</span>
+                    </Typography>
+                    <Controls.Button className={classes.changeButton}
+                        color='secondary'
+                        text="Modify"
+                        onClick={onClickChangeInfo}
+                    />
+                </Box>
+                <Divider />
+                <Box className={classes.tierInfoContainer}>
+                    <Typography variant="body1" color="primary" className={classes.reviewElement} >
+                        Subscription Tier: <span className={classes.reviewElementValue}>{selectedTier || <Incomplete />}</span>
+                    </Typography>
+                    <Controls.Button className={classes.changeButton}
+                        color='secondary'
+                        text="Modify"
+                        onClick={onClickChangeTier}
+                    />
+                </Box>
+                <Divider light={false} />
+                <Box className={classes.policyCheckedContainer} >
+                    <Controls.Checkbox className={classes.checkbox}
+                        checked={businessInfo.policyChecked}
+                        onChange={setPolicyChecked}
+                        name="policyChecked"
+                        color="secondary"
+                        label="I agree to the Terms of Service"
+                    />
+                </Box>
 
 
 
@@ -192,7 +226,7 @@ export default function ReviewForm({ businessInfo, selectedTier, creditCardInfo,
                         color='secondary'
                         text="Back"
                         onClick={onClickPrev}
-                    ></Controls.Button>
+                    />
                     <Controls.Button className={classes.submitButton}
                         color='primary'
                         type="submit"
