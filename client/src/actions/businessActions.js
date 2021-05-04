@@ -38,7 +38,7 @@ export const fetchMyBusinesses = () => async (dispatch, getState) => {
     try {
         dispatch({ type: FETCH_MY_BUSINESSES });
         const { data } = await api.fetchMyBusinesses(tokenConfig(getState));
-        dispatch({ type: FETCH_MY_BUSINESSES_SUCCESS, payload: data });
+        dispatch({ type: FETCH_MY_BUSINESSES_SUCCESS, payload: data.businesses });
     } catch (error) {
         dispatch(returnErrors(error.response.data, error.response.status, FETCH_MY_BUSINESSES_FAIL));
         dispatch({ type: FETCH_MY_BUSINESSES_FAIL });

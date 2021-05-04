@@ -43,7 +43,11 @@ const useStyles = makeStyles(theme => ({
             '&:hover': {
                 textDecoration: 'none',
             },
-        }
+        },
+        [theme.breakpoints.down('xs')]: {
+            marginRight: '8px',
+            marginLeft: '8px',
+        },
     },
     businessItem: {
         borderRadius: '7px',
@@ -56,6 +60,7 @@ const useStyles = makeStyles(theme => ({
             //transitionTimingFunction: 'ease-in-out',
             transform: 'translate(0px, 3px)',
         },
+        
     },
 }));
 

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Business from '../models/business.js';
+import User from '../models/user.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import Stripe from 'stripe';
@@ -51,8 +52,6 @@ export const registerBusiness = async (req, res) => {
 
         // Verify and set membership level (bronze, silver, gold)
 
-        // 
-
         const newBusiness = new Business({
             name: businessName,
             address: {
@@ -69,11 +68,14 @@ export const registerBusiness = async (req, res) => {
             selectedTier,
         });
 
-
-        let savedBusiness = await newBusiness.save();
+        // Push new business to user's array of businesses
+        const user = User.findOneAndUpdate(
+            { _id: req.user },
+            { $push: { businesses: newBusiness } },
+        );
 
         res.json({
-            business: savedBusiness,
+            business: newBusiness,
         });
 
     } catch (error) {
@@ -85,7 +87,7 @@ export const registerBusiness = async (req, res) => {
 export const myBusinesses = async (req, res) => {
     try {
         // Find all objecs that follows/fits the User model
-        const businesses = await Business.find({owners: req.user}).select('name');
+        const businesses = await User.findById(req.user).select('businesses');
 
         // Return status 200 (Ok), and .json array of found user object in database to front-end
         res.status(200).json(businesses);
@@ -96,15 +98,18 @@ export const myBusinesses = async (req, res) => {
 
 export const fetchBusinessDetails = async (req, res) => {
     try {
-        const { id } = req.params;
-        // Find all objecs that follows/fits the User model
-        const business = await Business.findOne({
-            owners: req.user,
-            _id: id,
-        }).select('name address phoneNumber serviceType description wageType hourlyWage keySearchTerms selectedTier');
+        // Get id of wanted business
+        const { id } = req.params; 
 
-        // Return status 200 (Ok), and .json array of found user object in database to front-end
-        res.status(200).json(business);
+        // Get list of businesses of that user
+        const user = await User.findById(req.user).select('businesses');
+
+        // Find wanted business
+        let selectedBusiness = user.businesses.find(business => business.id === id);
+        console.log(selectedBusiness);
+
+        // Return status 200 (Ok), and Business details
+        res.status(200).json(selectedBusiness);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
@@ -113,6 +118,7 @@ export const fetchBusinessDetails = async (req, res) => {
 dotenv.config();
 const stripe = new Stripe(process.env.STRIPE_SECRET_TEST);
 
+// INCOMPLETE
 export const payment = async (req, res) => {
     let { amount, id } = req.body
     try {

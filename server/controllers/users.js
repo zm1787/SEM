@@ -53,9 +53,9 @@ export const getUsers = async (req, res) => {
 // @access  Public
 export const registerSeeker = async (req, res) => {
     try {
-        const { firstName, lastName, dateOfBirth, country, province, city, email, password, passwordCheck, policyChecked } = req.body;
+        const { firstName, lastName, dateOfBirth, country, subdivision, city, email, password, passwordCheck, policyChecked } = req.body;
         // Validation
-        if (!firstName || !lastName || !dateOfBirth || !country || !province || !city || !email || !password || !passwordCheck) {
+        if (!firstName || !lastName || !dateOfBirth || !country || !subdivision || !city || !email || !password || !passwordCheck) {
             return res.status(400).json({ msg: "Please make sure all fields have been correctly filled before signing up." });
         }
         if (!isOldEnough(dateOfBirth)) {
@@ -85,7 +85,7 @@ export const registerSeeker = async (req, res) => {
             dateOfBirth,
             location: {
                 country,
-                province,
+                province: subdivision,
                 city,
             },
             userType: "Seeker"

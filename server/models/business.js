@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const businessSchema = mongoose.Schema({
+export const businessSchema = mongoose.Schema({
 
     owners: [mongoose.Schema.Types.ObjectId], // List of user IDs of people that have all rights to R/W operations on the business info
     employees: [mongoose.Schema.Types.ObjectId], // List of user IDs of people that have restricted rights to R/W operations

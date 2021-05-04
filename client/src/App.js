@@ -14,21 +14,44 @@ import RegisterBusinessPage from './pages/RegisterBusiness';
 import MyBusinessList from './pages/MyBusinessList';
 import ViewMyBusinessPage from './pages/ViewMyBusiness';
 
+import Chat from './components/chat/Chat';
+
 // Components
 import BusinessCardsList from './components/business/BusinessCardsList';
-import NavBar from './components/Navbar';
+import NavBar from './components/navbar';
 import * as Themes from './themes/costomThemes';
 import ThemeSelector from './components/ThemeSelector';
 import StripeContainer from './components/business/registerForm/stripePayment/StripeContainer';
 
+
+// TEST DELETE THIS
+import logoLight from './images/logo/FullLogoLight.svg';
+import logoDark from './images/logo/FullLogoDark.svg';
+import logoColor from './images/logo/ColorNoBG.svg';
+import logoTest from './images/logo/Test.svg';
+
+
+
 // Material UI
 import { makeStyles, CssBaseline, createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { Block } from '@material-ui/icons';
 
 const useStyles = makeStyles({
     appMain: {
 
-    }
+    },
+    logoImg: {
+        height: '200px',
+        width: 'auto',
+        margin: '50px auto',
+        display: 'block',
+    },
+    logoDiv: {
+        width: '100%',
+    },
 })
+
+
 
 
 const App = () => {
@@ -60,6 +83,20 @@ const App = () => {
                 <NavBar />
                 <h3>{auth.isLoading ? "Loading..." : auth.isAuthenticated ? "Authenticated" : "Not Authenticated"}</h3>
                 <Switch>
+                    <Route exact path="/viewLogos" >
+                        <div className={classes.logoDiv}>
+                            <img src={logoLight} alt="" className={classes.logoImg}></img>
+                        </div>
+                        <div className={classes.logoDiv}>
+                            <img src={logoDark} alt="" className={classes.logoImg}></img>
+                        </div>
+                        <div className={classes.logoDiv}>
+                            <img src={logoColor} alt="" className={classes.logoImg}></img>
+                        </div>
+                        <div className={classes.logoDiv}>
+                            <img src={logoTest} alt="" className={classes.logoImg}></img>
+                        </div>
+                    </Route>
                     <Route exact path="/" >
                         <HomePage />
                     </Route>
@@ -88,7 +125,9 @@ const App = () => {
                     </Route>
 
                     <Route exact path="/view-my-business" component={ViewMyBusinessPage} />
-                    
+
+                    <Route exact path="/chat" component={Chat} />
+
                     <Route exact path="/testStripePay" >
                         <div className="spatula">
                             <h1>The Spatula Store</h1>

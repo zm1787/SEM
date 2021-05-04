@@ -1,8 +1,20 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logoutUser } from '../actions/authActions';
-import Controls from './controls/';
+import { logoutUser } from '../../actions/authActions';
+import Controls from '../controls';
+
+// logo imports
+import fullLogoColor from '../../images/logo/ColorNoBG.svg'
+import fullLogoWhite from '../../images/logo/WhiteNoBG.svg'
+import fullLogoBlack from '../../images/logo/BlackNoBG.svg'
+import fullLogoColorWithBG from '../../images/logo/ColorWithBG.svg'
+import fullLogoLight from '../../images/logo/FullLogoLight.svg'
+import logo from '../../images/logo/logo.png'
+import noSlogan1 from '../../images/logo/NoSloganTest1.svg'
+import noSlogan2 from '../../images/logo/NoSloganTest2.svg'
+import noSloganDark from '../../images/logo/NoSloganDark.svg'
+import noSloganLight from '../../images/logo/NoSloganLight.svg'
 
 // MUI
 import { AppBar, Toolbar, Typography, IconButton, Menu } from '@material-ui/core';
@@ -13,8 +25,11 @@ import {
     AccountCircle,
     Lock as LockIcon,
     Business as BusinessIcon,
+    Chat as ChatIcon,
 } from '@material-ui/icons/';
 import MenuItem from '@material-ui/core/MenuItem';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 
 
@@ -29,6 +44,11 @@ const useStyles = makeStyles(theme => ({
     gridContainer: {
         height: '100%',
         margin: 0,
+    },
+    logoImg: {
+        marginTop: '2px',
+        height: '85%',
+        width: 'auto',
     },
     logoText: {
         color: theme.palette.primary.main,
@@ -45,7 +65,7 @@ const useStyles = makeStyles(theme => ({
         paddingLeft: theme.spacing(2),
         //justifyContent: 'center',
         alignItems: 'center',
-        borderRight: `2px solid ${theme.palette.background.default}`,
+        //borderRight: `2px solid ${theme.palette.background.default}`,
     },
     loginButton: {
         borderRadius: '27px',
@@ -112,10 +132,14 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function NavBar(props) {
+    const theme = useTheme();
     const classes = useStyles();
     const dispatch = useDispatch();
     const history = useHistory();
     const auth = useSelector((store) => store.auth);
+    const currentTheme = useSelector((store) => store.theme.selectedTheme);
+
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -135,15 +159,19 @@ export default function NavBar(props) {
         if (itemName === "profile") {
             history.push("/profile");
         }
-        if (itemName === "myaccount") {
-            history.push("/myaccount");
-        }
+        // if (itemName === "myaccount") {
+        //     history.push("/myaccount");
+        // }
         if (itemName === "registerBusiness") {
             history.push("/registerBusiness");
         }
         if (itemName === "myBusinessList") {
             history.push("/myBusinessList");
         }
+        if (itemName === "chat") {
+            history.push("/chat");
+        }
+
         handleClose();
     }
 
@@ -152,12 +180,24 @@ export default function NavBar(props) {
             <AppBar className={classes.root} position="fixed" >
                 <Toolbar className={classes.gridContainer} disableGutters>
                     <Grid container className={classes.gridContainer} alignItems="center">
-                        <Grid className={classes.logoCell} item xs={1} >
-                            <Link to="/" className={classes.logoTextLink}>
-                                <Typography className={classes.logoText} variant="h4">SEM</Typography>
-                            </Link>
+                        <Grid className={classes.logoCell} item xs={2} >
+                            {/* <Link to="/" className={classes.logoTextLink}>
+                                <Typography className={classes.logoText} variant="h4">S.E.M</Typography>
+                            </Link> */}
+                            {currentTheme === 'dark' || currentTheme === 'darkBlue' ?
+                                <Link to="/" className={classes.logoImg}>
+                                    <img src={noSloganLight} alt="" className={classes.logoImg}></img>
+                                </Link>
+                                :
+                                <Link to="/" className={classes.logoImg}>
+                                    <img src={noSloganDark} alt="" className={classes.logoImg}></img>
+                                </Link>
+                            }
                         </Grid>
-                        <Grid item xs={11} className={classes.buttons} >
+                        <Grid className={classes.logoCell} item xs={2} >
+                            {isSmallScreen && <Typography>Small!</Typography>}
+                        </Grid>
+                        <Grid item xs={8} className={classes.buttons} >
                             {!auth.isAuthenticated ?
                                 <span className={classes.buttonSpan}>
                                     <Controls.Button className={classes.loginButton}
@@ -175,6 +215,7 @@ export default function NavBar(props) {
                                 </span>
                                 :
                                 <span className={classes.MenuIconSpan}>
+                                    
                                     {auth.isAuthenticated && (
                                         <div>
                                             <IconButton className={classes.MenuIcon}
@@ -203,16 +244,19 @@ export default function NavBar(props) {
                                             >
                                                 <MenuItem onClick={() => menuItemClick("profile")}>
                                                     <AccountCircle className={classes.icon} fontSize="large" /> My Profile
-                                            </MenuItem>
+                                                </MenuItem>
                                                 <MenuItem onClick={() => menuItemClick("myBusinessList")}>
                                                     <BusinessIcon className={classes.icon} fontSize="large" /> My Businesses
-                                            </MenuItem>
+                                                </MenuItem>
                                                 <MenuItem onClick={() => menuItemClick("registerBusiness")}>
                                                     <BusinessIcon className={classes.icon} fontSize="large" /> Register a Business
-                                            </MenuItem>
+                                                </MenuItem>
+                                                <MenuItem onClick={() => menuItemClick("chat")}>
+                                                    <ChatIcon className={classes.icon} fontSize="large" /> Messages
+                                                </MenuItem>
                                                 <MenuItem onClick={() => menuItemClick("logout")}>
                                                     <LockIcon className={classes.icon} fontSize="large" /> Sign Out
-                                            </MenuItem>
+                                                </MenuItem>
                                             </Menu>
                                         </div>
                                     )}

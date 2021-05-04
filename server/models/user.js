@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { businessSchema as Business } from './business.js';
 
 const userSchema = mongoose.Schema({
     firstName: {
@@ -20,7 +21,6 @@ const userSchema = mongoose.Schema({
     password: {
         type: String, 
         required: true,
-        minlength: 5
     },
 
     location: {
@@ -50,6 +50,8 @@ const userSchema = mongoose.Schema({
     },
 
     profession: String,
+
+    businesses: [Business],
 
     createdAt: {
         type: Date,

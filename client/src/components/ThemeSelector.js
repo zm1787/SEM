@@ -5,6 +5,9 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectTheme } from '../actions/themeActions';
+
 
 
 
@@ -26,6 +29,8 @@ const useStyles = makeStyles(theme => ({
 export default function ThemeSelector({ selectedTheme, setSelectedTheme, Themes }) {
     const classes = useStyles();
     const [value, setValue] = React.useState('dark');
+    const dispatch = useDispatch();
+
 
 
     useEffect(() => {
@@ -38,7 +43,8 @@ export default function ThemeSelector({ selectedTheme, setSelectedTheme, Themes 
         else {
             setSelectedTheme(Themes.light);
         }
-    }, [value, setSelectedTheme, Themes]);
+        dispatch(selectTheme(value));
+    }, [value, setSelectedTheme, Themes, dispatch]);
 
     const handleChange = (event) => {
         setValue(event.target.value);

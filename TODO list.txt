@@ -1,0 +1,39 @@
+Navbar: 
+	1. Rebuild with not MUI grid
+	2. Split into big screen - small screen 
+		- Small screen: 
+			- smaller logo
+			- center logo
+			- buttons inside hamberger menu
+		- Big screen: 
+			- (Option) Full\Partial deconstruction of the hamburger menu
+			
+
+Chat Function:
+	1. 
+	
+	
+
+
+
+
+Search key words => try MUI Chips?
+
+
+
+
+
+
+
+
+
+
+
+Cleanup (unused/old): 
+
+	components and code:
+	- components > navbar > Navbar.js
+	- components > navbar > NavbarElements.js
+	
+	libraries/npm packages:
+	- styled-components

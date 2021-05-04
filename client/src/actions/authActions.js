@@ -35,13 +35,14 @@ export const loadUserProfile = () => async (dispatch, getState) => {
         const { data } = await api.loadUserProfile(tokenConfig(getState));
         dispatch({ type: USER_LOADED, payload: data });
     } catch (error) {
+        console.log(error);
         dispatch(returnErrors(error.response.data, error.response.status));
         dispatch({ type: AUTH_ERROR });
     }
 }
 
 // Register User
-export const registerUser = ({ firstName, lastName, dateOfBirth, country, province, city, email, password, passwordCheck, policyChecked }) => async (dispatch) => {
+export const registerUser = (newUser) => async (dispatch) => {
     // Headers
     const config = {
         headers: {
@@ -50,7 +51,7 @@ export const registerUser = ({ firstName, lastName, dateOfBirth, country, provin
     }
 
     // Request body
-    const body = JSON.stringify({ firstName, lastName, dateOfBirth, country, province, city, email, password, passwordCheck, policyChecked })
+    const body = JSON.stringify(newUser)
 
     try {
         dispatch({ type: USER_LOADING});
