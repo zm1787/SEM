@@ -5,6 +5,9 @@ import { loadUserProfile } from './actions/authActions';
 import { Switch, Route } from 'react-router-dom';
 import './app.css';
 
+// sass styles
+import './styles/app.css';
+
 // Pages
 import RegisterPage from './pages/Register';
 import HomePage from './pages/Home';

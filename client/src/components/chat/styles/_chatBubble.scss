@@ -1,0 +1,19 @@
+.chat-bubble {
+    margin: 10px 15px;
+    padding: 7px 13px;
+    width: max-content;
+    max-width: 400px;
+    border-radius: 19px;
+    display: block;
+    p {
+        color: #ffffff;
+    }
+}
+
+.from-other {
+    background-color: #2d3a49;
+}
+.from-you {
+    background-color: #009de6;
+    margin-left: auto;
+}

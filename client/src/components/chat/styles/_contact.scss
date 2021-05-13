@@ -1,0 +1,47 @@
+.contact-root {
+    //border: 1px solid rgb(114, 114, 114);
+    margin: 0 6px;
+    border-radius: 10px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0px;
+
+    flex: 1;
+    min-width: 0;
+    &:hover {
+        cursor: pointer;
+        background-color: #233243;
+    }
+
+    .img-container {
+        flex-shrink: 0;
+        height: 70px;
+        width: 70px;
+        margin: 0 6px;
+        overflow: hidden;
+        border-radius: 50%;
+        .img {
+            margin: 0 auto;
+            height: auto;
+            width: 100%;
+        }
+    }
+
+    .last-message-preview {
+        font-size: 14px;
+    }
+
+    .contact-info {
+        min-width: 0;
+        margin-right: 18px;
+        p {           
+            margin: 0; 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            
+        }
+    }
+}

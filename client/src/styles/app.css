@@ -1,0 +1,224 @@
+.chat-parent-grid {
+  margin: 0 auto;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: minmax(0, 300px) 1fr;
+      grid-template-columns: minmax(0, 300px) 1fr;
+  border: 2px solid #1dcdfe25;
+  height: 80vh;
+  width: 70vw;
+}
+
+.chat-parent-grid .contact-list-child-grid {
+  -ms-grid-column: 1;
+      grid-column-start: 1;
+  display: -ms-grid;
+  display: grid;
+  border-right: 2px solid #1dcdfe25;
+  -ms-grid-rows: auto 1fr;
+      grid-template-rows: auto 1fr;
+  max-width: 300px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.chat-parent-grid .contact-list-child-grid .contact-list-header {
+  -ms-grid-row: 1;
+      grid-row-start: 1;
+  width: 300px;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  /* justify-content: center;
+            align-items: center; */
+}
+
+.chat-parent-grid .contact-list-child-grid .contact-list {
+  min-height: 0;
+  width: 300px;
+  -ms-grid-row: 2;
+      grid-row-start: 2;
+  border-top: 2px solid #1dcdfe25;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.chat-parent-grid .current-chat-grid {
+  -ms-grid-column: 2;
+      grid-column-start: 2;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: auto 1fr auto;
+      grid-template-rows: auto 1fr auto;
+  overflow: hidden;
+}
+
+.chat-parent-grid .current-chat-grid .current-chat-header {
+  -ms-grid-row: 1;
+      grid-row-start: 1;
+}
+
+.chat-parent-grid .current-chat-grid .current-chat-display {
+  -ms-grid-row: 2;
+      grid-row-start: 2;
+  border-top: 2px solid #1dcdfe25;
+  overflow-y: scroll;
+}
+
+.chat-parent-grid .current-chat-grid .current-chat-form {
+  padding: 15px;
+  -ms-grid-row: 3;
+      grid-row-start: 3;
+  border-top: 2px solid #1dcdfe25;
+}
+
+#root {
+  height: 100vh;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.joinOuterContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+  height: 100vh;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #1a1a1d;
+}
+
+.joinInnerContainer {
+  width: 20%;
+}
+
+.joinInput {
+  border-radius: 0;
+  padding: 15px 20px;
+  width: 100%;
+}
+
+.heading {
+  color: white;
+  font-size: 2.5em;
+  padding-bottom: 10px;
+  border-bottom: 2px solid white;
+}
+
+.button {
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #2979ff;
+  padding: 20px;
+  border-radius: 5px;
+  display: inline-block;
+  border: none;
+  width: 100%;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .joinOuterContainer {
+    height: 100%;
+  }
+  .joinInnerContainer {
+    width: 90%;
+  }
+}
+
+button:focus {
+  outline: 0;
+}
+
+.contact-root {
+  margin: 0 6px;
+  border-radius: 10px;
+  height: 90px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  min-width: 0px;
+  flex: 1;
+  min-width: 0;
+}
+
+.contact-root:hover {
+  cursor: pointer;
+  background-color: #233243;
+}
+
+.contact-root .img-container {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  height: 70px;
+  width: 70px;
+  margin: 0 6px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.contact-root .img-container .img {
+  margin: 0 auto;
+  height: auto;
+  width: 100%;
+}
+
+.contact-root .last-message-preview {
+  font-size: 14px;
+}
+
+.contact-root .contact-info {
+  min-width: 0;
+  margin-right: 18px;
+}
+
+.contact-root .contact-info p {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-bubble {
+  margin: 10px 15px;
+  padding: 7px 13px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 400px;
+  border-radius: 19px;
+  display: block;
+}
+
+.chat-bubble p {
+  color: #ffffff;
+}
+
+.from-other {
+  background-color: #2d3a49;
+}
+
+.from-you {
+  background-color: #009de6;
+  margin-left: auto;
+}
+/*# sourceMappingURL=app.css.map */

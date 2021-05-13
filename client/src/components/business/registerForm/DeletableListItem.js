@@ -5,6 +5,8 @@ import CloseIcon from '@material-ui/icons/Close'; // basic x button
 import CancelIcon from '@material-ui/icons/Cancel'; // filled look x button
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'; // outlined look x button
 
+import {Chip} from '@material-ui/core';
+
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'inline-block',
@@ -33,6 +35,10 @@ const useStyles = makeStyles(theme => ({
             outline: 'none',
         },
     },
+    chipRoot: {
+        //display: 'inline-block',
+        margin: '8px',
+    },
 }));
 
 // Props description:
@@ -55,18 +61,25 @@ export default function DeletableListItem({ stateFieldName, item, index, state, 
     }
 
     return (
-        <Card className={classes.root}>
-            <CardContent>
+        // <Card className={classes.root}>
+        //     <CardContent>
 
-                <Typography className={classes.term} >
-                    {item}
-                    <IconButton className={classes.closeIcon} aria-label="delete" onClick={removeItem}>
-                        <CancelIcon />
-                    </IconButton>
-                </Typography>
+        //         <Typography className={classes.term} >
+        //             {item}
+        //             <IconButton className={classes.closeIcon} aria-label="delete" onClick={removeItem}>
+        //                 <CancelIcon />
+        //             </IconButton>
+        //         </Typography>
 
 
-            </CardContent>
-        </Card>
+        //     </CardContent>
+        // </Card>
+        <Chip className={classes.chipRoot}
+            label={item}
+            onDelete={removeItem}
+            deleteIcon={<CancelIcon />}
+            variant="outlined"
+            color="primary"
+      />
     )
 }

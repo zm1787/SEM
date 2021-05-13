@@ -138,7 +138,7 @@ const useStyles = makeStyles(theme => ({
         padding: '18px',
         borderRadius: '5px',
         minHeight: '100px',
-        border: `1px solid ${theme.palette.background.border}`,
+        border: `1px solid ${theme.palette.primary.main}`,
     },
     businessDescription: {
         '& .MuiInputBase-root': {

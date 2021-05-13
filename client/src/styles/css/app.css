@@ -1,0 +1,116 @@
+.chat-root {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  height: 800px;
+  width: 800px;
+}
+.chat-root p {
+  margin: 0;
+  color: #fff;
+}
+
+.chats-list-container {
+  grid-column-start: 1;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.chats-list-header {
+  grid-row-start: 1;
+  height: 100%;
+  display: flex;
+  /* justify-content: center;
+  align-items: center; */
+  background-color: #fff;
+}
+
+.chats-list {
+  grid-row-start: 2;
+  background-color: blueviolet;
+}
+
+.current-chat {
+  grid-column-start: 2;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.current-chat-header {
+  grid-row-start: 1;
+  background-color: brown;
+}
+
+.current-chat-display {
+  grid-row-start: 2;
+  background-color: orange;
+}
+
+.current-chat-form {
+  grid-row-start: 3;
+  background-color: green;
+}
+
+#root {
+  height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.joinOuterContainer {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  align-items: center;
+  background-color: #1a1a1d;
+}
+
+.joinInnerContainer {
+  width: 20%;
+}
+
+.joinInput {
+  border-radius: 0;
+  padding: 15px 20px;
+  width: 100%;
+}
+
+.heading {
+  color: white;
+  font-size: 2.5em;
+  padding-bottom: 10px;
+  border-bottom: 2px solid white;
+}
+
+.button {
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #2979ff;
+  padding: 20px;
+  border-radius: 5px;
+  display: inline-block;
+  border: none;
+  width: 100%;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .joinOuterContainer {
+    height: 100%;
+  }
+
+  .joinInnerContainer {
+    width: 90%;
+  }
+}
+button:focus {
+  outline: 0;
+}
+
+/*# sourceMappingURL=app.css.map */
