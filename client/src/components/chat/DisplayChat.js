@@ -2,7 +2,6 @@ import React from 'react'
 import ChatBubble from './ChatBubble';
 
 const DisplayChat = ({ chat }) => {
-    
     return (
         <div>
             {chat.map((messageInfo, index) => {

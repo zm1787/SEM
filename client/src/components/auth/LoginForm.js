@@ -135,6 +135,7 @@ function LoginForm() {
             <Form onSubmit={handleSubmit}>
                 <Box className={classes.textFieldsCell}>
                     <Controls.TextField
+                        autoFocus
                         variant={textFieldVariant}
                         label="Email"
                         name="email"

@@ -4,9 +4,11 @@
   display: grid;
   -ms-grid-columns: minmax(0, 300px) 1fr;
       grid-template-columns: minmax(0, 300px) 1fr;
-  border: 2px solid #1dcdfe25;
-  height: 80vh;
+  border-radius: 15px;
+  border: 2px solid #00aeef;
+  height: calc(100vh - 130px);
   width: 70vw;
+  max-width: 1100px;
 }
 
 .chat-parent-grid .contact-list-child-grid {
@@ -14,7 +16,7 @@
       grid-column-start: 1;
   display: -ms-grid;
   display: grid;
-  border-right: 2px solid #1dcdfe25;
+  border-right: 2px solid #00aeef;
   -ms-grid-rows: auto 1fr;
       grid-template-rows: auto 1fr;
   max-width: 300px;
@@ -23,6 +25,7 @@
 }
 
 .chat-parent-grid .contact-list-child-grid .contact-list-header {
+  padding: 7px;
   -ms-grid-row: 1;
       grid-row-start: 1;
   width: 300px;
@@ -39,7 +42,7 @@
   width: 300px;
   -ms-grid-row: 2;
       grid-row-start: 2;
-  border-top: 2px solid #1dcdfe25;
+  border-top: 2px solid #00aeef;
   overflow: hidden;
   overflow-y: scroll;
 }
@@ -62,15 +65,24 @@
 .chat-parent-grid .current-chat-grid .current-chat-display {
   -ms-grid-row: 2;
       grid-row-start: 2;
-  border-top: 2px solid #1dcdfe25;
+  border-top: 2px solid #00aeef;
   overflow-y: scroll;
 }
 
 .chat-parent-grid .current-chat-grid .current-chat-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   padding: 15px;
   -ms-grid-row: 3;
       grid-row-start: 3;
-  border-top: 2px solid #1dcdfe25;
+  border-top: 2px solid #00aeef;
+}
+
+.chat-parent-grid .current-chat-grid .current-chat-form .message-input {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
 }
 
 #root {
@@ -199,12 +211,11 @@ button:focus {
 }
 
 .chat-bubble {
-  margin: 10px 15px;
-  padding: 7px 13px;
+  padding: 7px 10px;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
-  max-width: 400px;
+  max-width: calc(min(400px, 70%));
   border-radius: 19px;
   display: block;
 }
@@ -215,10 +226,12 @@ button:focus {
 
 .from-other {
   background-color: #2d3a49;
+  margin: 10px 10px 10px 15px;
 }
 
 .from-you {
   background-color: #009de6;
   margin-left: auto;
+  margin: 10px 15px 10px auto;
 }
 /*# sourceMappingURL=app.css.map */

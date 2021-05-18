@@ -1,8 +1,9 @@
 .chat-bubble {
-    margin: 10px 15px;
-    padding: 7px 13px;
+    
+    padding: 7px 10px;
     width: max-content;
-    max-width: 400px;
+    //min-width: none;
+    max-width: calc(min(400px, 70%));
     border-radius: 19px;
     display: block;
     p {
@@ -12,8 +13,10 @@
 
 .from-other {
     background-color: #2d3a49;
+    margin: 10px 10px 10px 15px;
 }
 .from-you {
     background-color: #009de6;
     margin-left: auto;
+    margin: 10px 15px 10px auto;
 }

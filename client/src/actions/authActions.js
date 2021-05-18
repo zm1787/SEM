@@ -12,6 +12,9 @@ import {
 import { returnErrors } from './errorActions';
 import * as api from '../api';
 
+import history from '../history';
+
+
 // auth only: Gets first name, last name and email
 export const loadUser = () => async (dispatch, getState) => {
     // User loading 
@@ -87,6 +90,7 @@ export const loginUser = ({ email, password }) => async (dispatch) => {
 
 // Logout User
 export const logoutUser = () => {
+    history.push("/");
     return {
         type: LOGOUT_USER
     };

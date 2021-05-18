@@ -128,8 +128,8 @@ export default function LargeScreenNav({ currentTheme }) {
                     {/* Middle Nav */}
                     {auth.isAuthenticated ?
                         <div className={classes.buttonsFlexContainer}>
-                            {buttonList.map((btn) => (
-                                <Button className={classes.btn} size="large" color="primary" onClick={() => onMenuItemClick(btn.pageName)}>{btn.btnText}</Button>
+                            {buttonList.map((btn, index) => (
+                                <Button className={classes.btn} key={index} size="large" color="primary" onClick={() => onMenuItemClick(btn.pageName)}>{btn.btnText}</Button>
                             ))}
                         </div>
                         :

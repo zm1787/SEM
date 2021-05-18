@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function ThemeSelector({ selectedTheme, setSelectedTheme, Themes }) {
     const classes = useStyles();
-    const [value, setValue] = React.useState('dark');
+    const [value, setValue] = React.useState('darkBlue');
     const dispatch = useDispatch();
 
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextField as MuiTextField, withStyles, fade } from '@material-ui/core';
+import { TextField as MuiTextField, FormControl, withStyles, fade } from '@material-ui/core';
 
 
 
@@ -88,7 +88,7 @@ function TextField(props) {
                     placeholder={placeholder}
                     onChange={onChange}
                     onKeyPress={e => {
-                        if(e.key === 'Enter' && disableEnterSubmit) e.preventDefault();
+                        if (e.key === 'Enter' && disableEnterSubmit) e.preventDefault();
                     }}
                     InputProps={InputProps}
                     autoComplete="off"
@@ -104,7 +104,7 @@ function TextField(props) {
                     placeholder={placeholder}
                     onChange={onChange}
                     onKeyPress={e => {
-                        if(e.key === 'Enter' && disableEnterSubmit) e.preventDefault();
+                        if (e.key === 'Enter' && disableEnterSubmit) e.preventDefault();
                     }}
                     InputProps={InputProps}
                     autoComplete="off"
@@ -120,7 +120,7 @@ function TextField(props) {
                 placeholder={placeholder}
                 onChange={onChange}
                 onKeyPress={e => {
-                    if(e.key === 'Enter' && disableEnterSubmit) e.preventDefault();
+                    if (e.key === 'Enter' && disableEnterSubmit) e.preventDefault();
                 }}
                 InputProps={InputProps}
                 autoComplete="off"

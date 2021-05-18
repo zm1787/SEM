@@ -1,16 +1,19 @@
+$border-color: #00aeef;
 .chat-parent-grid {
     margin: 0 auto;
     display: grid;
     grid-template-columns: minmax(0, 300px) 1fr;
-    border: 2px solid #1dcdfe25;
-    height: 80vh;
+    border-radius: 15px;
+    border: 2px solid $border-color;
+    height: calc(100vh - 130px);
     width: 70vw;
+    max-width: 1100px;
 
 
     .contact-list-child-grid {
         grid-column-start: 1;
         display: grid; // Grid inside grid
-        border-right: 2px solid #1dcdfe25;
+        border-right: 2px solid $border-color;
         grid-template-rows: auto 1fr;
         max-width: 300px;
         min-width: 0;
@@ -19,6 +22,7 @@
 
 
         .contact-list-header {
+            padding: 7px;
             grid-row-start: 1;
             width: 300px;
             
@@ -34,7 +38,7 @@
             min-height: 0;
             width: 300px;
             grid-row-start: 2;
-            border-top: 2px solid #1dcdfe25;
+            border-top: 2px solid $border-color;
             overflow: hidden;
             overflow-y: scroll;
             //background-color: blueviolet;
@@ -56,16 +60,19 @@
 
         .current-chat-display {
             grid-row-start: 2;
-            border-top: 2px solid #1dcdfe25;
+            border-top: 2px solid $border-color;
             overflow-y: scroll;
             //background-color: orange;
         }
 
         .current-chat-form {
+            display: flex;
             padding: 15px;
             grid-row-start: 3;
-            border-top: 2px solid #1dcdfe25;
-            //background-color: green;
+            border-top: 2px solid $border-color;
+            .message-input {
+                flex-grow: 1;
+            }
         }
     }
 }

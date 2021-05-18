@@ -64,7 +64,7 @@ const App = () => {
 
     const classes = useStyles();
 
-    const [selectedTheme, setSelectedTheme] = React.useState(Themes.dark);
+    const [selectedTheme, setSelectedTheme] = React.useState(Themes.darkBlue);
     const theme = createMuiTheme(selectedTheme)
 
     // test stripe state

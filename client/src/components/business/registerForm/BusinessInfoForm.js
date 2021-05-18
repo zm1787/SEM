@@ -275,6 +275,7 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
                     <Typography variant="h5">Business Information</Typography>
                     <Box className={classes.textFieldsCell}>
                         <Controls.TextField
+                            autoFocus
                             variant={textFieldVariant}
                             label="Name of Business"
                             name="businessName"
