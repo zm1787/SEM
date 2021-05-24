@@ -65,7 +65,7 @@ export const fetchListOfChats = async (req, res) => {
         // Return status 200 (Ok), and .json array of found chats in database
         res.status(200).json(chats);
     } catch (error) {
-        res.status(404).json({ message: error.message });
+        res.status(404).json({ msg: error.message });
     }
 }
 

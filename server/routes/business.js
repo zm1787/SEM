@@ -1,7 +1,7 @@
 import express from 'express';
 import auth from '../middleware/auth.js';
 
-import { registerBusiness, myBusinesses, fetchBusinessDetails, payment } from "../controllers/businesses.js";
+import { registerBusiness, myBusinesses, fetchBusinessDetails, payment } from "../controllers/business.js";
 
 const router = express.Router();
 

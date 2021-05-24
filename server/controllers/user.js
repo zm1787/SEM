@@ -44,7 +44,7 @@ export const getUsers = async (req, res) => {
         // Return status 200 (Ok), and .json array of found user object in database to front-end
         res.status(200).json(users);
     } catch (error) {
-        res.status(404).json({ message: error.message });
+        res.status(404).json({ msg: error.message });
     }
 }
 
@@ -100,7 +100,7 @@ export const registerSeeker = async (req, res) => {
         });
 
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ msg: error.message });
     }
 }
 
@@ -192,7 +192,7 @@ export const loginUser = async (req, res) => {
         });
 
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ msg: error.message });
     }
 }
 
@@ -220,7 +220,7 @@ export const deleteUser = async (req, res) => {
 
     await User.findByIdAndRemove(id);
 
-    res.json({ message: 'User deleted successfully' });
+    res.json({ msg: 'User deleted successfully' });
 }
 
 

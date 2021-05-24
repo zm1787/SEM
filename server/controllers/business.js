@@ -92,7 +92,7 @@ export const myBusinesses = async (req, res) => {
         // Return status 200 (Ok), and .json array of found user object in database to front-end
         res.status(200).json(businesses);
     } catch (error) {
-        res.status(404).json({ message: error.message });
+        res.status(404).json({ msg: error.message });
     }
 }
 
@@ -111,7 +111,7 @@ export const fetchBusinessDetails = async (req, res) => {
         // Return status 200 (Ok), and Business details
         res.status(200).json(selectedBusiness);
     } catch (error) {
-        res.status(404).json({ message: error.message });
+        res.status(404).json({ msg: error.message });
     }
 }
 

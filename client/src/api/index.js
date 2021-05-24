@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 // Base Routes
-const userUrl = 'http://localhost:5000/users';
+const userUrl = 'http://localhost:5000/user';
 const businessUrl = 'http://localhost:5000/business';
-const chatUrl = 'http://localhost:5000/chats';
+const chatUrl = 'http://localhost:5000/chat';
 
 export const getUsers = () => axios.get(userUrl); // For testing purposes only.
 

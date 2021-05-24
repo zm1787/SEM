@@ -5,11 +5,10 @@ import dotenv from 'dotenv';
 import * as socketio from 'socket.io';
 import { createServer } from 'http';
 
-import userRoutes from './routes/users.js';
+import userRoutes from './routes/user.js';
 import businessRoutes from './routes/business.js';
-import chatsRoutes from './routes/chats.js';
+import chatRoutes from './routes/chat.js';
 
-import Chat from './models/chat.js';
 
 
 const app = express();
@@ -19,9 +18,9 @@ app.use(express.json());
 
 app.use(cors());
 
-app.use('/users', userRoutes); // Every route inside of userRoutes will start with '/users'
+app.use('/user', userRoutes); // Every route inside of userRoutes will start with '/users'
 app.use('/business', businessRoutes); // Every route inside of businessRoutes will start with '/business'
-app.use('/chats', chatsRoutes); // Every route inside of chatsRoutes will start with '/chats'
+app.use('/chat', chatRoutes); // Every route inside of chatsRoutes will start with '/chats'
 
 const server = createServer(app);
 
