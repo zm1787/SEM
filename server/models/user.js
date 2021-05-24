@@ -53,6 +53,8 @@ const userSchema = mongoose.Schema({
 
     businesses: [Business],
 
+    chats: [mongoose.Schema.Types.ObjectId],
+
     createdAt: {
         type: Date,
         default: new Date()

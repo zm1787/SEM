@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
+import { useDispatch } from 'react-redux';
+
 
 import Contact from './Contact';
 import DisplayChat from './DisplayChat';
@@ -115,17 +117,20 @@ const arrayIsEmpty = (array) => {
 
 export default function Chat({ location }) {
     const classes = useStyles();
+    const dispatch = useDispatch();
+
 
     const ENDPOINT = 'localhost:5000';
 
-    const [selectedContactInfo, setSelectedContactInfo] = useState({
-        name: "",
-        lastMessage: "",
-        activeChat: TEST_LIST_OF_CHATS["Alex"],
+    // State
+    const [state, setState] = useState({
+        listOfContacts: [],
+
+        activeChatName: "",
+        activeChatContent: TEST_LIST_OF_CHATS["Alex"],
     });
 
-
-
+    // Effects
     useEffect(() => {
         const name = 'Bob';
         const chat_id = '1234';
@@ -141,6 +146,23 @@ export default function Chat({ location }) {
         };
     }, [ENDPOINT])
 
+    // Functions
+    const onCreateChat = () => {
+        const newChat = {
+            participants: [
+                {
+                    id: "6081b02572ce73346402b551",
+                    name: "Zacharie Melanson",
+                },
+                {
+                    id: "60a3d4bbcfab2b348c27a307",
+                    name: "Chris Doiron",
+                },
+            ],
+        };
+
+        //dispatch(createNewChat(newChat));
+    }
 
     return (
         <div className="chat-parent-grid">
@@ -149,22 +171,29 @@ export default function Chat({ location }) {
                     <Typography variant="h4">Contacts</Typography>
                 </div>
                 <div className="contact-list">
-                    {TEST_CONTACTS.map((contact, index) => {
-                        return (
-                            <Contact key={index} contact={contact} setSelectedContactInfo={setSelectedContactInfo} selectedContactInfo={selectedContactInfo} />
-                        )
-                    })}
+                    {!arrayIsEmpty(state.listOfContacts) ?
+                        state.listOfContacts.map((contact, index) => {
+                            return (
+                                <Contact key={index} contact={contact} setSelectedContactInfo={setState} selectedContactInfo={state} />
+                            )
+                        })
+                        :
+                        <div>
+                            <h5>You do not yet have any contacts.</h5>
+                            <button onClick={onCreateChat}>Create a Chat!</button>
+                        </div>
+                    }
                 </div>
             </div>
             <div className="current-chat-grid">
                 <div className="current-chat-header">
-                    <Typography variant="h5">Chatting with {selectedContactInfo.name}</Typography>
+                    <Typography variant="h5">Chatting with {state.selectedChatName}</Typography>
                 </div>
                 <div className="current-chat-display">
-                    {!arrayIsEmpty(selectedContactInfo.activeChat) ?
-                        <DisplayChat chat={selectedContactInfo.activeChat} />
+                    {!arrayIsEmpty(state.activeChatContent) ?
+                        <DisplayChat chat={state.activeChatContent} />
                         :
-                        <h4>This chat is empty!</h4>
+                        <h4>This chat is empty. Send a Message to start chatting!</h4>
                     }
                 </div>
                 <form className="current-chat-form">

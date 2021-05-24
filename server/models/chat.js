@@ -1,12 +1,28 @@
 import mongoose from 'mongoose';
-import Message from './message.js';
+import { messageSchema as Message } from './message.js';
 
 const chatSchema = mongoose.Schema({
-    // list of massages in the chat
-    //messages: [Message],
+    // List of massages in the chat
+    messages: [Message],
 
     // List of participants as user ids
-    participants: [mongoose.Schema.Types.ObjectId],
+    participants: [
+        {
+            id: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true,
+            },
+            name: {
+                type: String,
+                required: true,
+            }
+        }
+    ],
+
+    receiverHasRead: {
+        type: Boolean,
+        default: false,
+    },
 
     createdAt: {
         type: Date,

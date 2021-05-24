@@ -1,12 +1,12 @@
 import express from 'express';
 import auth from '../middleware/auth.js';
 
-import { addUser, removeUser, getUser, getUsersInChat } from "../controllers/chats.js";
+import { addUser, removeUser, getUser, getUsersInChat, fetchListOfChats, createNewChat } from "../controllers/chats.js";
 
 const router = express.Router();
 
-// router.post('/register', auth, registerBusiness);
-// router.get('/myBusinesses', auth, myBusinesses);
+router.post('/createNewChat', auth, createNewChat);
+router.get('/fetchListOfChats', auth, fetchListOfChats);
 
 
 export default router;
