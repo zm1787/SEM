@@ -5,20 +5,6 @@ const chatSchema = mongoose.Schema({
     // List of massages in the chat
     messages: [Message],
 
-    // List of participants as user ids
-    participants: [
-        {
-            id: {
-                type: mongoose.Schema.Types.ObjectId,
-                required: true,
-            },
-            name: {
-                type: String,
-                required: true,
-            }
-        }
-    ],
-
     receiverHasRead: {
         type: Boolean,
         default: false,

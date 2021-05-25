@@ -3,37 +3,37 @@ import { businessSchema as Business } from './business.js';
 
 const userSchema = mongoose.Schema({
     firstName: {
-        type : String,
+        type: String,
         required: true
     },
 
     lastName: {
-        type : String,
+        type: String,
         required: true
     },
 
     email: {
-        type: String, 
+        type: String,
         required: true,
         unique: true
     },
 
     password: {
-        type: String, 
+        type: String,
         required: true,
     },
 
     location: {
         country: {
-            type: String, 
+            type: String,
             required: true,
         },
         province: {
-            type: String, 
+            type: String,
             required: true,
         },
         city: {
-            type: String, 
+            type: String,
             required: true,
         },
     },
@@ -45,7 +45,7 @@ const userSchema = mongoose.Schema({
 
     // userType: Specialist(bronze, silver, gold) or seeker
     userType: {
-        type : String,
+        type: String,
         required: true,
     },
 
@@ -53,7 +53,45 @@ const userSchema = mongoose.Schema({
 
     businesses: [Business],
 
-    chats: [mongoose.Schema.Types.ObjectId],
+    // List of contacts and id of chat for that contact
+    contacts: [
+        {
+            contact_id: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true,
+            },
+            chat: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true,
+            },
+        },
+    ],
+
+    contactRequestsReceived: [
+        {
+            contact_id: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true,
+            },
+            status: {
+                type: String,
+                required: true,
+            },
+        },
+    ],
+
+    contactRequestsSent: [
+        {
+            contact_id: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true,
+            },
+            status: {
+                type: String,
+                required: true,
+            },
+        },
+    ],
 
     createdAt: {
         type: Date,

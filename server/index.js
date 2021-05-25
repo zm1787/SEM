@@ -7,7 +7,6 @@ import { createServer } from 'http';
 
 import userRoutes from './routes/user.js';
 import businessRoutes from './routes/business.js';
-import chatRoutes from './routes/chat.js';
 
 
 
@@ -20,7 +19,6 @@ app.use(cors());
 
 app.use('/user', userRoutes); // Every route inside of userRoutes will start with '/users'
 app.use('/business', businessRoutes); // Every route inside of businessRoutes will start with '/business'
-app.use('/chat', chatRoutes); // Every route inside of chatsRoutes will start with '/chats'
 
 const server = createServer(app);
 

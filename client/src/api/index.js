@@ -20,10 +20,6 @@ export const registerBusiness = (newBusiness, config) => axios.post(`${businessU
 export const fetchMyBusinesses = (config) => axios.get(`${businessUrl}/myBusinesses`, config); 
 export const fetchBusinessDetails = (businessID, config) => axios.get(`${businessUrl}/fetchBusinessDetails/${businessID}`, config); 
 
-// Chat
-export const createNewChat = (newChat, config) => axios.post(`${chatUrl}/createNewChat`, newChat, config); 
-
-
 
 
 
