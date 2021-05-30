@@ -9,7 +9,6 @@ $border-color: #00aeef;
     width: 70vw;
     max-width: 1100px;
 
-
     .contact-list-child-grid {
         grid-column-start: 1;
         display: grid; // Grid inside grid
@@ -18,20 +17,28 @@ $border-color: #00aeef;
         max-width: 300px;
         min-width: 0;
         overflow: hidden;
-        
-
 
         .contact-list-header {
             padding: 7px;
             grid-row-start: 1;
             width: 300px;
-            
+
             height: 100%;
             display: flex;
-            /* justify-content: center;
-            align-items: center; */
+            justify-content: space-between;
+            align-items: center;
 
             //background-color: #fff;
+
+            .notification-icon {
+                .MuiBadge-badge {
+                    background-color: red;
+                }
+            }
+            .MuiIconButton-root {
+                width: 60px;
+                height: 60px;
+            }
         }
 
         .contact-list {

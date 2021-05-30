@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUsers } from './actions/userActions';
+import { addSocket } from './actions/socketActions';
 import { loadUserProfile } from './actions/authActions';
+import { loadNotification } from './actions/notificationActions';
 import { Switch, Route } from 'react-router-dom';
 import './app.css';
 
@@ -17,7 +19,7 @@ import RegisterBusinessPage from './pages/RegisterBusiness';
 import MyBusinessList from './pages/MyBusinessList';
 import ViewMyBusinessPage from './pages/ViewMyBusiness';
 
-import Chat from './components/chat/Chat';
+import ChatDashBoard from './components/chat/ChatDashBoard';
 
 // Components
 import BusinessCardsList from './components/business/BusinessCardsList';
@@ -76,8 +78,28 @@ const App = () => {
     }, [dispatch]);
 
     useEffect(() => {
+        if(auth.user) {
+            dispatch(loadNotification(auth.user.notifications));
+        }
+    }, [dispatch, auth.user]);
+
+    useEffect(() => {
         dispatch(getUsers());
     }, [dispatch]);
+
+    // Connect socket
+    useEffect(() => {
+        if(auth.user) {
+            const user_id = auth.user._id
+            
+            dispatch(addSocket("notifications", user_id));
+
+            return () => {
+                // socket.emit('disconnect-chat', { user_id });
+                // socket.off();
+            };
+        }
+    }, [auth.user, dispatch])
 
     return (
         <ThemeProvider theme={theme}>
@@ -129,7 +151,7 @@ const App = () => {
 
                     <Route exact path="/view-my-business" component={ViewMyBusinessPage} />
 
-                    <Route exact path="/chat" component={Chat} />
+                    <Route exact path="/chat" component={ChatDashBoard} />
 
                     <Route exact path="/testStripePay" >
                         <div className="spatula">

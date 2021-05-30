@@ -69,7 +69,7 @@ export const registerBusiness = async (req, res) => {
         });
 
         // Push new business to user's array of businesses
-        const user = User.findOneAndUpdate(
+        const user = await User.findOneAndUpdate(
             { _id: req.user },
             { $push: { businesses: newBusiness } },
         );

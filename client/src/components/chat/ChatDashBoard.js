@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+
+import { sendContactRequest } from '../../actions/contactActions';
+import { addNotification, removeNotification } from '../../actions/notificationActions';
 
 import Contact from './Contact';
-import DisplayChat from './DisplayChat';
+import ActiveChat from './ActiveChat';
+import NotificationMenuButton from './NotificationMenuButton';
 
-import { makeStyles, Typography } from '@material-ui/core';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import { makeStyles, Typography, Badge, } from '@material-ui/core';
 
 const TEST_CONTACTS = [
     {
@@ -115,10 +120,9 @@ const arrayIsEmpty = (array) => {
 }
 
 
-export default function Chat({ location }) {
+export default function ChatDashBoard({ location }) {
     const classes = useStyles();
     const dispatch = useDispatch();
-
 
     const ENDPOINT = 'localhost:5000';
 
@@ -130,45 +134,53 @@ export default function Chat({ location }) {
         activeChatContent: TEST_LIST_OF_CHATS["Alex"],
     });
 
-    // Effects
-    useEffect(() => {
-        const name = 'Bob';
-        const chat_id = '1234';
-        socket = io(ENDPOINT);
-
-        socket.emit('join-chat', { name, chat_id }, (/* {error} */) => {
-            // Do something with error
-        });
-
-        return () => {
-            socket.emit('disconnect-chat');
-            socket.off();
-        };
-    }, [ENDPOINT])
-
     // Functions
-    const onCreateChat = () => {
-        const newChat = {
-            participants: [
-                {
-                    id: "6081b02572ce73346402b551",
-                    name: "Zacharie Melanson",
-                },
-                {
-                    id: "60a3d4bbcfab2b348c27a307",
-                    name: "Chris Doiron",
-                },
-            ],
-        };
+    // const onCreateChat = () => {
+    //     const newRequest = {
+    //         recipient_id: "60ad382d447e294a7c207ece",
+    //     };
+    //     console.log("Sending request to:", newRequest.recipient_id)
+    //     dispatch(sendContactRequest(newRequest));
+    // }
 
-        //dispatch(createNewChat(newChat));
+
+
+    // ###############################################################################
+    // TESTING NOTIFICATIONS REMOVE LATER
+    const sockets = useSelector((store) => store.sockets);
+    const auth = useSelector((store) => store.auth);
+
+    const onSendFriendRequest = () => {
+        const user = auth.user;
+        const newRequest = {
+            _id: "1111",
+            type: "Friend Requestasdf",
+            senderName: `${user.firstName} ${user.lastName}`,
+            receiver_id: "60ad382d447e294a7c207ece",
+            sender_id: user._id,
+        };
+        
+        sockets.notifications.socket.emit('send-friend-request', newRequest);
     }
+    const onRemoveNotificaion = () => {
+        const newRequest = {
+            _id: "1236",
+            type: "Friend Request",
+            recipient_id: "60ad382d447e294a7c207ece",
+            sender_id: "60ad384e447e294a7c207ecf",
+        };
+        dispatch(removeNotification(newRequest._id));
+    }
+    // ###############################################################################
+
+
 
     return (
         <div className="chat-parent-grid">
             <div className="contact-list-child-grid">
                 <div className="contact-list-header">
                     <Typography variant="h4">Contacts</Typography>
+                    <NotificationMenuButton />
                 </div>
                 <div className="contact-list">
                     {!arrayIsEmpty(state.listOfContacts) ?
@@ -180,7 +192,8 @@ export default function Chat({ location }) {
                         :
                         <div>
                             <h5>You do not yet have any contacts.</h5>
-                            <button onClick={onCreateChat}>Create a Chat!</button>
+                            <button onClick={onSendFriendRequest}>Add Friend!</button>
+                            <button onClick={onRemoveNotificaion}>Remove Friend!</button>
                         </div>
                     }
                 </div>
@@ -191,7 +204,7 @@ export default function Chat({ location }) {
                 </div>
                 <div className="current-chat-display">
                     {!arrayIsEmpty(state.activeChatContent) ?
-                        <DisplayChat chat={state.activeChatContent} />
+                        <ActiveChat chat={state.activeChatContent} />
                         :
                         <h4>This chat is empty. Send a Message to start chatting!</h4>
                     }

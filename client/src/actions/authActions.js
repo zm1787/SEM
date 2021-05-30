@@ -24,8 +24,13 @@ export const loadUser = () => async (dispatch, getState) => {
         const { data } = await api.loadUser(tokenConfig(getState));
         dispatch({ type: USER_LOADED, payload: data });
     } catch (error) {
-        dispatch(returnErrors(error.response.data, error.response.status));
-        dispatch({ type: AUTH_ERROR });
+        if (error.response !== undefined) {
+            dispatch(returnErrors(error.response.data, error.response.status));
+            dispatch({ type: AUTH_ERROR });
+        }
+        else {
+            console.log(error);
+        }
     }
 }
 
@@ -38,9 +43,13 @@ export const loadUserProfile = () => async (dispatch, getState) => {
         const { data } = await api.loadUserProfile(tokenConfig(getState));
         dispatch({ type: USER_LOADED, payload: data });
     } catch (error) {
-        console.log(error);
-        dispatch(returnErrors(error.response.data, error.response.status));
-        dispatch({ type: AUTH_ERROR });
+        if (error.response !== undefined) {
+            dispatch(returnErrors(error.response.data, error.response.status));
+            dispatch({ type: AUTH_ERROR });
+        }
+        else {
+            console.log(error);
+        }
     }
 }
 
@@ -57,12 +66,17 @@ export const registerUser = (newUser) => async (dispatch) => {
     const body = JSON.stringify(newUser)
 
     try {
-        dispatch({ type: USER_LOADING});
+        dispatch({ type: USER_LOADING });
         const { data } = await api.registerUser(body, config);
         dispatch({ type: REGISTER_SUCCESS, payload: data });
     } catch (error) {
-        dispatch(returnErrors(error.response.data, error.response.status, 'REGISTER_FAIL'));
-        dispatch({ type: REGISTER_FAIL });
+        if (error.response !== undefined) {
+            dispatch(returnErrors(error.response.data, error.response.status, 'REGISTER_FAIL'));
+            dispatch({ type: REGISTER_FAIL });
+        }
+        else {
+            console.log(error);
+        }
     }
 }
 
@@ -79,12 +93,17 @@ export const loginUser = ({ email, password }) => async (dispatch) => {
     const body = JSON.stringify({ email, password })
 
     try {
-        dispatch({ type: USER_LOADING});
+        dispatch({ type: USER_LOADING });
         const { data } = await api.loginUser(body, config);
         dispatch({ type: LOGIN_SUCCESS, payload: data });
     } catch (error) {
-        dispatch(returnErrors(error.response.data, error.response.status, 'LOGIN_FAIL'));
-        dispatch({ type: LOGIN_FAIL });
+        if (error.response !== undefined) {
+            dispatch(returnErrors(error.response.data, error.response.status, 'LOGIN_FAIL'));
+            dispatch({ type: LOGIN_FAIL });
+        }
+        else {
+            console.log(error);
+        }
     }
 }
 

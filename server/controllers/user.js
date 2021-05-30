@@ -21,11 +21,11 @@ export const loadUser = async (req, res) => {
 }
 
 // @route   GET users/load
-// @desc    Get User Info
+// @desc    Return User Info
 // @access  Auth only
 export const loadProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user).select('email firstName lastName location userType');
+        const user = await User.findById(req.user).select('email firstName lastName location userType notifications');
         if (!user) throw Error('User does not exist');
         res.json(user);
     } catch (error) {

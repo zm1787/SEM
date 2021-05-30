@@ -33,8 +33,21 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  /* justify-content: center;
-            align-items: center; */
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.chat-parent-grid .contact-list-child-grid .contact-list-header .notification-icon .MuiBadge-badge {
+  background-color: red;
+}
+
+.chat-parent-grid .contact-list-child-grid .contact-list-header .MuiIconButton-root {
+  width: 60px;
+  height: 60px;
 }
 
 .chat-parent-grid .contact-list-child-grid .contact-list {

@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+const contactUrl = 'http://localhost:5000/contact';
 // Base Routes
 const userUrl = 'http://localhost:5000/user';
 const businessUrl = 'http://localhost:5000/business';
@@ -20,11 +21,5 @@ export const registerBusiness = (newBusiness, config) => axios.post(`${businessU
 export const fetchMyBusinesses = (config) => axios.get(`${businessUrl}/myBusinesses`, config); 
 export const fetchBusinessDetails = (businessID, config) => axios.get(`${businessUrl}/fetchBusinessDetails/${businessID}`, config); 
 
-
-
-
-
-
-
-
-
+// CONTACT
+export const sendContactRequest = (newRequest, config) => axios.post(`${contactUrl}/sendContactRequest`, newRequest, config); 

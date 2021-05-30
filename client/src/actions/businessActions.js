@@ -29,8 +29,13 @@ export const registerBusiness = (newBusinessInfo) => async (dispatch, getState) 
         dispatch({ type: REGISTER_BUSINESS_SUCCESS, payload: data });
         history.push("/myBusinesses");
     } catch (error) {
-        dispatch(returnErrors(error.response.data, error.response.status, 'REGISTER_BUSINESS_FAIL'));
-        dispatch({ type: REGISTER_BUSINESS_FAIL });
+        if (error.response !== undefined) {
+            dispatch(returnErrors(error.response.data, error.response.status, 'REGISTER_BUSINESS_FAIL'));
+            dispatch({ type: REGISTER_BUSINESS_FAIL });
+        }
+        else {
+            console.log(error);
+        }
     }
 }
 
@@ -40,8 +45,13 @@ export const fetchMyBusinesses = () => async (dispatch, getState) => {
         const { data } = await api.fetchMyBusinesses(tokenConfig(getState));
         dispatch({ type: FETCH_MY_BUSINESSES_SUCCESS, payload: data.businesses });
     } catch (error) {
-        dispatch(returnErrors(error.response.data, error.response.status, FETCH_MY_BUSINESSES_FAIL));
-        dispatch({ type: FETCH_MY_BUSINESSES_FAIL });
+        if (error.response !== undefined) {
+            dispatch(returnErrors(error.response.data, error.response.status, FETCH_MY_BUSINESSES_FAIL));
+            dispatch({ type: FETCH_MY_BUSINESSES_FAIL });
+        }
+        else {
+            console.log(error);
+        }
     }
 }
 
@@ -54,8 +64,13 @@ export const fetchBusiness = (businessID) => async (dispatch, getState) => {
         const { data } = await api.fetchBusinessDetails(businessID, tokenConfig(getState));
         dispatch({ type: FETCH_BUSINESS_DETAILS_SUCCESS, payload: data });
     } catch (error) {
-        dispatch(returnErrors(error.response.data, error.response.status, FETCH_BUSINESS_DETAILS_FAIL));
-        dispatch({ type: FETCH_BUSINESS_DETAILS_FAIL });
+        if (error.response !== undefined) {
+            dispatch(returnErrors(error.response.data, error.response.status, FETCH_BUSINESS_DETAILS_FAIL));
+            dispatch({ type: FETCH_BUSINESS_DETAILS_FAIL });
+        }
+        else {
+            console.log(error);
+        }
     }
 }
 

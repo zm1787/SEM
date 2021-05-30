@@ -4,8 +4,8 @@ import {
 
 
 // Register business
-export const selectTheme = (newTheme) => async (dispatch) => {   
-        dispatch({ type: SET_THEME, payload: newTheme });
+export const selectTheme = (newTheme) => async (dispatch) => {
+    dispatch({ type: SET_THEME, payload: newTheme });
 }
 
 

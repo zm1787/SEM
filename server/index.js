@@ -5,9 +5,11 @@ import dotenv from 'dotenv';
 import * as socketio from 'socket.io';
 import { createServer } from 'http';
 
+import contactRoutes from './routes/contact.js';
 import userRoutes from './routes/user.js';
 import businessRoutes from './routes/business.js';
 
+import { onConnect } from './socket/connection.js';
 
 
 const app = express();
@@ -15,8 +17,13 @@ dotenv.config();
 
 app.use(express.json());
 
-app.use(cors());
+app.use(
+    cors({
+        origin: "*",
+    })
+);
 
+app.use('/contact', contactRoutes);
 app.use('/user', userRoutes); // Every route inside of userRoutes will start with '/users'
 app.use('/business', businessRoutes); // Every route inside of businessRoutes will start with '/business'
 
@@ -33,19 +40,4 @@ mongoose.set('useFindAndModify', false); // Makes sure we dont get any error mes
 
 // Chat io connections
 const io = new socketio.Server(server, {cors: { origin: "*" }});
-io.on('connection', (socket) => {
-    console.log('We have a new connection!!! Connected to: ', socket.id);
-
-    socket.on('join-chat', ({ name, chat_id }, callback) => {
-        console.log(name, chat_id);
-    });
-
-    socket.on('send-message', (data) => {
-        //const message
-        console.log(data);
-    });
-
-    socket.on('disconnect-chat', () => {
-        console.log('User has left!!!');
-    });
-});
+io.on('connection', onConnect);

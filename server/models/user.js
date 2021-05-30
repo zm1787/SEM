@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import { businessSchema as Business } from './business.js';
+import { notificationSchema as Notification } from './notification.js';
+
 
 const userSchema = mongoose.Schema({
     firstName: {
@@ -53,45 +55,29 @@ const userSchema = mongoose.Schema({
 
     businesses: [Business],
 
+    notifications: [Notification],
+
     // List of contacts and id of chat for that contact
-    contacts: [
-        {
-            contact_id: {
-                type: mongoose.Schema.Types.ObjectId,
-                required: true,
-            },
-            chat: {
-                type: mongoose.Schema.Types.ObjectId,
-                required: true,
-            },
+    contacts: [{
+        contact_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
         },
-    ],
+        chat: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+        },
+    }],
 
-    contactRequestsReceived: [
-        {
-            contact_id: {
-                type: mongoose.Schema.Types.ObjectId,
-                required: true,
-            },
-            status: {
-                type: String,
-                required: true,
-            },
-        },
-    ],
+    contactRequestsReceived: [{
+        contact_id: mongoose.Schema.Types.ObjectId,
+        status: String,
+    }],
 
-    contactRequestsSent: [
-        {
-            contact_id: {
-                type: mongoose.Schema.Types.ObjectId,
-                required: true,
-            },
-            status: {
-                type: String,
-                required: true,
-            },
-        },
-    ],
+    contactRequestsSent: [{
+        contact_id: mongoose.Schema.Types.ObjectId,
+        status: String,
+    }],
 
     createdAt: {
         type: Date,

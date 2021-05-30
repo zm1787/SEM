@@ -1,10 +1,10 @@
 import React from 'react'
 import ChatBubble from './ChatBubble';
 
-const DisplayChat = ({ chat }) => {
+const ActiveChat = ({ chat }) => {
     return (
         <div>
-            {chat.map((messageInfo, index) => {
+            {chat && chat.map((messageInfo, index) => {
                 return (
                     <ChatBubble key={index} messageInfo={messageInfo} />
                 )
@@ -13,4 +13,4 @@ const DisplayChat = ({ chat }) => {
     )
 }
 
-export default DisplayChat
+export default ActiveChat

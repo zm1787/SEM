@@ -5,10 +5,14 @@ import errorReducer from './errorReducer';
 import authReducer from './authReducer';
 import businessReducer from './businessReducer';
 import themeReducer from './themeReducer';
-import chatReducer from './chatReducer';
+import contactReducer from './contactReducer';
+import notificationReducer from './notificationReducer';
+import socketReducer from './socketReducer';
 
 export default combineReducers({ 
-    chat: chatReducer,
+    sockets: socketReducer,
+    notifications: notificationReducer,
+    contact: contactReducer,
     users: userReducer, 
     error: errorReducer, 
     auth: authReducer,
