@@ -1,6 +1,8 @@
 import React from 'react'
 import BusinessCard from './BusinessCard';
 import { makeStyles } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -9,14 +11,20 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default function BusinessCardsList( {users} ) {
+export default function BusinessCardsList() {
     const classes = useStyles();
+    const businessStore = useSelector((store) => store.business);
+
+    var businessList
+    if (businessStore.nearbyBusinesses.length !== 0) {
+        businessList = businessStore.nearbyBusinesses
+    }
 
     return (
         <div className={classes.root}>
-            {users.map((user) => {
+            {businessList && businessList.map((business) => {
                 return (
-                    <BusinessCard key={user._id} user={user} />
+                    <BusinessCard key={business._id} business={business} />
                 )
             })}
         </div>

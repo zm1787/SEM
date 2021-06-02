@@ -10,6 +10,12 @@ export const light = {
         secondary: {
             main: green['400'],
         },
+        components: {
+            iconButton: {
+                background: '#f0f2f5',
+                backgroundHover: '#a3a5a8',
+            },
+        },
         background: {
             default: '#f4f5fd', // Off-white ish 
 
@@ -55,6 +61,16 @@ export const darkBlue = {
         secondary: {
             main: '#21d0b2',
             light: '#34f5c5',
+        },
+
+        components: {
+            iconButton: {
+                background: '#2f455c',
+                backgroundHover: '#3d5876',
+            },
+            borders: {
+                main: '#2f455c',
+            }
         },
 
         background: {
@@ -117,7 +133,12 @@ export const dark = {
         secondary: {
             main: lightBlue['600'],
         },
-
+        components: {
+            iconButton: {
+                background: '#2f455c',
+                backgroundHover: '#3d5876',
+            },
+        },
         background: {
             default: '#212832',
             darkest: '#212832',

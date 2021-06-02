@@ -11,6 +11,10 @@ import {
     FETCH_MY_BUSINESSES_FAIL,
     FETCH_MY_BUSINESSES,
     FETCH_MY_BUSINESSES_SUCCESS,
+
+    GET_NEARBY_BUSINESSES,
+    GET_NEARBY_BUSINESSES_FAIL,
+    GET_NEARBY_BUSINESSES_SUCCESS,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -19,6 +23,9 @@ const initialState = {
 
     myBusinessesIsLoading: false,
     myBusinessList: [],
+
+    nearbyBusinessesIsLoading: false,
+    nearbyBusinesses: [],
 };
 
 
@@ -86,6 +93,25 @@ const businessReducer = (state = initialState, action) => {
                 ...state,
                 myBusinessesIsLoading: false,
                 myBusinessList: [],
+            }
+
+
+        case GET_NEARBY_BUSINESSES:
+            return {
+                ...state,
+                nearbyBusinessesIsLoading: false
+            }
+        case GET_NEARBY_BUSINESSES_SUCCESS:
+            return {
+                ...state,
+                nearbyBusinessesIsLoading: false,
+                nearbyBusinesses: action.payload,
+            };
+        case GET_NEARBY_BUSINESSES_FAIL:
+            return {
+                ...state,
+                nearbyBusinessesIsLoading: false,
+                nearbyBusinesses: [],
             }
         default:
             return state;

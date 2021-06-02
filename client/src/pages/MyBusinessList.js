@@ -87,7 +87,7 @@ export default function MyBusinessList() {
             <Paper className={classes.paper} elevation={3}>
                 <h2 className={classes.header}>My Businesses</h2>
                 <div className={classes.businessList}>
-                    {businesses.map((business, index) => {
+                    {businesses && businesses.map((business, index) => {
                         return (
                             <Link key={business._id} to={{
                                 pathname: '/view-my-business',

@@ -68,11 +68,14 @@ export const registerBusiness = async (req, res) => {
             selectedTier,
         });
 
-        // Push new business to user's array of businesses
+        // Push new business id to user's array of businesses
         const user = await User.findOneAndUpdate(
             { _id: req.user },
-            { $push: { businesses: newBusiness } },
+            { $push: { businesses: newBusiness._id } },
         );
+
+        // Save new business in business collection
+        newBusiness.save();
 
         res.json({
             business: newBusiness,
@@ -87,7 +90,15 @@ export const registerBusiness = async (req, res) => {
 export const myBusinesses = async (req, res) => {
     try {
         // Find all objecs that follows/fits the User model
-        const businesses = await User.findById(req.user).select('businesses');
+        const user = await User.findById(req.user).select('businesses');
+        
+        console.log(user.businesses)
+
+        const businesses = await Business.find({
+            '_id': { $in: user.businesses}
+        }).select('_id name')
+
+        console.log(businesses)
 
         // Return status 200 (Ok), and .json array of found user object in database to front-end
         res.status(200).json(businesses);
@@ -99,17 +110,29 @@ export const myBusinesses = async (req, res) => {
 export const fetchBusinessDetails = async (req, res) => {
     try {
         // Get id of wanted business
-        const { id } = req.params; 
+        const { id } = req.params;
 
         // Get list of businesses of that user
-        const user = await User.findById(req.user).select('businesses');
-
-        // Find wanted business
-        let selectedBusiness = user.businesses.find(business => business.id === id);
-        console.log(selectedBusiness);
+        const selectedBusiness = await Business.findById(id)
 
         // Return status 200 (Ok), and Business details
         res.status(200).json(selectedBusiness);
+    } catch (error) {
+        res.status(404).json({ msg: error.message });
+    }
+}
+
+export const getNearbyBusinesses = async (req, res) => {
+    try {
+        let businesses = await Business.find({ $or:[{'address.city': "Dieppe"}, {'address.city': "Moncton"}] })
+
+        businesses.forEach(business => {
+            business.selectedTier = undefined;
+            business.createdAt = undefined;
+        })
+
+        // Return status 200 (Ok), and .json array of found user object in database to front-end
+        res.status(200).json(businesses);
     } catch (error) {
         res.status(404).json({ msg: error.message });
     }

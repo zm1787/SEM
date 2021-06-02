@@ -10,6 +10,10 @@ import {
     FETCH_MY_BUSINESSES_FAIL,
     FETCH_MY_BUSINESSES,
     FETCH_MY_BUSINESSES_SUCCESS,
+
+    GET_NEARBY_BUSINESSES,
+    GET_NEARBY_BUSINESSES_FAIL,
+    GET_NEARBY_BUSINESSES_SUCCESS,
 } from "./actionTypes";
 import { returnErrors } from './errorActions';
 import * as api from '../api';
@@ -43,11 +47,27 @@ export const fetchMyBusinesses = () => async (dispatch, getState) => {
     try {
         dispatch({ type: FETCH_MY_BUSINESSES });
         const { data } = await api.fetchMyBusinesses(tokenConfig(getState));
-        dispatch({ type: FETCH_MY_BUSINESSES_SUCCESS, payload: data.businesses });
+        dispatch({ type: FETCH_MY_BUSINESSES_SUCCESS, payload: data });
     } catch (error) {
         if (error.response !== undefined) {
             dispatch(returnErrors(error.response.data, error.response.status, FETCH_MY_BUSINESSES_FAIL));
             dispatch({ type: FETCH_MY_BUSINESSES_FAIL });
+        }
+        else {
+            console.log(error);
+        }
+    }
+}
+
+export const getNearbyBusinesses = () => async (dispatch, getState) => {
+    try {
+        dispatch({ type: GET_NEARBY_BUSINESSES });
+        const { data } = await api.getNearbyBusinesses(tokenConfig(getState));
+        dispatch({ type: GET_NEARBY_BUSINESSES_SUCCESS, payload: data });
+    } catch (error) {
+        if (error.response !== undefined) {
+            dispatch(returnErrors(error.response.data, error.response.status, GET_NEARBY_BUSINESSES_FAIL));
+            dispatch({ type: GET_NEARBY_BUSINESSES_FAIL });
         }
         else {
             console.log(error);

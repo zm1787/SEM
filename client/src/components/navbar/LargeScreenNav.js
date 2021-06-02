@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
 import Controls from '../controls';
+import NotificationMenuButton from './NotificationMenuButton';
 
 // logo imports
 import noSloganDark from '../../images/logo/NoSloganDark.svg'
@@ -44,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     btn: {
         fontSize: '16px',
         textTransform: 'none',
-        margin: '0 4px',
+        margin: 'auto 4px',
         '&:focus': {
             boxShadow: 'none',
             outline: 'none',
@@ -66,9 +67,10 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const buttonList = [
+    { btnText: "Find Specialist", pageName: "find-specialist" },
     { btnText: "Profile", pageName: "profile" },
-    { btnText: "Register a Business", pageName: "registerBusiness" },
-    { btnText: "My Businesses", pageName: "myBusinessList" },
+    { btnText: "Register a Business", pageName: "register-business" },
+    { btnText: "My Businesses", pageName: "my-business-list" },
     { btnText: "Messages", pageName: "chat" },
 ]
 
@@ -98,16 +100,20 @@ export default function LargeScreenNav({ currentTheme }) {
             history.push("/profile");
             return;
         }
-        if (item === "registerBusiness") {
-            history.push("/registerBusiness");
+        if (item === "register-business") {
+            history.push("/register-business");
             return;
         }
-        if (item === "myBusinessList") {
-            history.push("/myBusinessList");
+        if (item === "my-business-list") {
+            history.push("/my-business-list");
             return;
         }
         if (item === "chat") {
             history.push("/chat");
+            return;
+        }
+        if (item === "find-specialist") {
+            history.push("/find-specialist");
             return;
         }
     }
@@ -134,12 +140,15 @@ export default function LargeScreenNav({ currentTheme }) {
                         </div>
                         :
                         <div >
-                            
+
                         </div>
                     }
                     {/* Right Nav */}
                     {auth.isAuthenticated ?
-                        <div >
+                        <div className={classes.buttonsFlexContainer}>
+                            <div className={classes.notificationMenuButton}>
+                                <NotificationMenuButton />
+                            </div>
                             <Button className={classes.btn} variant="outlined" color="primary" onClick={() => onMenuItemClick("logout")}>Log Out</Button>
                         </div>
                         :

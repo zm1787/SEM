@@ -18,6 +18,7 @@ import ProfilePage from './pages/Profile';
 import RegisterBusinessPage from './pages/RegisterBusiness';
 import MyBusinessList from './pages/MyBusinessList';
 import ViewMyBusinessPage from './pages/ViewMyBusiness';
+import FindSpecialist from './pages/FindSpecialist';
 
 import ChatDashBoard from './components/chat/ChatDashBoard';
 
@@ -142,14 +143,16 @@ const App = () => {
                     </Route>
                     {/* ####################################### */}
 
-                    <Route exact path="/registerBusiness" >
+                    <Route exact path="/register-business" >
                         <RegisterBusinessPage />
                     </Route>
-                    <Route exact path="/myBusinessList" >
+                    <Route exact path="/my-business-list" >
                         <MyBusinessList />
                     </Route>
 
                     <Route exact path="/view-my-business" component={ViewMyBusinessPage} />
+                    
+                    <Route exact path="/find-specialist" component={FindSpecialist} />
 
                     <Route exact path="/chat" component={ChatDashBoard} />
 

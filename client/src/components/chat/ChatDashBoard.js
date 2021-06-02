@@ -9,7 +9,6 @@ import { addNotification, removeNotification } from '../../actions/notificationA
 
 import Contact from './Contact';
 import ActiveChat from './ActiveChat';
-import NotificationMenuButton from './NotificationMenuButton';
 
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { makeStyles, Typography, Badge, } from '@material-ui/core';
@@ -180,7 +179,6 @@ export default function ChatDashBoard({ location }) {
             <div className="contact-list-child-grid">
                 <div className="contact-list-header">
                     <Typography variant="h4">Contacts</Typography>
-                    <NotificationMenuButton />
                 </div>
                 <div className="contact-list">
                     {!arrayIsEmpty(state.listOfContacts) ?

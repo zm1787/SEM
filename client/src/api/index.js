@@ -19,6 +19,7 @@ export const deleteUser         = (id)                => axios.delete(`${userUrl
 // Business
 export const registerBusiness = (newBusiness, config) => axios.post(`${businessUrl}/register`, newBusiness, config); 
 export const fetchMyBusinesses = (config) => axios.get(`${businessUrl}/myBusinesses`, config); 
+export const getNearbyBusinesses = (config) => axios.get(`${businessUrl}/getNearbyBusinesses`, config); 
 export const fetchBusinessDetails = (businessID, config) => axios.get(`${businessUrl}/fetchBusinessDetails/${businessID}`, config); 
 
 // CONTACT

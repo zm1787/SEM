@@ -6,8 +6,28 @@ import { addNotification, removeNotification } from '../../actions/notificationA
 
 
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { makeStyles, Typography, Badge, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { makeStyles, Typography, Badge, IconButton, Menu, MenuItem, } from '@material-ui/core';
+import { Palette } from '@material-ui/icons';
 
+
+const useStyles = makeStyles(theme => ({
+    notificationMenuButton: {
+        marginRight: '30px',
+        '& .MuiIconButton-root': {
+            width: '50px',
+            height: '50px',
+            backgroundColor: theme.palette.components.iconButton.background,
+            '&:hover': {
+                backgroundColor: theme.palette.components.iconButton.backgroundHover,
+            },
+        },
+        '& .notification-icon': {
+            '& .MuiBadge-badge': {
+                backgroundColor: 'red',
+            }
+        }
+    },
+}))
 
 let socket;
 
@@ -29,9 +49,10 @@ const NotificationMenuButton = () => {
 
     const notifications = useSelector((store) => store.notifications);
 
+    const classes = useStyles();
 
     return (
-        <div>
+        <div className={classes.notificationMenuButton}>
             <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-profile"
@@ -45,10 +66,10 @@ const NotificationMenuButton = () => {
                             vertical: 'top',
                             horizontal: 'right',
                         }}>
-                        <NotificationsIcon fontSize="large" />
+                        <NotificationsIcon />
                     </Badge>
                     :
-                    <NotificationsIcon fontSize="large" />
+                    <NotificationsIcon />
                 }
             </IconButton>
             <Menu

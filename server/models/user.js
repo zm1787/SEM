@@ -53,7 +53,7 @@ const userSchema = mongoose.Schema({
 
     profession: String,
 
-    businesses: [Business],
+    businesses: [mongoose.Schema.Types.ObjectId],
 
     notifications: [Notification],
 

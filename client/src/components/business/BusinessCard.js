@@ -19,7 +19,7 @@ const useStyles = makeStyles( theme => ({
 }))
 
 
-export default function BusinessCard(props) {
+export default function BusinessCard({ business }) {
 
     const classes = useStyles();
 
@@ -27,9 +27,9 @@ export default function BusinessCard(props) {
         <div>
             <Card className={classes.root}>
                 <div className={classes.cardInfo}>
-                    <Typography className={classes.cardText} variant="h5">{props.user.firstName} {props.user.lastName}</Typography>
-                    <Typography className={classes.cardText} variant="h5">{props.user.userType}</Typography>
-                    <Typography className={classes.cardText} variant="h5">{props.user.profession}</Typography>
+                    <Typography className={classes.cardText} variant="h5">{business.name}</Typography>
+                    <Typography className={classes.cardText} variant="h5">{business.address.full}</Typography>
+                    <Typography className={classes.cardText} variant="h5">{business.phoneNumber}</Typography>
                 </div>
             </Card>
         </div >
