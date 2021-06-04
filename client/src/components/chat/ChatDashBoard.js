@@ -133,46 +133,6 @@ export default function ChatDashBoard({ location }) {
         activeChatContent: TEST_LIST_OF_CHATS["Alex"],
     });
 
-    // Functions
-    // const onCreateChat = () => {
-    //     const newRequest = {
-    //         recipient_id: "60ad382d447e294a7c207ece",
-    //     };
-    //     console.log("Sending request to:", newRequest.recipient_id)
-    //     dispatch(sendContactRequest(newRequest));
-    // }
-
-
-
-    // ###############################################################################
-    // TESTING NOTIFICATIONS REMOVE LATER
-    const sockets = useSelector((store) => store.sockets);
-    const auth = useSelector((store) => store.auth);
-
-    const onSendFriendRequest = () => {
-        const user = auth.user;
-        const newRequest = {
-            _id: "1111",
-            type: "Friend Requestasdf",
-            senderName: `${user.firstName} ${user.lastName}`,
-            receiver_id: "60ad382d447e294a7c207ece",
-            sender_id: user._id,
-        };
-        
-        sockets.notifications.socket.emit('send-friend-request', newRequest);
-    }
-    const onRemoveNotificaion = () => {
-        const newRequest = {
-            _id: "1236",
-            type: "Friend Request",
-            recipient_id: "60ad382d447e294a7c207ece",
-            sender_id: "60ad384e447e294a7c207ecf",
-        };
-        dispatch(removeNotification(newRequest._id));
-    }
-    // ###############################################################################
-
-
 
     return (
         <div className="chat-parent-grid">
@@ -190,8 +150,6 @@ export default function ChatDashBoard({ location }) {
                         :
                         <div>
                             <h5>You do not yet have any contacts.</h5>
-                            <button onClick={onSendFriendRequest}>Add Friend!</button>
-                            <button onClick={onRemoveNotificaion}>Remove Friend!</button>
                         </div>
                     }
                 </div>

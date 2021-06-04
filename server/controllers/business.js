@@ -58,7 +58,7 @@ export const registerBusiness = async (req, res) => {
                 ...address,
                 full: `${address.streetAddress}, ${address.city}, ${address.subdivisionCode}, ${address.country}`,
             },
-            owners: [req.user], // Add userID to owners
+            owner: req.user, // Add userID to owners
             phoneNumber,
             serviceType,
             keySearchTerms: [...searchTerms],
@@ -124,12 +124,15 @@ export const fetchBusinessDetails = async (req, res) => {
 
 export const getNearbyBusinesses = async (req, res) => {
     try {
-        let businesses = await Business.find({ $or:[{'address.city': "Dieppe"}, {'address.city': "Moncton"}] })
+        let businesses = await Business.find({ $or:[{'address.city': "Dieppe"}, {'address.city': "Moncton"}] }).lean()
 
-        businesses.forEach(business => {
+        var user;
+        for (const business of businesses) {
+            user = await User.findById(business.owner).select("_id firstName lastName");
+            business.owner = user;
             business.selectedTier = undefined;
             business.createdAt = undefined;
-        })
+        }
 
         // Return status 200 (Ok), and .json array of found user object in database to front-end
         res.status(200).json(businesses);

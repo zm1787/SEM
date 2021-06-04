@@ -9,14 +9,22 @@ export const onConnect = async (socket) => {
     //****************************************************************************************************
     // Initial connection. Add client to list of online users.
     //****************************************************************************************************
-    socket.on('connect_to_notifications', (data) => {
+    socket.on('connection', (data) => {
         const { user_id } = data;
 
         // Add user to list of connected users
-        onlineUsers[user_id] = socket.id
-
+        onlineUsers[user_id] = socket.id;
         console.log("\nNew user connected to notifications:", user_id);
-        console.log("New user socket id:", onlineUsers[user_id], "\n");
+    });
+
+    //****************************************************************************************************
+    // Disconnect socket. Remove client from list of online users.
+    //****************************************************************************************************
+    socket.on('disconnect', () => {
+        const user_id = Object.keys(onlineUsers).find(key => onlineUsers[key] === socket.id);
+
+        // Remove user from list of connected users
+        delete onlineUsers[user_id];
     });
 
     //****************************************************************************************************
@@ -52,6 +60,11 @@ export const onConnect = async (socket) => {
         receiverUser.save();
 
         socket.to(onlineUsers[receiver_id]).emit('new-friend-request-added', data)
+    });
+
+    socket.on('accept-friend-request', async (data) => {
+        const { sender_id, receiver_id, type, senderName } = data;
+
     });
 
     socket.on('join-chat', ({ name, chat_id }, callback) => {

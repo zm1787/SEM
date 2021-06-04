@@ -29,8 +29,6 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-let socket;
-
 const NotificationMenuButton = () => {
     // Notification menu setup
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -50,6 +48,14 @@ const NotificationMenuButton = () => {
     const notifications = useSelector((store) => store.notifications);
 
     const classes = useStyles();
+
+    const onAcceptFriendRequest = () => {
+        console.log("Friend request accepted")
+    }
+
+    const onDeclineFriendRequest = () => {
+        console.log("Friend request declined")
+    }
 
     return (
         <div className={classes.notificationMenuButton}>
@@ -93,10 +99,10 @@ const NotificationMenuButton = () => {
                         switch (item.type) {
                             case "Friend Request":
                                 return (
-                                    <div onClick={() => console.log("Clicked Notification!")}>
+                                    <div key={index}>
                                         <p>{item.type} from {item.senderName}</p>
-                                        <button>Accept</button>
-                                        <button>Decline</button>
+                                        <button onClick={onAcceptFriendRequest}>Accept</button>
+                                        <button onClick={onDeclineFriendRequest}>Decline</button>
                                     </div>
                                 )
                             default:

@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 export const businessSchema = mongoose.Schema({
 
-    owners: [mongoose.Schema.Types.ObjectId], // List of user IDs of people that have all rights to R/W operations on the business info
+    owner: mongoose.Schema.Types.ObjectId, 
     employees: [mongoose.Schema.Types.ObjectId], // List of user IDs of people that have restricted rights to R/W operations
 
     name: {

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUsers } from './actions/userActions';
-import { addSocket } from './actions/socketActions';
+import { connectSocket, disconnectSocket } from './actions/socketActions';
 import { loadUserProfile } from './actions/authActions';
 import { loadNotification } from './actions/notificationActions';
 import { Switch, Route } from 'react-router-dom';
@@ -79,26 +79,19 @@ const App = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        if(auth.user) {
-            dispatch(loadNotification(auth.user.notifications));
-        }
-    }, [dispatch, auth.user]);
-
-    useEffect(() => {
         dispatch(getUsers());
     }, [dispatch]);
 
-    // Connect socket
+    // Connect socket and load notifications
     useEffect(() => {
-        if(auth.user) {
+        if (auth.user) {
             const user_id = auth.user._id
-            
-            dispatch(addSocket("notifications", user_id));
+            dispatch(loadNotification(auth.user.notifications));
 
-            return () => {
-                // socket.emit('disconnect-chat', { user_id });
-                // socket.off();
-            };
+            dispatch(connectSocket(user_id));
+            // return () => {
+            //     dispatch(disconnectSocket(user_id));
+            // };
         }
     }, [auth.user, dispatch])
 
@@ -151,7 +144,7 @@ const App = () => {
                     </Route>
 
                     <Route exact path="/view-my-business" component={ViewMyBusinessPage} />
-                    
+
                     <Route exact path="/find-specialist" component={FindSpecialist} />
 
                     <Route exact path="/chat" component={ChatDashBoard} />

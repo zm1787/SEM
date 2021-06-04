@@ -1,5 +1,7 @@
 import React from 'react'
 import { Card, makeStyles, Typography } from '@material-ui/core';
+import { useSelector } from 'react-redux'
+import io from 'socket.io-client';
 
 
 const useStyles = makeStyles( theme => ({
@@ -21,6 +23,22 @@ const useStyles = makeStyles( theme => ({
 
 export default function BusinessCard({ business }) {
 
+    const auth = useSelector((store) => store.auth)
+    const socket = useSelector((store) => store.socket);
+
+    const onSendFriendRequest = () => {
+        const user = auth.user;
+
+        const newRequest = {
+            type: "Friend Request",
+            senderName: `${user.firstName} ${user.lastName}`,
+            receiver_id: business.owner._id,
+            sender_id: user._id,
+        };
+        
+        socket.emit('send-friend-request', newRequest);
+    }
+
     const classes = useStyles();
 
     return (
@@ -30,6 +48,10 @@ export default function BusinessCard({ business }) {
                     <Typography className={classes.cardText} variant="h5">{business.name}</Typography>
                     <Typography className={classes.cardText} variant="h5">{business.address.full}</Typography>
                     <Typography className={classes.cardText} variant="h5">{business.phoneNumber}</Typography>
+                    <Typography className={classes.cardText} variant="h5">{business.owner.firstName} {business.owner.lastName}</Typography>
+                </div>
+                <div>
+                    <button onClick={onSendFriendRequest}>Message</button>
                 </div>
             </Card>
         </div >

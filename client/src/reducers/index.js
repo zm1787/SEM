@@ -10,7 +10,7 @@ import notificationReducer from './notificationReducer';
 import socketReducer from './socketReducer';
 
 export default combineReducers({ 
-    sockets: socketReducer,
+    socket: socketReducer,
     notifications: notificationReducer,
     contact: contactReducer,
     users: userReducer, 
