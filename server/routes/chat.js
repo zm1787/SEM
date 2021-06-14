@@ -2,12 +2,12 @@ import express from 'express';
 import auth from '../middleware/auth.js';
 
 import { 
-    fetchContacts,
-} from "../controllers/contact.js";
+    fetchChat,
+} from "../controllers/chat.js";
 
 const router = express.Router();
 
-router.get('/fetchContacts', auth,  fetchContacts);
+router.get('/fetchChat', auth, fetchChat);
 
 
 export default router;

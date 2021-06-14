@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, makeStyles, Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux'
+import { FRIEND_REQUEST, MESSAGE } from '../../constants/AppConstants';
 import io from 'socket.io-client';
 
 
@@ -30,7 +31,7 @@ export default function BusinessCard({ business }) {
         const user = auth.user;
 
         const newRequest = {
-            type: "Friend Request",
+            type: FRIEND_REQUEST,
             senderName: `${user.firstName} ${user.lastName}`,
             receiver_id: business.owner._id,
             sender_id: user._id,

@@ -7,7 +7,7 @@ const chatSchema = mongoose.Schema({
 
     receiverHasRead: {
         type: Boolean,
-        default: false,
+        default: true,
     },
 
     createdAt: {

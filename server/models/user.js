@@ -58,15 +58,16 @@ const userSchema = mongoose.Schema({
     notifications: [Notification],
 
     // List of contacts and id of chat for that contact
-    contacts: [{
-        contact_id: {
+    friends: [{
+        friend_id: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
         },
-        chat: {
-            type: mongoose.Schema.Types.ObjectId,
+        name: {
+            type: String,
             required: true,
         },
+        chat_id: mongoose.Schema.Types.ObjectId,
     }],
 
     contactRequestsReceived: [{

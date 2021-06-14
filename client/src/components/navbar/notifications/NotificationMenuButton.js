@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-
-import io from 'socket.io-client';
-import { addNotification, removeNotification } from '../../actions/notificationActions';
-
+import { FRIEND_REQUEST, MESSAGE } from '../../../constants/AppConstants';
 
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { makeStyles, Typography, Badge, IconButton, Menu, MenuItem, } from '@material-ui/core';
 import { Palette } from '@material-ui/icons';
+
+import io from 'socket.io-client';
+import FriendRequest from './FriendRequest';
 
 
 const useStyles = makeStyles(theme => ({
@@ -30,6 +30,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const NotificationMenuButton = () => {
+    const classes = useStyles();
+
     // Notification menu setup
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -40,22 +42,7 @@ const NotificationMenuButton = () => {
         setAnchorEl(null);
     };
 
-    const ENDPOINT = 'localhost:5000';
-
-    const auth = useSelector((store) => store.auth);
-    const dispatch = useDispatch();
-
     const notifications = useSelector((store) => store.notifications);
-
-    const classes = useStyles();
-
-    const onAcceptFriendRequest = () => {
-        console.log("Friend request accepted")
-    }
-
-    const onDeclineFriendRequest = () => {
-        console.log("Friend request declined")
-    }
 
     return (
         <div className={classes.notificationMenuButton}>
@@ -97,16 +84,22 @@ const NotificationMenuButton = () => {
                 <div >
                     {notifications.length !== 0 ? notifications.map((item, index) => {
                         switch (item.type) {
-                            case "Friend Request":
+                            case FRIEND_REQUEST:
                                 return (
                                     <div key={index}>
-                                        <p>{item.type} from {item.senderName}</p>
-                                        <button onClick={onAcceptFriendRequest}>Accept</button>
-                                        <button onClick={onDeclineFriendRequest}>Decline</button>
+                                        <FriendRequest item={item} />
                                     </div>
                                 )
+
+                                case MESSAGE:
+                                    return (
+                                        <div key={index}>
+                                            <p>{item.message}</p>
+                                        </div>
+                                    )
+
                             default:
-                                return <p>Unknown notification!</p>;
+                                return <div key={index}><p>Unknown notification type!</p></div>;
                         }
 
 

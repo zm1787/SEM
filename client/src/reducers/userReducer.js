@@ -1,4 +1,9 @@
-import { FETCH_ALL, CREATE, UPDATE, DELETE } from '../actions/actionTypes';
+import { 
+    FETCH_ALL, 
+    CREATE, 
+    UPDATE, 
+    DELETE,
+} from '../actions/actionTypes';
 
 
 const userReducer = (users = [], action) => {  

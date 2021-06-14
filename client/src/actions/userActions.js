@@ -1,4 +1,9 @@
-import { FETCH_ALL, CREATE, UPDATE, DELETE } from './actionTypes';
+import { 
+    FETCH_ALL, 
+    CREATE, 
+    UPDATE, 
+    DELETE, 
+} from './actionTypes';
 import * as api from '../api';
 
 // Action Creators
@@ -51,6 +56,7 @@ export const deleteUser = (id) => async (dispatch) => {
         console.log(error);
     }
 }
+
 
 
 

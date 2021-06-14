@@ -100,11 +100,11 @@ export default function LargeScreenNav({ currentTheme }) {
         if (item === "profile") {
             history.push("/profile");
         }
-        if (item === "registerBusiness") {
-            history.push("/registerBusiness");
+        if (item === "register-business") {
+            history.push("/register-business");
         }
-        if (item === "myBusinessList") {
-            history.push("/myBusinessList");
+        if (item === "my-business-list") {
+            history.push("/my-business-list");
         }
         if (item === "chat") {
             history.push("/chat");
@@ -159,10 +159,10 @@ export default function LargeScreenNav({ currentTheme }) {
                                     <MenuItem onClick={() => onMenuItemClick("profile")}>
                                         <AccountCircle className={classes.icon} fontSize="large" /> My Profile
                                     </MenuItem>
-                                    <MenuItem onClick={() => onMenuItemClick("myBusinessList")}>
+                                    <MenuItem onClick={() => onMenuItemClick("my-business-list")}>
                                         <BusinessIcon className={classes.icon} fontSize="large" /> My Businesses
                                     </MenuItem>
-                                    <MenuItem onClick={() => onMenuItemClick("registerBusiness")}>
+                                    <MenuItem onClick={() => onMenuItemClick("register-business")}>
                                         <BusinessIcon className={classes.icon} fontSize="large" /> Register a Business
                                     </MenuItem>
                                     <MenuItem onClick={() => onMenuItemClick("chat")}>

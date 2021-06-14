@@ -23,4 +23,18 @@ export const getNearbyBusinesses = (config) => axios.get(`${businessUrl}/getNear
 export const fetchBusinessDetails = (businessID, config) => axios.get(`${businessUrl}/fetchBusinessDetails/${businessID}`, config); 
 
 // CONTACT
-export const sendContactRequest = (newRequest, config) => axios.post(`${contactUrl}/sendContactRequest`, newRequest, config); 
+export const fetchContacts = (config) => axios.get(`${contactUrl}/fetchContacts`, config); 
+
+// CHAT
+export const fetchChat = (friend_id, config) => {
+    config.params = { friend_id }
+    return axios.get(`${chatUrl}/fetchChat`,  
+        {
+            params: {
+                friendId: friend_id
+            },
+            headers: config.headers,
+        }, 
+    );
+
+}

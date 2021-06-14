@@ -1,5 +1,8 @@
 import React, {useEffect} from 'react'
 import profilePic from '../../images/Profile Pic1.png';
+import { fetchChat } from '../../actions/activeChatActions';
+import { useSelector, useDispatch } from 'react-redux';
+
 
 import { makeStyles, Typography } from '@material-ui/core';
 
@@ -54,19 +57,21 @@ const TEST_LIST_OF_CHATS = {
     ],
 }
 
-const Contact = ({ contact, setSelectedContactInfo, selectedContactInfo }) => {
+const Contact = ({ friend, activeChat, setActiveChat, auth }) => {
     const classes = useStyles();
-
-    // useEffect(() => {
-    //    contact.m
-    // }, [contact])
+    const dispatch = useDispatch();
 
     const onChatSelected = () => { 
-        setSelectedContactInfo({
-            ...selectedContactInfo,
-            activeChat: TEST_LIST_OF_CHATS[contact.name],
-            name: contact.name,
-            lastMessage: contact.lastMessage,
+        // FETCH chat content 
+        dispatch(fetchChat(friend.friend_id));
+        console.log(friend.name)
+        setActiveChat({
+            ...activeChat,
+            friendName: friend.name,
+            friend_id: friend.friend_id,
+            createNewChat: friend.chat_id && friend.chat_id.lenght !== 0 ? false : true,
+            lastMessage: friend.chat ? friend.chat.message[0] : "",
+            activeChatContent: friend.chat ? friend.chat : "",
         })
     }
 
@@ -76,8 +81,8 @@ const Contact = ({ contact, setSelectedContactInfo, selectedContactInfo }) => {
                 <img className="img" src={profilePic} alt="" />
             </div>
             <div className="contact-info">
-                <Typography>{contact.name}</Typography>
-                <Typography /*className="last-message-preview"*/ className={`${classes.secondaryText} last-message-preview`} >{contact.lastMessage}</Typography>
+                <Typography>{friend.name}</Typography>
+                <Typography /*className="last-message-preview"*/ className={`${classes.secondaryText} last-message-preview`} >{friend.chat ? friend.chat : ""}</Typography>
             </div>
         </div>
     )

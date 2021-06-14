@@ -1,33 +1,42 @@
 import {
-	SEND_CONTACT_REQUEST,
-	SEND_CONTACT_REQUEST_FAIL,
-	SEND_CONTACT_REQUEST_SUCCESS,
+    FETCH_CONTACTS,
+    FETCH_CONTACTS_FAIL,
+    FETCH_CONTACTS_SUCCESS,
 
 } from "../actions/actionTypes";
 
-const initialState = {
-    // TODO
-};
 
+const initialState = {
+    contacts: [],
+    errorMessage: "",
+    isLoading: false,
+}
 
 const contactReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SEND_CONTACT_REQUEST:
+        case FETCH_CONTACTS:
             return {
                 // TODO
                 ...state,
+                isLoading: true,
             };
-        case SEND_CONTACT_REQUEST_SUCCESS:
+
+        case FETCH_CONTACTS_SUCCESS:
             return {
-                // TODO
                 ...state,
+                errorMessage: "",
+                contacts: action.payload,
+                isLoading: false,
+            };;
+
+        case FETCH_CONTACTS_FAIL:
+            return {
+                ...state,
+                errorMessage: action.payload,
+                contacts: [],
+                isLoading: false,
             };
-        case SEND_CONTACT_REQUEST_FAIL:
-            return {
-                // TODO
-                ...state,
-            }
-    
+
         default:
             return state;
     }

@@ -6,8 +6,13 @@ export const messageSchema = mongoose.Schema({
         required: true
     },
 
-    sender: {
+    sender_id: {
         type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
+
+    senderName: {
+        type: String,
         required: true
     },
 

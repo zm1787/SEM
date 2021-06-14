@@ -7,7 +7,8 @@ import {
     LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
     REGISTER_FAIL,
-    LOGOUT_USER
+    LOGOUT_USER,
+    ADD_FRIEND,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -58,6 +59,14 @@ const authReducer = (state = initialState, action) => {
                 isAuthenticated: false,
                 isLoading: false
             }
+            case ADD_FRIEND:
+                return {
+                    ...state,
+                    user: {
+                        ...state.user,
+                        friends: [...state.user.friends, action.payload]
+                    }
+                }
         default:
             return state;
     }

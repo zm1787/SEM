@@ -25,7 +25,7 @@ export const loadUser = async (req, res) => {
 // @access  Auth only
 export const loadProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user).select('email firstName lastName location userType notifications');
+        const user = await User.findById(req.user).select('email firstName lastName location userType notifications friends');
         if (!user) throw Error('User does not exist');
         res.json(user);
     } catch (error) {

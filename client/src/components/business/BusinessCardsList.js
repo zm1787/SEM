@@ -16,21 +16,18 @@ export default function BusinessCardsList() {
     const businessStore = useSelector((store) => store.business);
     const auth = useSelector((store) => store.auth);
 
-    var businessList
-    if (businessStore.nearbyBusinesses.length !== 0) {
-        businessList = businessStore.nearbyBusinesses
-    }
-
     return (
         <div className={classes.root}>
-            {businessList && businessList.map((business) => {
-                return (
-                    business.owner._id !== auth.user._id ?
-                        <BusinessCard key={business._id} business={business} />
-                        :
-                        null
-                )
-            })}
+            { businessStore.nearbyBusinesses &&
+                businessStore.nearbyBusinesses.map((business) => {
+                    return (
+                        business.owner._id !== auth.user._id ?
+                            <BusinessCard key={business._id} business={business} />
+                            :
+                            null
+                    )
+                })
+            }
         </div>
     )
 }

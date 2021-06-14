@@ -2,6 +2,8 @@ import {
     ADD_NOTIFICATION,
     LOAD_NOTIFICATION,
     REMOVE_NOTIFICATION,
+
+    CLEAR,
 } from "./actionTypes";
 
 export const addNotification = (newNotification) => async (dispatch) => {
@@ -14,6 +16,7 @@ export const addNotification = (newNotification) => async (dispatch) => {
 
 export const loadNotification = (notifications) => async (dispatch) => {
     try {
+        // Notifications are part of auth.user, so it is already 
         dispatch({ type: LOAD_NOTIFICATION, payload: notifications });
     } catch (error) {
         console.log(error);
@@ -26,4 +29,8 @@ export const removeNotification = (notification_id) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
+}
+
+export const clearNotifications = () => async (dispatch) => {
+    dispatch({ type: CLEAR });
 }

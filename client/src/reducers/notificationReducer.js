@@ -2,6 +2,8 @@ import {
     ADD_NOTIFICATION,
     LOAD_NOTIFICATION,
     REMOVE_NOTIFICATION,
+
+    CLEAR,
 } from "../actions/actionTypes";
 
 
@@ -21,6 +23,9 @@ const notificationReducer = (notifications = [], action) => {
                 return notifications;
             }
             return notifications.filter((notification) => notification._id !== action.payload);
+
+        case CLEAR:
+            return [];
 
         default:
             return notifications;

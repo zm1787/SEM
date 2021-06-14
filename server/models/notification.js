@@ -21,6 +21,11 @@ export const notificationSchema = mongoose.Schema({
         required: true
     },
 
+    receiverHasRead: {
+        type: Boolean,
+        default: false,
+    },
+
     createdAt: {
         type: Date,
         default: new Date()

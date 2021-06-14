@@ -1,6 +1,6 @@
 import User from '../models/user.js';
 
-export const sendContactRequest = async (req, res) => {
+export const fetchContacts = async (req, res) => {
     try {
         // Get id of user to send request
         const {

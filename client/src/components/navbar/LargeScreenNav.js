@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
 import Controls from '../controls';
-import NotificationMenuButton from './NotificationMenuButton';
+import NotificationMenuButton from './notifications/NotificationMenuButton';
 
 // logo imports
 import noSloganDark from '../../images/logo/NoSloganDark.svg'

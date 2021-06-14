@@ -1,25 +1,21 @@
 import {
-	SEND_CONTACT_REQUEST,
-	SEND_CONTACT_REQUEST_FAIL,
-	SEND_CONTACT_REQUEST_SUCCESS,
+    FETCH_CONTACTS,
+    FETCH_CONTACTS_FAIL,
+    FETCH_CONTACTS_SUCCESS,
 
 } from "./actionTypes";
 import * as api from '../api';
 import { returnErrors } from './errorActions';
     
-    
 
-export const sendContactRequest = (newRequest) => async (dispatch, getState) => {
-    // Request body
-    const body = JSON.stringify(newRequest)
-
+export const fetchContacts = (newRequest) => async (dispatch, getState) => {
     try {
-        dispatch({ type: SEND_CONTACT_REQUEST });
-        const { data } = await api.sendContactRequest(body, tokenConfig(getState));
-        dispatch({ type: SEND_CONTACT_REQUEST_SUCCESS, payload: data });
+        dispatch({ type: FETCH_CONTACTS });
+        const { data } = await api.fetchContacts(tokenConfig(getState));
+        dispatch({ type: FETCH_CONTACTS_SUCCESS, payload: data });
     } catch (error) {
-        dispatch(returnErrors(error.response.data, error.response.status, SEND_CONTACT_REQUEST_FAIL));
-        dispatch({ type: SEND_CONTACT_REQUEST_FAIL });
+        dispatch(returnErrors(error.response.data, error.response.status, FETCH_CONTACTS_FAIL));
+        dispatch({ type: FETCH_CONTACTS_FAIL, payload: error.response.data });
     }
 }
 

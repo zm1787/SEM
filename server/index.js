@@ -2,14 +2,14 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import * as socketio from 'socket.io';
 import { createServer } from 'http';
 
 import contactRoutes from './routes/contact.js';
 import userRoutes from './routes/user.js';
 import businessRoutes from './routes/business.js';
+import chatRoutes from './routes/chat.js';
 
-import { onConnect } from './socket/connection.js';
+import { startSocketServer } from './socket/connection.js';
 
 
 const app = express();
@@ -25,6 +25,7 @@ app.use(
 
 app.use('/contact', contactRoutes);
 app.use('/user', userRoutes); // Every route inside of userRoutes will start with '/users'
+app.use('/chat', chatRoutes); // Every route inside of userRoutes will start with '/users'
 app.use('/business', businessRoutes); // Every route inside of businessRoutes will start with '/business'
 
 const server = createServer(app);
@@ -39,5 +40,4 @@ mongoose.set('useFindAndModify', false); // Makes sure we dont get any error mes
 
 
 // Chat io connections
-const io = new socketio.Server(server, {cors: { origin: "*" }});
-io.on('connection', onConnect);
+startSocketServer(server);

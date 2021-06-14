@@ -7,11 +7,16 @@ import {
     LOGOUT_USER,
     LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
-    REGISTER_FAIL
+    REGISTER_FAIL,
+    ADD_FRIEND,
+    CLEAR,
 } from "./actionTypes";
 import { returnErrors } from './errorActions';
 import * as api from '../api';
-
+import { clearActiveChat } from './activeChatActions'
+import { clearBusiness } from './businessActions'
+import { clearSocket } from './socketActions'
+import { clearNotifications } from './notificationActions'
 import history from '../history';
 
 
@@ -34,7 +39,6 @@ export const loadUser = () => async (dispatch, getState) => {
     }
 }
 
-// auth only: Gets firstName, lastName, email, userType and location
 export const loadUserProfile = () => async (dispatch, getState) => {
     // User loading 
     dispatch({ type: USER_LOADING });
@@ -80,6 +84,14 @@ export const registerUser = (newUser) => async (dispatch) => {
     }
 }
 
+export const addFriend = (newFriend) => async (dispatch) => {
+    try {
+        dispatch({ type: ADD_FRIEND, payload: newFriend });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 // Login User
 export const loginUser = ({ email, password }) => async (dispatch) => {
     // Headers
@@ -108,12 +120,15 @@ export const loginUser = ({ email, password }) => async (dispatch) => {
 }
 
 // Logout User
-export const logoutUser = () => {
+export const logoutUser = () => async (dispatch) => {
+    dispatch(clearActiveChat());
+    dispatch(clearBusiness());
+    dispatch(clearSocket());
+    dispatch(clearNotifications());
+    dispatch({ type: LOGOUT_USER });
     history.push("/");
-    return {
-        type: LOGOUT_USER
-    };
 }
+
 
 
 

@@ -14,6 +14,8 @@ import {
     GET_NEARBY_BUSINESSES,
     GET_NEARBY_BUSINESSES_FAIL,
     GET_NEARBY_BUSINESSES_SUCCESS,
+
+    CLEAR,
 } from "./actionTypes";
 import { returnErrors } from './errorActions';
 import * as api from '../api';
@@ -94,7 +96,9 @@ export const fetchBusiness = (businessID) => async (dispatch, getState) => {
     }
 }
 
-
+export const clearBusiness = () => async (dispatch) => {
+    dispatch({ type: CLEAR });
+}
 
 // Setup config/headers with the token
 export const tokenConfig = getState => {

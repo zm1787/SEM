@@ -1,5 +1,9 @@
 export const FIELD_VARIANT = "outlined";
 
+// Notifications Types
+export const FRIEND_REQUEST = "Friend request";
+export const MESSAGE = "Message";
+
 
 // Places
 export const COUNTRIES = [

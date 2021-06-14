@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import ChatBubble from './ChatBubble';
 
-const ActiveChat = ({ chat }) => {
+
+const ActiveChat = ({messages}) => {
+
     return (
         <div>
-            {chat && chat.map((messageInfo, index) => {
+            {messages && messages.map((messageInfo, index) => {
                 return (
                     <ChatBubble key={index} messageInfo={messageInfo} />
                 )

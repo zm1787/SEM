@@ -1,6 +1,8 @@
 import {
     CONNECT_SOCKET,
     DISCONNECT_SOCKET,
+
+    CLEAR,
 } from "../actions/actionTypes";
 
 const initialState = {}
@@ -13,6 +15,9 @@ const socketReducer = (socket = initialState, action) => {
         
         case DISCONNECT_SOCKET:
             return {};
+
+        case CLEAR:
+            return initialState;
 
         default:
             return socket;

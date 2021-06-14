@@ -15,6 +15,8 @@ import {
     GET_NEARBY_BUSINESSES,
     GET_NEARBY_BUSINESSES_FAIL,
     GET_NEARBY_BUSINESSES_SUCCESS,
+
+    CLEAR,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -113,6 +115,10 @@ const businessReducer = (state = initialState, action) => {
                 nearbyBusinessesIsLoading: false,
                 nearbyBusinesses: [],
             }
+
+        case CLEAR:
+            return initialState;
+
         default:
             return state;
     }

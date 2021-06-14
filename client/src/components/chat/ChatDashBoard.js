@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import queryString from 'query-string';
 import io from 'socket.io-client';
 import { useDispatch, useSelector } from 'react-redux';
-
-
-import { sendContactRequest } from '../../actions/contactActions';
-import { addNotification, removeNotification } from '../../actions/notificationActions';
+import { Link } from 'react-router-dom';
 
 import Contact from './Contact';
 import ActiveChat from './ActiveChat';
 
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import { makeStyles, Typography, Badge, } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 
 const TEST_CONTACTS = [
     {
@@ -99,10 +94,6 @@ const TEST_LIST_OF_CHATS = {
     ],
 }
 
-let TEST_LOADED_CHAT = []
-
-
-let socket;
 
 const useStyles = makeStyles(theme => ({
 
@@ -126,13 +117,37 @@ export default function ChatDashBoard({ location }) {
     const ENDPOINT = 'localhost:5000';
 
     // State
-    const [state, setState] = useState({
-        listOfContacts: [],
-
+    const [activeChat, setActiveChat] = useState({
         activeChatName: "",
+        friendName: "",
+        friend_id: "",
+        createNewChat: false,
         activeChatContent: TEST_LIST_OF_CHATS["Alex"],
     });
 
+
+    // send message setup
+    const [message, setMessage] = useState("")
+    const auth = useSelector((store) => store.auth)
+    const socket = useSelector((store) => store.socket)
+    const storeActiveChat = useSelector((store) => store.activeChat)
+
+
+    const sendMessage = (e) => {
+        e.preventDefault();
+        const user = auth.user;
+
+        const data = {
+            message: message,
+            createNewChat: activeChat.createNewChat,
+            senderName: `${user.firstName} ${user.lastName}`,
+            sender_id: user._id,
+            receiver_id: activeChat.friend_id,
+        };
+
+        socket.emit('send-message', data);
+        setMessage("");
+    }
 
     return (
         <div className="chat-parent-grid">
@@ -141,33 +156,40 @@ export default function ChatDashBoard({ location }) {
                     <Typography variant="h4">Contacts</Typography>
                 </div>
                 <div className="contact-list">
-                    {!arrayIsEmpty(state.listOfContacts) ?
-                        state.listOfContacts.map((contact, index) => {
+                    {auth.user ?
+                        auth.user.friends.map((friend, index) => {
                             return (
-                                <Contact key={index} contact={contact} setSelectedContactInfo={setState} selectedContactInfo={state} />
+                                <Contact key={index} friend={friend} activeChat={activeChat} setActiveChat={setActiveChat} auth={auth} />
                             )
                         })
                         :
                         <div>
-                            <h5>You do not yet have any contacts.</h5>
+                            <h5>Oops! Looks like you do not yet have any contacts.</h5>
+                            <Link to="/find-specialist" className={classes.logoImg}>
+                                <p>Find a specialist</p>
+                            </Link>
                         </div>
                     }
                 </div>
             </div>
             <div className="current-chat-grid">
                 <div className="current-chat-header">
-                    <Typography variant="h5">Chatting with {state.selectedChatName}</Typography>
+                    <Typography variant="h5">Chatting with {activeChat.friendName}</Typography>
                 </div>
                 <div className="current-chat-display">
-                    {!arrayIsEmpty(state.activeChatContent) ?
-                        <ActiveChat chat={state.activeChatContent} />
+                    {!arrayIsEmpty(storeActiveChat.messages) ?
+                        <ActiveChat messages={storeActiveChat.messages} />
                         :
                         <h4>This chat is empty. Send a Message to start chatting!</h4>
                     }
                 </div>
-                <form className="current-chat-form">
-                    <input className="message-input" type="text" />
-                    <button className="send-btn">Send</button>
+                <form className="current-chat-form" onSubmit={e => sendMessage(e)}>
+                    <input
+                        className="message-input"
+                        type="text"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)} />
+                    <button className="send-btn" type="submit">Send</button>
                 </form>
             </div>
         </div>
