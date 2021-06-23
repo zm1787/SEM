@@ -4,7 +4,6 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { createServer } from 'http';
 
-import contactRoutes from './routes/contact.js';
 import userRoutes from './routes/user.js';
 import businessRoutes from './routes/business.js';
 import chatRoutes from './routes/chat.js';
@@ -23,10 +22,9 @@ app.use(
     })
 );
 
-app.use('/contact', contactRoutes);
-app.use('/user', userRoutes); // Every route inside of userRoutes will start with '/users'
-app.use('/chat', chatRoutes); // Every route inside of userRoutes will start with '/users'
-app.use('/business', businessRoutes); // Every route inside of businessRoutes will start with '/business'
+app.use('/user', userRoutes); 
+app.use('/chat', chatRoutes); 
+app.use('/business', businessRoutes);
 
 const server = createServer(app);
 

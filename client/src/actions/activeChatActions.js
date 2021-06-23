@@ -9,6 +9,7 @@ import {
 } from "./actionTypes";
 import { returnErrors } from './errorActions';
 import * as api from '../api';
+import tokenConfig from './tokenConfig';
 
 
 export const addNewMessage = (newMessage) => async (dispatch) => {
@@ -40,22 +41,3 @@ export const clearActiveChat = () => async (dispatch) => {
     dispatch({ type: CLEAR });
 }
 
-// Setup config/headers with the token
-export const tokenConfig = getState => {
-    // Get token from localStorage
-    const token = getState().auth.token;
-
-    // Headers
-    const config = {
-        headers: {
-            "Content-type": "application/json"
-        }
-    }
-
-    // If token, add to headers
-    if (token) {
-        config.headers['x-auth-token'] = token;
-    }
-
-    return config;
-}

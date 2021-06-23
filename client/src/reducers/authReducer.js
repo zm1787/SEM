@@ -25,6 +25,7 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 isLoading: true
             };
+
         case USER_LOADED:
             return {
                 ...state,
@@ -37,6 +38,7 @@ const authReducer = (state = initialState, action) => {
                     ...action.payload,
                 },*/
             };
+
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
             localStorage.setItem('token', action.payload.token); // Set token in local storage
@@ -46,7 +48,8 @@ const authReducer = (state = initialState, action) => {
                 isAuthenticated: true,
                 isLoading: false,
             };
-        case AUTH_ERROR: 
+
+        case AUTH_ERROR:
         case LOGIN_FAIL:
         case LOGOUT_USER:
         case LOGOUT_SUCCESS:
@@ -59,14 +62,16 @@ const authReducer = (state = initialState, action) => {
                 isAuthenticated: false,
                 isLoading: false
             }
-            case ADD_FRIEND:
-                return {
-                    ...state,
-                    user: {
-                        ...state.user,
-                        friends: [...state.user.friends, action.payload]
-                    }
+
+        case ADD_FRIEND:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    friends: [...state.user.friends, action.payload]
                 }
+            }
+            
         default:
             return state;
     }

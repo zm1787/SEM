@@ -61,7 +61,8 @@ $border-color: #00aeef;
 
         .current-chat-header {
             grid-row-start: 1;
-
+            text-align: center;
+            padding: 5px;
             //background-color: brown;
         }
 
@@ -74,12 +75,21 @@ $border-color: #00aeef;
 
         .current-chat-form {
             display: flex;
-            padding: 15px;
+            padding: 15px 0;
             grid-row-start: 3;
             border-top: 2px solid $border-color;
             .message-input {
+                margin-left: 15px;
                 flex-grow: 1;
+                border-radius: 16px;
+                background-color: #2d3a49;
+                padding: 6px 10px 7px 10px; 
             }
+            .send-btn {
+                margin: 0 4px;
+                padding: 6px 5px 6px 7px;
+            }
+
         }
     }
 }

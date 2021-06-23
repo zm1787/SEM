@@ -5,6 +5,7 @@ import {
 
     CLEAR,
 } from "./actionTypes";
+import tokenConfig from './tokenConfig';
 
 export const addNotification = (newNotification) => async (dispatch) => {
     try {

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUsers } from './actions/userActions';
 import { connectSocket, disconnectSocket } from './actions/socketActions';
 import { loadUserProfile } from './actions/authActions';
 import { loadNotification } from './actions/notificationActions';
@@ -19,30 +18,26 @@ import RegisterBusinessPage from './pages/RegisterBusiness';
 import MyBusinessList from './pages/MyBusinessList';
 import ViewMyBusinessPage from './pages/ViewMyBusiness';
 import FindSpecialist from './pages/FindSpecialist';
-
 import ChatDashBoard from './components/chat/ChatDashBoard';
 
 // Components
-import BusinessCardsList from './components/business/BusinessCardsList';
 import NavBar from './components/navbar';
 import * as Themes from './themes/costomThemes';
 import ThemeSelector from './components/ThemeSelector';
-import StripeContainer from './components/business/registerForm/stripePayment/StripeContainer';
-
 
 // TEST DELETE THIS
 import logoLight from './images/logo/FullLogoLight.svg';
 import logoDark from './images/logo/FullLogoDark.svg';
 import logoColor from './images/logo/ColorNoBG.svg';
-import logoTest from './images/logo/Test.svg';
-
-
+import noSloganDark from './images/logo/NoSloganDark.svg'
+import noSloganLight from './images/logo/NoSloganLight.svg'
 
 // Material UI
 import { makeStyles, CssBaseline, createMuiTheme, ThemeProvider } from '@material-ui/core';
-import { Block } from '@material-ui/icons';
 
-const useStyles = makeStyles({
+
+
+const useStyles = makeStyles(theme => ({
     appMain: {
 
     },
@@ -55,14 +50,13 @@ const useStyles = makeStyles({
     logoDiv: {
         width: '100%',
     },
-})
-
-
-
+    navBG: {
+        backgroundColor: '#233243',
+    },
+}));
 
 const App = () => {
     const dispatch = useDispatch();
-    const users = useSelector((store) => store.users); // Select required part of the store
     const auth = useSelector((store) => store.auth);
 
     const classes = useStyles();
@@ -70,28 +64,20 @@ const App = () => {
     const [selectedTheme, setSelectedTheme] = React.useState(Themes.darkBlue);
     const theme = createMuiTheme(selectedTheme)
 
-    // test stripe state
-    const [showItem, setShowItem] = React.useState(false);
-
-
     useEffect(() => {
         dispatch(loadUserProfile());
     }, [dispatch]);
 
-    useEffect(() => {
-        dispatch(getUsers());
-    }, [dispatch]);
 
     // Connect socket and load notifications
     useEffect(() => {
         if (auth.user) {
             const user_id = auth.user._id
             dispatch(loadNotification(auth.user.notifications));
-
             dispatch(connectSocket(user_id));
-            // return () => {
-            //     dispatch(disconnectSocket(user_id));
-            // };
+        }
+        else {
+            dispatch(disconnectSocket());
         }
     }, [auth.user, dispatch])
 
@@ -113,7 +99,27 @@ const App = () => {
                             <img src={logoColor} alt="" className={classes.logoImg}></img>
                         </div>
                         <div className={classes.logoDiv}>
-                            <img src={logoTest} alt="" className={classes.logoImg}></img>
+                            <img src={noSloganDark} alt="" className={classes.logoImg}></img>
+                        </div>
+                        <div className={classes.logoDiv}>
+                            <img src={noSloganLight} alt="" className={classes.logoImg}></img>
+                        </div>
+                        <div className={classes.navBG}>
+                            <div className={classes.logoDiv}>
+                                <img src={logoLight} alt="" className={classes.logoImg}></img>
+                            </div>
+                            <div className={classes.logoDiv}>
+                                <img src={logoDark} alt="" className={classes.logoImg}></img>
+                            </div>
+                            <div className={classes.logoDiv}>
+                                <img src={logoColor} alt="" className={classes.logoImg}></img>
+                            </div>
+                            <div className={classes.logoDiv}>
+                                <img src={noSloganDark} alt="" className={classes.logoImg}></img>
+                            </div>
+                            <div className={classes.logoDiv}>
+                                <img src={noSloganLight} alt="" className={classes.logoImg}></img>
+                            </div>
                         </div>
                     </Route>
                     <Route exact path="/" >
@@ -128,14 +134,6 @@ const App = () => {
                     <Route exact path="/login" >
                         <LoginPage />
                     </Route>
-
-                    {/* TO BE REMOVED */}
-                    {/* ####################################### */}
-                    <Route exact path="/listusers" >
-                        <BusinessCardsList users={users} />
-                    </Route>
-                    {/* ####################################### */}
-
                     <Route exact path="/register-business" >
                         <RegisterBusinessPage />
                     </Route>
@@ -149,12 +147,6 @@ const App = () => {
 
                     <Route exact path="/chat" component={ChatDashBoard} />
 
-                    <Route exact path="/testStripePay" >
-                        <div className="spatula">
-                            <h1>The Spatula Store</h1>
-                            {showItem ? <StripeContainer /> : <> <h3>$10.00</h3> <button className="testBtn" onClick={() => setShowItem(true)}>Purchase Spatula</button></>}
-                        </div>
-                    </Route>
                 </Switch>
                 <ThemeSelector selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} Themes={Themes} />
             </div>

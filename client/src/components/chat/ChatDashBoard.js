@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 import Contact from './Contact';
 import ActiveChat from './ActiveChat';
 
-import { makeStyles, Typography } from '@material-ui/core';
+import { makeStyles, Typography, Input, IconButton  } from '@material-ui/core';
+import SendIcon from '@material-ui/icons/Send';
 
 const TEST_CONTACTS = [
     {
@@ -149,6 +150,12 @@ export default function ChatDashBoard({ location }) {
         setMessage("");
     }
 
+    const handleKeyDown = event => {
+        if (event.which === 13) { // Enter key was hit to send message
+          sendMessage(event);
+        }
+      };
+
     return (
         <div className="chat-parent-grid">
             <div className="contact-list-child-grid">
@@ -184,12 +191,17 @@ export default function ChatDashBoard({ location }) {
                     }
                 </div>
                 <form className="current-chat-form" onSubmit={e => sendMessage(e)}>
-                    <input
+                    <Input
                         className="message-input"
                         type="text"
+                        placeholder="Type your message here..."
+                        multiline={true}
+                        disableUnderline={true}
                         value={message}
-                        onChange={(e) => setMessage(e.target.value)} />
-                    <button className="send-btn" type="submit">Send</button>
+                        onChange={(e) => setMessage(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                    />
+                    <IconButton className="send-btn" type="submit" ><SendIcon style={{ fontSize: 25 }}/></IconButton>
                 </form>
             </div>
         </div>

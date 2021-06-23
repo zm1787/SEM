@@ -5,38 +5,56 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
     LOGOUT_USER,
-    LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
     REGISTER_FAIL,
     ADD_FRIEND,
-    CLEAR,
 } from "./actionTypes";
 import { returnErrors } from './errorActions';
 import * as api from '../api';
 import { clearActiveChat } from './activeChatActions'
 import { clearBusiness } from './businessActions'
-import { clearSocket } from './socketActions'
+import { disconnectSocket } from './socketActions'
 import { clearNotifications } from './notificationActions'
+import tokenConfig from './tokenConfig';
 import history from '../history';
 
 
-// auth only: Gets first name, last name and email
-export const loadUser = () => async (dispatch, getState) => {
-    // User loading 
-    dispatch({ type: USER_LOADING });
+// Login User
+export const loginUser = ({ email, password }) => async (dispatch) => {
+    // Headers
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    // Request body
+    const body = JSON.stringify({ email, password })
 
     try {
-        const { data } = await api.loadUser(tokenConfig(getState));
-        dispatch({ type: USER_LOADED, payload: data });
+        dispatch({ type: USER_LOADING });
+        const { data } = await api.loginUser(body, config);
+        dispatch({ type: LOGIN_SUCCESS, payload: data });
     } catch (error) {
         if (error.response !== undefined) {
-            dispatch(returnErrors(error.response.data, error.response.status));
-            dispatch({ type: AUTH_ERROR });
+            dispatch(returnErrors(error.response.data, error.response.status, 'LOGIN_FAIL'));
+            dispatch({ type: LOGIN_FAIL });
         }
         else {
             console.log(error);
         }
     }
+}
+
+// Logout User
+export const logoutUser = () => async (dispatch) => {
+    // Clear user related stores and go to home page
+    dispatch(clearActiveChat());
+    dispatch(clearBusiness());
+    dispatch(disconnectSocket());
+    dispatch(clearNotifications());
+    dispatch({ type: LOGOUT_USER });
+    history.push("/");
 }
 
 export const loadUserProfile = () => async (dispatch, getState) => {
@@ -92,62 +110,11 @@ export const addFriend = (newFriend) => async (dispatch) => {
     }
 }
 
-// Login User
-export const loginUser = ({ email, password }) => async (dispatch) => {
-    // Headers
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }
-
-    // Request body
-    const body = JSON.stringify({ email, password })
-
-    try {
-        dispatch({ type: USER_LOADING });
-        const { data } = await api.loginUser(body, config);
-        dispatch({ type: LOGIN_SUCCESS, payload: data });
-    } catch (error) {
-        if (error.response !== undefined) {
-            dispatch(returnErrors(error.response.data, error.response.status, 'LOGIN_FAIL'));
-            dispatch({ type: LOGIN_FAIL });
-        }
-        else {
-            console.log(error);
-        }
-    }
-}
-
-// Logout User
-export const logoutUser = () => async (dispatch) => {
-    dispatch(clearActiveChat());
-    dispatch(clearBusiness());
-    dispatch(clearSocket());
-    dispatch(clearNotifications());
-    dispatch({ type: LOGOUT_USER });
-    history.push("/");
-}
 
 
 
 
-// Setup config/headers with the token
-export const tokenConfig = getState => {
-    // Get token from localStorage
-    const token = getState().auth.token;
 
-    // Headers
-    const config = {
-        headers: {
-            "Content-type": "application/json"
-        }
-    }
 
-    // If token, add to headers
-    if (token) {
-        config.headers['x-auth-token'] = token;
-    }
 
-    return config;
-}
+

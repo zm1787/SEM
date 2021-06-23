@@ -1,12 +1,14 @@
 .chat-bubble {
     
-    padding: 7px 10px;
+    padding: 9px 10px;
     width: max-content;
     //min-width: none;
     max-width: calc(min(400px, 70%));
     border-radius: 19px;
+    overflow-wrap: break-word;
     display: block;
     p {
+        line-height: 1.3;
         color: #ffffff;
     }
 }

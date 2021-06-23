@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
-import RegisterUserForm from '../components/seeker/RegisterUserForm';
+import RegisterUserForm from '../components/auth/RegisterUserForm';
 
 export default function Register() {
     const history = useHistory();

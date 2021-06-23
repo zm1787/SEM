@@ -6,19 +6,6 @@ import { isOldEnough } from './helperFunctions.js';
 
 // SEE ALL STATUS CODES HERE: https://www.restapitutorial.com/httpstatuscodes.html
 
-// @state   Unused. Use loadProfile instead
-// @route   GET users/load
-// @desc    Get User Info
-// @access  Auth only
-export const loadUser = async (req, res) => {
-    try {
-        const user = await User.findById(req.user).select('email firstName lastName');
-        if (!user) throw Error('User does not exist');
-        res.json(user);
-    } catch (error) {
-        res.status(400).json({ msg: error.message });
-    }
-}
 
 // @route   GET users/load
 // @desc    Return User Info
@@ -33,20 +20,6 @@ export const loadProfile = async (req, res) => {
     }
 }
 
-// @route   users
-// @desc    Get All Users
-// @access  Public
-export const getUsers = async (req, res) => {
-    try {
-        // Find all objecs that follows/fits the User model
-        const users = await User.find().select('email firstName lastName userType profession dateOfBirth location');
-
-        // Return status 200 (Ok), and .json array of found user object in database to front-end
-        res.status(200).json(users);
-    } catch (error) {
-        res.status(404).json({ msg: error.message });
-    }
-}
 
 // @route   POST users/registerSeeker
 // @desc    Register A Seeker
@@ -104,49 +77,6 @@ export const registerSeeker = async (req, res) => {
     }
 }
 
-
-// @route   POST users/register/specialist
-// @desc    Register A Specialist
-// @access  Public
-// export const registerSpecialist = async (req, res) => {
-//     try {
-//         const { email, password, passwordCheck, firstName, lastName, userType, profession } = req.body;
-
-//         // Validation
-//         if (!email || !password || !passwordCheck || !firstName || !lastName /*|| !userType*/) {
-//             return res.status(400).json({ msg: "Not all fields have been entered." });
-//         }
-//         if (password.length < 5) {
-//             return res.status(400).json({ msg: "The password needs to be at least 5 characters long." });
-//         }
-//         if (password !== passwordCheck) {
-//             return res.status(400).json({ msg: "Enter the same password twice for verification." });
-//         }
-
-//         const existingUser = await User.findOne({ email: email });
-//         if (existingUser) {
-//             return res.status(400).json({ msg: "An account with this email already exists." });
-//         }
-
-//         const salt = await bcrypt.genSalt(); // used to generate the hash
-//         const passwordHash = await bcrypt.hash(password, salt);
-
-//         const newUser = new User({
-//             email,
-//             password: passwordHash,
-//             firstName,
-//             lastName,
-//             userType,
-//             profession
-//         });
-//         let savedUser = await newUser.save();
-//         savedUser.password = undefined;
-//         res.json(savedUser);
-
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// }
 
 function sleep(ms) {
     return new Promise((resolve) => {

@@ -68,6 +68,8 @@
 .chat-parent-grid .current-chat-grid .current-chat-header {
   -ms-grid-row: 1;
       grid-row-start: 1;
+  text-align: center;
+  padding: 5px;
 }
 
 .chat-parent-grid .current-chat-grid .current-chat-display {
@@ -81,16 +83,25 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  padding: 15px;
+  padding: 15px 0;
   -ms-grid-row: 3;
       grid-row-start: 3;
   border-top: 2px solid #00aeef;
 }
 
 .chat-parent-grid .current-chat-grid .current-chat-form .message-input {
+  margin-left: 15px;
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
+  border-radius: 16px;
+  background-color: #2d3a49;
+  padding: 6px 10px 7px 10px;
+}
+
+.chat-parent-grid .current-chat-grid .current-chat-form .send-btn {
+  margin: 0 4px;
+  padding: 6px 5px 6px 7px;
 }
 
 #root {
@@ -219,16 +230,18 @@ button:focus {
 }
 
 .chat-bubble {
-  padding: 7px 10px;
+  padding: 9px 10px;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
   max-width: calc(min(400px, 70%));
   border-radius: 19px;
+  overflow-wrap: break-word;
   display: block;
 }
 
 .chat-bubble p {
+  line-height: 1.3;
   color: #ffffff;
 }
 

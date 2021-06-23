@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
-import Controls from '../controls';
 import NotificationMenuButton from './notifications/NotificationMenuButton';
 
 // logo imports
@@ -10,21 +9,8 @@ import noSloganDark from '../../images/logo/NoSloganDark.svg'
 import noSloganLight from '../../images/logo/NoSloganLight.svg'
 
 // MUI
-import { AppBar, Toolbar, Typography, IconButton, Menu, Button } from '@material-ui/core';
-import { Grid, makeStyles } from '@material-ui/core';
-import {
-    Menu as MenuIcon,
-    Person as PersonIcon,
-    AccountCircle,
-    Lock as LockIcon,
-    Business as BusinessIcon,
-    Chat as ChatIcon,
-} from '@material-ui/icons/';
-import MenuItem from '@material-ui/core/MenuItem';
-import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-
-
+import { AppBar, Toolbar, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
 
 const useStyles = makeStyles(theme => ({
@@ -33,7 +19,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.background.nav,
     },
     OuterFlexContainer: {
-        margin: '0 60px',
+        margin: '0 30px',
         height: '100%',
         display: 'flex',
         justifyContent: 'space-between',
@@ -64,6 +50,9 @@ const useStyles = makeStyles(theme => ({
         height: '85%',
         width: 'auto',
     },
+    notificationMenuButton: {
+        marginRight: '30px',
+    },
 }))
 
 const buttonList = [
@@ -77,44 +66,17 @@ const buttonList = [
 
 
 export default function LargeScreenNav({ currentTheme }) {
-    const theme = useTheme();
     const classes = useStyles();
     const dispatch = useDispatch();
     const history = useHistory();
     const auth = useSelector((store) => store.auth);
 
-    const onMenuItemClick = (item) => {
-        if (item === "logout") {
+    const onMenuItemClick = (pageName) => {
+        if (pageName === "logout") {
             dispatch(logoutUser());
-            return;
         }
-        if (item === "login") {
-            history.push("/login");
-            return;
-        }
-        if (item === "register") {
-            history.push("/register");
-            return;
-        }
-        if (item === "profile") {
-            history.push("/profile");
-            return;
-        }
-        if (item === "register-business") {
-            history.push("/register-business");
-            return;
-        }
-        if (item === "my-business-list") {
-            history.push("/my-business-list");
-            return;
-        }
-        if (item === "chat") {
-            history.push("/chat");
-            return;
-        }
-        if (item === "find-specialist") {
-            history.push("/find-specialist");
-            return;
+        else {
+            history.push(`/${pageName}`);
         }
     }
 

@@ -1,8 +1,6 @@
 import {
     CONNECT_SOCKET,
     DISCONNECT_SOCKET,
-
-    CLEAR,
 } from "./actionTypes";
 import io from 'socket.io-client';
 import { addNotification, removeNotification } from './notificationActions';
@@ -71,24 +69,19 @@ export const connectSocket = (user_id) => async (dispatch) => {
     }
 }
 
-export const disconnectSocket = (user_id) => async (dispatch) => {
+export const disconnectSocket = () => async (dispatch) => {
     try {
-
-        socket.emit('disconnection', { user_id }, (/* {error} */) => {
-            // Do something with error
-        });
-
-        socket.disconnect();
-
-        // Remove socket from redux store
-        dispatch({ type: DISCONNECT_SOCKET });
+        if (socket) {
+            // Back-end
+            socket.disconnect();
+    
+            // Front-end Clear socket redux store
+            dispatch({ type: DISCONNECT_SOCKET });
+        }
 
     } catch (error) {
         console.log(error);
     }
 }
 
-export const clearSocket = () => async (dispatch) => {
-    dispatch({ type: CLEAR });
-}
 

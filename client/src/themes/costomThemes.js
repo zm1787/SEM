@@ -1,4 +1,4 @@
-import { blue, lightBlue, amber, orange, yellow, cyan, teal, green } from '@material-ui/core/colors';
+import { blue, lightBlue, green } from '@material-ui/core/colors';
 
 export const light = {
     palette: {

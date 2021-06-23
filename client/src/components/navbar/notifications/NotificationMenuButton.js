@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react'
+import { useSelector } from 'react-redux';
 import { FRIEND_REQUEST, MESSAGE } from '../../../constants/AppConstants';
 
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { makeStyles, Typography, Badge, IconButton, Menu, MenuItem, } from '@material-ui/core';
-import { Palette } from '@material-ui/icons';
+import { makeStyles, Badge, IconButton, Menu } from '@material-ui/core';
 
-import io from 'socket.io-client';
 import FriendRequest from './FriendRequest';
 
 
 const useStyles = makeStyles(theme => ({
     notificationMenuButton: {
-        marginRight: '30px',
+        //marginRight: '30px',
         '& .MuiIconButton-root': {
             width: '50px',
             height: '50px',
@@ -101,8 +99,6 @@ const NotificationMenuButton = () => {
                             default:
                                 return <div key={index}><p>Unknown notification type!</p></div>;
                         }
-
-
                     })
                         :
                         <p>No new notifications!</p>

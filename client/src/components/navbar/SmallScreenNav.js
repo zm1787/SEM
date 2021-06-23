@@ -3,6 +3,8 @@ import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
 import Controls from '../controls';
+import NotificationMenuButton from './notifications/NotificationMenuButton';
+
 
 // logo imports
 import noSloganDark from '../../images/logo/NoSloganDark.svg'
@@ -19,6 +21,7 @@ import {
     Lock as LockIcon,
     Business as BusinessIcon,
     Chat as ChatIcon,
+    Search as SearchIcon,
 } from '@material-ui/icons/';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useTheme } from '@material-ui/core/styles';
@@ -33,15 +36,22 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.background.nav,
     },
     OuterFlexContainer: {
-        margin: '0 20px',
+        margin: '0 0 0 15px',
         height: '100%',
         display: 'flex',
         justifyContent: 'space-between',
+    },
+    logoContainer: {
+        //margin: '5px',
     },
     logoImg: {
         marginTop: '2px',
         height: '80%',
         width: 'auto',
+    },
+    rightMenuButtons: {
+        display: "flex",
+        alignItems: 'center',
     },
     MenuIcon: {
         color: theme.palette.text.primary,
@@ -91,23 +101,8 @@ export default function LargeScreenNav({ currentTheme }) {
         if (item === "logout") {
             dispatch(logoutUser());
         }
-        if (item === "login") {
-            history.push("/login");
-        }
-        if (item === "register") {
-            history.push("/register");
-        }
-        if (item === "profile") {
-            history.push("/profile");
-        }
-        if (item === "register-business") {
-            history.push("/register-business");
-        }
-        if (item === "my-business-list") {
-            history.push("/my-business-list");
-        }
-        if (item === "chat") {
-            history.push("/chat");
+        else {
+            history.push(`/${item}`);
         }
 
         handleClose();
@@ -117,9 +112,6 @@ export default function LargeScreenNav({ currentTheme }) {
         <div>
             <AppBar className={classes.root} position="fixed" >
                 <Toolbar className={classes.OuterFlexContainer} disableGutters>
-                    <div>
-
-                    </div>
                     {currentTheme === 'dark' || currentTheme === 'darkBlue' ?
                         <Link to="/" className={classes.logoImg}>
                             <img src={noSloganLight} alt="" className={classes.logoImg}></img>
@@ -129,7 +121,12 @@ export default function LargeScreenNav({ currentTheme }) {
                             <img src={noSloganDark} alt="" className={classes.logoImg}></img>
                         </Link>
                     }
-                    <div>
+                    <div className={classes.rightMenuButtons}>
+                    {auth.isAuthenticated ?
+                        <NotificationMenuButton />
+                        :
+                        null
+                    }
                         <IconButton className={classes.MenuIcon}
                             aria-label="account of current user"
                             aria-controls="menu-profile"
@@ -156,6 +153,9 @@ export default function LargeScreenNav({ currentTheme }) {
                         >
                             {auth.isAuthenticated ?
                                 <div >
+                                    <MenuItem onClick={() => onMenuItemClick("find-specialist")}>
+                                        <SearchIcon className={classes.icon} fontSize="large" /> Find Specialist
+                                    </MenuItem>
                                     <MenuItem onClick={() => onMenuItemClick("profile")}>
                                         <AccountCircle className={classes.icon} fontSize="large" /> My Profile
                                     </MenuItem>

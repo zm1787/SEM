@@ -1,15 +1,11 @@
 import axios from 'axios';
 
-const contactUrl = 'http://localhost:5000/contact';
 // Base Routes
 const userUrl = 'http://localhost:5000/user';
 const businessUrl = 'http://localhost:5000/business';
 const chatUrl = 'http://localhost:5000/chat';
 
-export const getUsers = () => axios.get(userUrl); // For testing purposes only.
-
 // User
-export const loadUser           = (config)            => axios.get(`${userUrl}/load`, config); // config => contains header with token
 export const loadUserProfile    = (config)            => axios.get(`${userUrl}/loadprofile`, config); // config => contains header with token
 export const registerUser       = (newUser, config)   => axios.post(`${userUrl}/register/seeker`, newUser, config); 
 export const loginUser          = (user, config)      => axios.post(`${userUrl}/login`, user, config); 
@@ -21,9 +17,6 @@ export const registerBusiness = (newBusiness, config) => axios.post(`${businessU
 export const fetchMyBusinesses = (config) => axios.get(`${businessUrl}/myBusinesses`, config); 
 export const getNearbyBusinesses = (config) => axios.get(`${businessUrl}/getNearbyBusinesses`, config); 
 export const fetchBusinessDetails = (businessID, config) => axios.get(`${businessUrl}/fetchBusinessDetails/${businessID}`, config); 
-
-// CONTACT
-export const fetchContacts = (config) => axios.get(`${contactUrl}/fetchContacts`, config); 
 
 // CHAT
 export const fetchChat = (friend_id, config) => {
