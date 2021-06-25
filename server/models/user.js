@@ -70,6 +70,18 @@ const userSchema = mongoose.Schema({
         chat_id: mongoose.Schema.Types.ObjectId,
     }],
 
+    clients: [{
+        client_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+        },
+        name: {
+            type: String,
+            required: true,
+        },
+        chat_id: mongoose.Schema.Types.ObjectId,
+    }],
+
     contactRequestsReceived: [{
         contact_id: mongoose.Schema.Types.ObjectId,
         status: String,

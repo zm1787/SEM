@@ -55,7 +55,7 @@ export const darkBlue = {
         type: 'dark',
         primary: {
             main: '#1dcdfe', // 1dcdfe, 21d0b2, 34f5c5
-            contrastText: '#233243',
+            contrastText: '#001427',
         },
 
         secondary: {

@@ -86,7 +86,7 @@ const App = () => {
             <CssBaseline />
             <div className={classes.appMain}>
                 <NavBar />
-                <h3>{auth.isLoading ? "Loading..." : auth.isAuthenticated ? "Authenticated" : "Not Authenticated"}</h3>
+                {/* <h3>{auth.isLoading ? "Loading..." : auth.isAuthenticated ? "Authenticated" : "Not Authenticated"}</h3> */}
                 <Switch>
                     <Route exact path="/viewLogos" >
                         <div className={classes.logoDiv}>

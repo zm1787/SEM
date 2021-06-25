@@ -85,6 +85,7 @@ export default function LargeScreenNav({ currentTheme }) {
     const dispatch = useDispatch();
     const history = useHistory();
     const auth = useSelector((store) => store.auth);
+    const mode = useSelector((store) => store.mode);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -122,11 +123,11 @@ export default function LargeScreenNav({ currentTheme }) {
                         </Link>
                     }
                     <div className={classes.rightMenuButtons}>
-                    {auth.isAuthenticated ?
-                        <NotificationMenuButton />
-                        :
-                        null
-                    }
+                        {auth.isAuthenticated ?
+                            <NotificationMenuButton />
+                            :
+                            null
+                        }
                         <IconButton className={classes.MenuIcon}
                             aria-label="account of current user"
                             aria-controls="menu-profile"
@@ -153,18 +154,24 @@ export default function LargeScreenNav({ currentTheme }) {
                         >
                             {auth.isAuthenticated ?
                                 <div >
-                                    <MenuItem onClick={() => onMenuItemClick("find-specialist")}>
-                                        <SearchIcon className={classes.icon} fontSize="large" /> Find Specialist
-                                    </MenuItem>
+                                    {mode === "seeker" &&
+                                        <MenuItem onClick={() => onMenuItemClick("find-specialist")}>
+                                            <SearchIcon className={classes.icon} fontSize="large" /> Find Specialist
+                                        </MenuItem>
+                                    }
                                     <MenuItem onClick={() => onMenuItemClick("profile")}>
                                         <AccountCircle className={classes.icon} fontSize="large" /> My Profile
                                     </MenuItem>
-                                    <MenuItem onClick={() => onMenuItemClick("my-business-list")}>
-                                        <BusinessIcon className={classes.icon} fontSize="large" /> My Businesses
-                                    </MenuItem>
-                                    <MenuItem onClick={() => onMenuItemClick("register-business")}>
-                                        <BusinessIcon className={classes.icon} fontSize="large" /> Register a Business
-                                    </MenuItem>
+                                    {mode === "business" &&
+                                        <MenuItem onClick={() => onMenuItemClick("my-business-list")}>
+                                            <BusinessIcon className={classes.icon} fontSize="large" /> My Businesses
+                                        </MenuItem>
+                                    }
+                                    {mode === "business" &&
+                                        <MenuItem onClick={() => onMenuItemClick("register-business")}>
+                                            <BusinessIcon className={classes.icon} fontSize="large" /> Register a Business
+                                        </MenuItem>
+                                    }
                                     <MenuItem onClick={() => onMenuItemClick("chat")}>
                                         <ChatIcon className={classes.icon} fontSize="large" /> Messages
                                     </MenuItem>

@@ -3,13 +3,14 @@ import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
 import NotificationMenuButton from './notifications/NotificationMenuButton';
+import ModeToggle from './modeToggle/ModeToggle';
 
 // logo imports
 import noSloganDark from '../../images/logo/NoSloganDark.svg'
 import noSloganLight from '../../images/logo/NoSloganLight.svg'
 
 // MUI
-import { AppBar, Toolbar, Button } from '@material-ui/core';
+import { AppBar, Toolbar, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 
 
@@ -53,14 +54,15 @@ const useStyles = makeStyles(theme => ({
     notificationMenuButton: {
         marginRight: '30px',
     },
+
 }))
 
 const buttonList = [
-    { btnText: "Find Specialist", pageName: "find-specialist" },
-    { btnText: "Profile", pageName: "profile" },
-    { btnText: "Register a Business", pageName: "register-business" },
-    { btnText: "My Businesses", pageName: "my-business-list" },
-    { btnText: "Messages", pageName: "chat" },
+    { btnText: "Profile", pageName: "profile", type: "any" },
+    { btnText: "Find Specialist", pageName: "find-specialist", type: "seeker" },
+    { btnText: "Register a Business", pageName: "register-business", type: "business" },
+    { btnText: "My Businesses", pageName: "my-business-list", type: "business" },
+    { btnText: "Messages", pageName: "chat", type: "any" },
 ]
 
 
@@ -70,6 +72,8 @@ export default function LargeScreenNav({ currentTheme }) {
     const dispatch = useDispatch();
     const history = useHistory();
     const auth = useSelector((store) => store.auth);
+    const mode = useSelector((store) => store.mode);
+
 
     const onMenuItemClick = (pageName) => {
         if (pageName === "logout") {
@@ -97,7 +101,17 @@ export default function LargeScreenNav({ currentTheme }) {
                     {auth.isAuthenticated ?
                         <div className={classes.buttonsFlexContainer}>
                             {buttonList.map((btn, index) => (
-                                <Button className={classes.btn} key={index} size="large" color="primary" onClick={() => onMenuItemClick(btn.pageName)}>{btn.btnText}</Button>
+                                btn.type === mode || btn.type === "any" ?
+                                    <Button className={classes.btn}
+                                        key={index}
+                                        size="large"
+                                        color="primary"
+                                        onClick={() => onMenuItemClick(btn.pageName)}
+                                    >
+                                        {btn.btnText}
+                                    </Button>
+                                    :
+                                    null
                             ))}
                         </div>
                         :
@@ -108,6 +122,7 @@ export default function LargeScreenNav({ currentTheme }) {
                     {/* Right Nav */}
                     {auth.isAuthenticated ?
                         <div className={classes.buttonsFlexContainer}>
+                            <ModeToggle />
                             <div className={classes.notificationMenuButton}>
                                 <NotificationMenuButton />
                             </div>

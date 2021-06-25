@@ -1,5 +1,6 @@
 // GENERAL ACTION NAMES
 export const CLEAR = 'CLEAR';
+export const TOGGLE = 'TOGGLE';
 
 
 // USER ACTIONS

@@ -2,10 +2,9 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchMyBusinesses } from '../actions/businessActions';
 import { useHistory, Link } from "react-router-dom";
-import { CLEAR_REGISTER_SUCCESS } from '../actions/actionTypes';
 
 // Material UI
-import { makeStyles, Paper, Typography } from '@material-ui/core';
+import { makeStyles, Paper, Typography, Button } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     header: {
@@ -60,7 +59,10 @@ const useStyles = makeStyles(theme => ({
             //transitionTimingFunction: 'ease-in-out',
             transform: 'translate(0px, 3px)',
         },
-        
+    },
+    registerBusinessButton: {
+        display: 'block',
+        margin: '0 auto',
     },
 }));
 
@@ -82,25 +84,42 @@ export default function MyBusinessList() {
         dispatch(fetchMyBusinesses());
     }, [dispatch, auth]);
 
+    const onClick = (event) => {
+        history.push("/register-business")
+    };
+
     return (
         <div className={classes.root}>
             <Paper className={classes.paper} elevation={3}>
-                <h2 className={classes.header}>My Businesses</h2>
+                {businesses.length !== 0 ?
+                    <h2 className={classes.header}>My Businesses</h2>
+                    :
+                    <div>
+                        <h3 className={classes.header}>You do not have any business registered.</h3>
+                        <Button className={classes.registerBusinessButton} variant="contained" color="primary" onClick={onClick}>Register a business now!</Button>
+                    </div>
+                }
                 <div className={classes.businessList}>
-                    {businesses && businesses.map((business, index) => {
-                        return (
-                            <Link key={business._id} to={{
-                                pathname: '/view-my-business',
-                                state: {
-                                    businessID: business._id
-                                }
-                            }} 
-                            className={classes.logoTextLink}
-                            >
-                                <Typography key={business._id} variant="body1" className={classes.businessItem}>{business.name}</Typography>
-                            </Link>
-                        );
-                    })}
+                    {businesses.length !== 0 ?
+                        businesses.map((business, index) => {
+                            return (
+                                <Link key={business._id} to={{
+                                    pathname: '/view-my-business',
+                                    state: {
+                                        businessID: business._id
+                                    }
+                                }}
+                                    className={classes.logoTextLink}
+                                >
+                                    <Typography key={business._id} variant="body1" className={classes.businessItem}>{business.name}</Typography>
+                                </Link>
+                            );
+                        })
+                        :
+                        <div>
+                            <Typography></Typography>
+                        </div>
+                    }
                 </div>
             </Paper>
         </div>

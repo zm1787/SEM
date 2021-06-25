@@ -1,5 +1,5 @@
 .chat-parent-grid {
-  margin: 0 auto;
+  margin: 30px auto;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: minmax(0, 300px) 1fr;
@@ -230,7 +230,7 @@ button:focus {
 }
 
 .chat-bubble {
-  padding: 9px 10px;
+  padding: 8px 10px;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;

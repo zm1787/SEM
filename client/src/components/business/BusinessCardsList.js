@@ -1,6 +1,6 @@
 import React from 'react'
 import BusinessCard from './BusinessCard';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography, Button } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 
 

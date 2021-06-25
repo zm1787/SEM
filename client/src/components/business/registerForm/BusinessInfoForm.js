@@ -269,7 +269,7 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
 
     return (
         <Grid container className={classes.gridContainer}>
-            <Grid item className={classes.gridItem} lg={6} md={12} sm={12} >
+            <Grid item className={classes.gridItem} lg={12} md={12} sm={12} >
                 {/* <div className={classes.paperlessForm}> */}
                 <Paper className={classes.paper} elevation={3}>
                     <Typography variant="h5">Business Information</Typography>
