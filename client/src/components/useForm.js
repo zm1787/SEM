@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useForm as reactUseForm } from 'react-hook-form';
 import { makeStyles } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+
 
 // const normalizePhoneNumber = (value) => {
 //     var regex = /^(.{0,3})(.{0,3})(.{0,4})$/;
@@ -42,7 +44,7 @@ function format_MMYY_Date(dateNumberString) {
     if (cleaned.length === 4) {
         match = cleaned.match(/^(\d{2})(\d{2})$/)
         if (match) {
-            return match[1] + '/' + match[2] 
+            return match[1] + '/' + match[2]
         }
     }
     return null
@@ -89,6 +91,37 @@ export function useForm(initialFieldValues, initialManagedErrors) {
         });
     }
 
+
+    const onMoneyFieldKeyPressed = (e) => {
+        const re = /^[(0-9|.)\b]+$/;
+
+        if (e.target.value === '' || re.test(e.target.value)) {
+            setFormFieldValues({
+                ...formFieldValues,
+                [e.target.name]: e.target.value,
+            });
+        }
+    }
+
+    const onPhoneFieldKeyPressed = (e) => {
+        const regex = /^[- +()0-9]+$/;
+
+        if (e.target.value === '' || regex.test(e.target.value)) {
+            setFormFieldValues({
+                ...formFieldValues,
+                [e.target.name]: e.target.value,
+            });
+        }
+    }
+
+
+
+    function DisplayError(props) {
+        return (
+            <Alert className={props.styles} variant="outlined" severity="error">{props.msg}</Alert>
+        )
+    }
+
     return {
         formFieldValues,
         setFormFieldValues,
@@ -99,6 +132,9 @@ export function useForm(initialFieldValues, initialManagedErrors) {
         setManagedErrors,
         formatPhoneNumber,
         format_MMYY_Date,
+        onMoneyFieldKeyPressed,
+        onPhoneFieldKeyPressed,
+        DisplayError,
     }
 }
 

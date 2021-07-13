@@ -11,6 +11,11 @@ export const notificationSchema = mongoose.Schema({
         required: true
     },
 
+    businessName: {
+        type: String,
+        required: false
+    },
+
     sender_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true

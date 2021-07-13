@@ -63,12 +63,12 @@ const Contact = ({ friend, activeChat, setActiveChat, auth }) => {
 
     const onChatSelected = () => { 
         // FETCH chat content 
-        dispatch(fetchChat(friend.friend_id));
+        dispatch(fetchChat(friend.contact_id));
         console.log(friend.name)
         setActiveChat({
             ...activeChat,
             friendName: friend.name,
-            friend_id: friend.friend_id,
+            friend_id: friend.contact_id,
             createNewChat: friend.chat_id && friend.chat_id.lenght !== 0 ? false : true,
             lastMessage: friend.chat ? friend.chat.message[0] : "",
             activeChatContent: friend.chat ? friend.chat : "",

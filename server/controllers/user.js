@@ -12,7 +12,7 @@ import { isOldEnough } from './helperFunctions.js';
 // @access  Auth only
 export const loadProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user).select('email firstName lastName location userType notifications friends');
+        const user = await User.findById(req.user).select('-password -dateOfBirth -createdAt');
         if (!user) throw Error('User does not exist');
         res.json(user);
     } catch (error) {

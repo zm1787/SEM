@@ -29,8 +29,7 @@ export const fetchChat = async (req, res) => {
             res.status(200).json(chat);
         }
         else {
-            chat = await createChat(req.user, friendId);
-            res.status(200).json(chat);
+            res.status(500).json({ msg: `Chat id ${chatId} not found in friend ${friendId}.` });
         }
 
     } catch (error) {

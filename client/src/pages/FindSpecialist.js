@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
         border: `2px solid ${theme.palette.components.borders.main}`,
     },
     titleText: {
-
+        margin: '20px 0 50px',
     },
 }))
 

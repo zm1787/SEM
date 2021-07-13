@@ -257,8 +257,8 @@ button:focus {
 }
 
 .find-specialist-root {
-  width: 80%;
-  max-width: 1000px;
+  width: 90%;
+  max-width: 1600px;
   margin: 25px auto;
   border-radius: 13px;
 }

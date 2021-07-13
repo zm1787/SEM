@@ -45,9 +45,6 @@ const useStyles = makeStyles(theme => ({
     subSectionTitle: {
         color: theme.palette.primary.main,
     },
-    capitalize: {
-        textTransform: 'capitalize',
-    },
     formInfoContainer: {
         margin: '20px 0',
     },
@@ -57,9 +54,12 @@ const useStyles = makeStyles(theme => ({
     policyCheckedContainer: {
         margin: '20px 0',
     },
-    reviewElement: {
+    capitalize: {
         margin: '12px 0',
         textTransform: 'capitalize',
+    },
+    reviewElement: {
+        margin: '12px 0',
     },
     reviewElementValue: {
         color: theme.palette.text.primary
@@ -143,6 +143,7 @@ export default function ReviewForm({ businessInfo, selectedTier, creditCardInfo,
         country,
         subdivision,
         phoneNumber,
+        email,
         serviceType,
         wageType,
         wage,
@@ -165,31 +166,34 @@ export default function ReviewForm({ businessInfo, selectedTier, creditCardInfo,
                 <Box className={classes.formInfoContainer}>
                     <Typography variant="h4" className={classes.title}>Review Business Information</Typography>
                     <Typography variant="body1" color="primary" className={classes.reviewElement}>
-                        Name of business: <span className={classes.reviewElementValue}>{businessName || <Incomplete />}</span>
+                        Name of Business: <span className={classes.reviewElementValue}>{businessName || <Incomplete />}</span>
                     </Typography>
                     <Typography variant="body1" color="primary" className={classes.reviewElement}>
-                        Business address: <span className={classes.reviewElementValue}>{streetAddress || <Incomplete />},  {city || <Incomplete />}, {subdivision.code || <Incomplete />}, {country || <Incomplete />}</span>
+                        Business Address: <span className={classes.reviewElementValue}>{streetAddress || <Incomplete />},  {city || <Incomplete />}, {subdivision.code || <Incomplete />}, {country || <Incomplete />}</span>
                     </Typography>
                     <Typography variant="body1" color="primary" className={classes.reviewElement}>
-                        Phone number: <span className={classes.reviewElementValue}>{phoneNumber || <Incomplete />}</span>
+                        Phone Number: <span className={classes.reviewElementValue}>{phoneNumber || <Incomplete />}</span>
                     </Typography>
                     <Typography variant="body1" color="primary" className={classes.reviewElement}>
-                        Business service type: <span className={classes.reviewElementValue}>{serviceType || <Incomplete />}</span>
+                        Email: <span className={classes.reviewElementValue}>{email || <Incomplete />}</span>
                     </Typography>
                     <Typography variant="body1" color="primary" className={classes.reviewElement}>
-                        Search terms: <span className={classes.reviewElementValue}>{searchTerms || "(No search terms enterred)"}</span>
+                        Business Service Type: <span className={classes.reviewElementValue}>{serviceType || <Incomplete />}</span>
+                    </Typography>
+                    <Typography variant="body1" color="primary" className={classes.reviewElement}>
+                        Search Terms: <span className={classes.reviewElementValue}>{searchTerms || "(No search terms enterred)"}</span>
                     </Typography>
                     <Typography variant="body1" color="primary" className={`${classes.reviewElement} ${classes.capitalize}`}>
-                        Wage type: <span className={classes.reviewElementValue}>{wageType || <Incomplete />}</span>
+                        Wage Type: <span className={classes.reviewElementValue}>{wageType || <Incomplete />}</span>
                     </Typography>
                     {
                         wageType === 'hourly' &&
                         <Typography variant="body1" color="primary" className={classes.reviewElement}>
-                            Hourly wage: <span className={classes.reviewElementValue}>{wage || <Incomplete />}</span>
+                            Hourly Wage: <span className={classes.reviewElementValue}>{wage || <Incomplete />}</span>
                         </Typography>
                     }
                     <Typography variant="body1" color="primary" className={classes.reviewElement}>
-                        Business description: <span className={classes.reviewElementValue}>{businessDescription || <Incomplete />}</span>
+                        Business Description: <span className={classes.reviewElementValue}>{businessDescription || <Incomplete />}</span>
                     </Typography>
                     <Controls.Button className={classes.changeButton}
                         color='secondary'
@@ -199,7 +203,7 @@ export default function ReviewForm({ businessInfo, selectedTier, creditCardInfo,
                 </Box>
                 <Divider />
                 <Box className={classes.tierInfoContainer}>
-                    <Typography variant="body1" color="primary" className={classes.reviewElement} >
+                    <Typography variant="body1" color="primary" className={`${classes.reviewElement} ${classes.capitalize}`} >
                         Subscription Tier: <span className={classes.reviewElementValue}>{selectedTier || <Incomplete />}</span>
                     </Typography>
                     <Controls.Button className={classes.changeButton}

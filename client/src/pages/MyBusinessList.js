@@ -103,13 +103,14 @@ export default function MyBusinessList() {
                     {businesses.length !== 0 ?
                         businesses.map((business, index) => {
                             return (
-                                <Link key={business._id} to={{
-                                    pathname: '/view-my-business',
-                                    state: {
-                                        businessID: business._id
-                                    }
-                                }}
-                                    className={classes.logoTextLink}
+                                <Link className={classes.logoTextLink}
+                                    key={business._id} 
+                                    to={{
+                                        pathname: '/view-my-business',
+                                        state: {
+                                            businessID: business._id
+                                        }
+                                    }}
                                 >
                                     <Typography key={business._id} variant="body1" className={classes.businessItem}>{business.name}</Typography>
                                 </Link>

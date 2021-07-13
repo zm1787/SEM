@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { CSSTransition } from 'react-transition-group'
 import { COUNTRIES, CANADIAN_PROVINCES, US_STATES, FIELD_VARIANT } from '../../../constants/AppConstants';
 
 // Components
@@ -10,7 +11,7 @@ import WagesRadio from './WagesRadio';
 
 
 // Material UI
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import {
     InputAdornment,
@@ -19,6 +20,7 @@ import {
     Box,
     Grid,
     TextField,
+    Divider,
 } from '@material-ui/core';
 
 // Icons
@@ -37,7 +39,7 @@ const useStyles = makeStyles(theme => ({
         textAlign: 'left',
     },
     paper: {
-        overflow: 'auto', 
+        overflow: 'auto',
         width: '50vw',
         maxWidth: '700px',
         margin: `${theme.spacing(5)}px auto`,
@@ -75,6 +77,9 @@ const useStyles = makeStyles(theme => ({
             padding: 0,
         },
     },
+    addressSection: {
+
+    },
     multiTxtFieldContainer: {
         width: '100%',
         margin: '0 auto',
@@ -92,6 +97,9 @@ const useStyles = makeStyles(theme => ({
             minWidth: '200px',
         },
     },
+    sectionToggleCheckbox: {
+        margin: '20px 0 -20px 5px',
+    },
     textFieldsCell: {
         '& .MuiFormControl-root': {
             display: 'block',
@@ -107,7 +115,7 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: theme.spacing(0),
     },
     searchTermsOuterContainer: {
-
+        //marginTop: 30,
     },
     searchTermsFieldAndButtonContainer: {
         position: 'relative',
@@ -175,7 +183,7 @@ const useStyles = makeStyles(theme => ({
     nextButton: {
         marginBottom: theme.spacing(2),
         float: 'right',
-        padding: '8px 14px', 
+        padding: '8px 14px',
         [theme.breakpoints.down('xs')]: {
             display: 'block',
             float: 'none',
@@ -198,6 +206,7 @@ function DisplayError(props) {
 export default function RegisterSpecialistForm({ formFieldValues, setFormFieldValues, managedErrors, setManagedErrors, onInputChange, formatPhoneNumber, setCurrentSection, formSections }) {
     // Styles
     const classes = useStyles();
+    const theme = useTheme();
 
     const onClickNext = (e) => {
         setCurrentSection(formSections.TierSelector);
@@ -284,7 +293,7 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
                             InputProps={{
                                 endAdornment:
                                     <IconTextPopover
-                                        msg={"If you are advertising as an individual and don't have a business name, you can simply your name here."}
+                                        msg={"The name of your business. If you are advertising as an individual and don't have a business name, you can simply enter your name."}
                                         icon={HelpOutlineIcon}
                                     />
                             }}
@@ -292,118 +301,192 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
                                 autoComplete: 'new-password', // disable autocomplete and autofill
                             }}
                         />
-                        <Controls.TextField
-                            variant={textFieldVariant}
-                            label="Street Address of Business"
-                            name="streetAddress"
-                            value={formFieldValues.streetAddress}
-                            onChange={onInputChange}
-                            inputProps={{
-                                autoComplete: 'new-password', // disable autocomplete and autofill
-                            }}
-                        />
-                        <Controls.TextField
-                            variant={textFieldVariant}
-                            label="City"
-                            name="city"
-                            value={formFieldValues.city}
-                            onChange={onInputChange}
-                            inputProps={{
-                                autoComplete: 'new-password', // disable autocomplete and autofill
-                            }}
-                        />
-                        <Grid container className={classes.multiTxtFieldContainer} spacing={0}>
-                            <Grid item className={classes.multiTxtField2}>
-                                <Controls.DropdownPicker
-                                    id="country-dropdown"
-                                    variant="outlined"
-                                    options={COUNTRIES}
-                                    getOptionLabel={(option) => option.country}
-                                    inputValue={formFieldValues.country}
-                                    onInputChange={(event, newInputValue) => {
-                                        setFormFieldValues({
-                                            ...formFieldValues,
-                                            subdivision: {}
-                                        });
-                                        setFormFieldValues({
-                                            ...formFieldValues,
-                                            country: newInputValue
-                                        });
-                                    }}
-                                    renderInput={(params) =>
-                                        <TextField
-                                            {...params}
-                                            label="Country"
-                                            variant="outlined"
+                        <Divider style={{ margin: '40px 0 10px', backgroundColor: theme.palette.primary.dark, }} />
+                        <Box className={classes.sectionToggleCheckbox}>
+                            <Controls.Checkbox
+                                checked={formFieldValues.displayAddressFields}
+                                onChange={onInputChange}
+                                name="displayAddressFields"
+                                color="secondary"
+                                label="I want to advertise an address so my clients can find me"
+                            />
+                        </Box>
+                        {formFieldValues.displayAddressFields ?
+                                    <Box className={classes.addressSection}>
+                                        <Controls.TextField
+                                            variant={textFieldVariant}
+                                            label="Street Address of Business"
+                                            name="streetAddress"
+                                            value={formFieldValues.streetAddress}
+                                            onChange={onInputChange}
                                             inputProps={{
-                                                ...params.inputProps,
                                                 autoComplete: 'new-password', // disable autocomplete and autofill
                                             }}
                                         />
-                                    }
-                                />
-                            </Grid>
-                            <Grid item className={classes.multiTxtField2}>
-                                <Controls.DropdownPicker
-                                    id="subdivision-dropdown"
-                                    variant="outlined"
-                                    options={formFieldValues.country === "United States" ? US_STATES : CANADIAN_PROVINCES}
-                                    getOptionLabel={(option) => option.name}
-                                    getOptionSelected={(option, value) => option.name === value.name}
-                                    onChange={(event, newValue) => {
-                                        setFormFieldValues({
-                                            ...formFieldValues,
-                                            subdivision: newValue
-                                        });
-                                    }}
-                                    renderInput={(params) =>
-                                        <TextField
-                                            {...params}
-                                            label={formFieldValues.country === "United States" ? "State" : "Province/Territory"}
-                                            variant="outlined"
+                                        <Controls.TextField
+                                            variant={textFieldVariant}
+                                            label="City"
+                                            name="city"
+                                            value={formFieldValues.city}
+                                            onChange={onInputChange}
+                                            inputProps={{
+                                                autoComplete: 'new-password', // disable autocomplete and autofill
+                                            }}
+                                        />
+                                        <Grid container className={classes.multiTxtFieldContainer} spacing={0}>
+                                            <Grid item className={classes.multiTxtField2}>
+                                                <Controls.DropdownPicker
+                                                    id="country-dropdown"
+                                                    variant="outlined"
+                                                    options={COUNTRIES}
+                                                    getOptionLabel={(option) => option.country}
+                                                    inputValue={formFieldValues.country}
+                                                    onInputChange={(event, newInputValue) => {
+                                                        setFormFieldValues({
+                                                            ...formFieldValues,
+                                                            subdivision: {}
+                                                        });
+                                                        setFormFieldValues({
+                                                            ...formFieldValues,
+                                                            country: newInputValue
+                                                        });
+                                                    }}
+                                                    renderInput={(params) =>
+                                                        <TextField
+                                                            {...params}
+                                                            label="Country"
+                                                            variant="outlined"
+                                                            inputProps={{
+                                                                ...params.inputProps,
+                                                                autoComplete: 'new-password', // disable autocomplete and autofill
+                                                            }}
+                                                        />
+                                                    }
+                                                />
 
-                                            inputProps={{
-                                                ...params.inputProps,
-                                                autoComplete: 'new-password', // disable autocomplete and autofill
-                                            }}
-                                        />
-                                    }
+                                            </Grid>
+                                            <Grid item className={classes.multiTxtField2}>
+                                                <Controls.DropdownPicker
+                                                    id="subdivision-dropdown"
+                                                    variant="outlined"
+                                                    options={formFieldValues.country === "United States" ? US_STATES : CANADIAN_PROVINCES}
+                                                    getOptionLabel={(option) => option.name}
+                                                    getOptionSelected={(option, value) => option.name === value.name}
+                                                    onChange={(event, newValue) => {
+                                                        setFormFieldValues({
+                                                            ...formFieldValues,
+                                                            subdivision: newValue
+                                                        });
+                                                    }}
+                                                    renderInput={(params) =>
+                                                        <TextField
+                                                            {...params}
+                                                            label={formFieldValues.country === "United States" ? "State" : "Province/Territory"}
+                                                            variant="outlined"
+
+                                                            inputProps={{
+                                                                ...params.inputProps,
+                                                                autoComplete: 'new-password', // disable autocomplete and autofill
+                                                            }}
+                                                        />
+                                                    }
+                                                />
+                                            </Grid>
+
+                                        </Grid>
+                                    </Box>
+                            : null
+                        }
+                        <Divider style={{ margin: '40px 0 10px', backgroundColor: theme.palette.primary.dark, }} />
+                        <Box className={classes.sectionToggleCheckbox}>
+                            <Controls.Checkbox
+                                checked={formFieldValues.displayPhoneNumberFieldRequired}
+                                onChange={onInputChange}
+                                name="displayPhoneNumberFieldRequired"
+                                color="secondary"
+                                label="I want to advertise my phone number"
+                            />
+                        </Box>
+                        {formFieldValues.displayPhoneNumberFieldRequired ?
+                            <Box>
+                                <Controls.TextField
+                                    variant={textFieldVariant}
+                                    label="Phone Number"
+                                    name="phoneNumber"
+                                    value={formFieldValues.phoneNumber}
+                                    onBlur={(e) => {
+                                        var res = e.target.value.toString().replace(/\D/g, "")
+                                        if (res.length === 10 || res.length === 11) {
+                                            setFormFieldValues({
+                                                ...formFieldValues,
+                                                phoneNumber: formatPhoneNumber(res)
+                                            });
+                                            setManagedErrors({
+                                                ...managedErrors,
+                                                phoneNumber: "",
+                                            })
+                                        }
+                                        else {
+                                            setManagedErrors({
+                                                ...managedErrors,
+                                                phoneNumber: "The phone number must be a full 10 or 11 digit number.",
+                                            })
+                                        }
+                                    }}
+                                    onChange={(event) => onPhoneFieldKeyPressed(event, formFieldValues, setFormFieldValues)}
+                                    placeholder="(000) 000-0000"
+                                    InputProps={{
+                                        endAdornment:
+                                            <IconTextPopover
+                                                msg={"This is the number clients will see in order to contact you."}
+                                                icon={HelpOutlineIcon}
+                                            />
+                                    }}
+                                    inputProps={{
+                                        autoComplete: 'new-password', // disable autocomplete and autofill
+                                    }}
                                 />
-                            </Grid>
-                        </Grid>
-                        <Controls.TextField
-                            variant={textFieldVariant}
-                            label="Phone Number"
-                            name="phoneNumber"
-                            value={formFieldValues.phoneNumber}
-                            onBlur={(e) => {
-                                var res = e.target.value.toString().replace(/\D/g, "")
-                                if (res.length === 10 || res.length === 11) {
-                                    setFormFieldValues({
-                                        ...formFieldValues,
-                                        phoneNumber: formatPhoneNumber(res)
-                                    });
-                                    setManagedErrors({
-                                        ...managedErrors,
-                                        phoneNumber: "",
-                                    })
-                                }
-                                else {
-                                    setManagedErrors({
-                                        ...managedErrors,
-                                        phoneNumber: "The phone number must be a full 10 or 11 digit number.",
-                                    })
-                                }
-                            }}
-                            onChange={(event) => onPhoneFieldKeyPressed(event, formFieldValues, setFormFieldValues)}
-                            placeholder="(000) 000-0000"
-                            inputProps={{
-                                autoComplete: 'new-password', // disable autocomplete and autofill
-                            }}
-                        />
-                        {managedErrors.phoneNumber && (
-                            <DisplayError msg={managedErrors.phoneNumber} styles={classes.fieldErrorMsg} />
-                        )}
+                                {managedErrors.phoneNumber && (
+                                    <DisplayError msg={managedErrors.phoneNumber} styles={classes.fieldErrorMsg} />
+                                )}
+                            </Box>
+                            : null
+                        }
+                        <Divider style={{ margin: '40px 0 10px', backgroundColor: theme.palette.primary.dark, }} />
+                        <div className={classes.sectionToggleCheckbox}>
+                            <Controls.Checkbox
+                                checked={formFieldValues.displayEmailFieldRequired}
+                                onChange={onInputChange}
+                                name="displayEmailFieldRequired"
+                                color="secondary"
+                                label="I want to advertise my email address"
+                            />
+                        </div>
+                        {formFieldValues.displayEmailFieldRequired ?
+                            <Box>
+                                <Controls.TextField
+                                    variant={textFieldVariant}
+                                    label="Email"
+                                    name="email"
+                                    type="text"
+                                    value={formFieldValues.email}
+                                    onChange={onInputChange}
+                                    placeholder="email@example.com"
+                                    InputProps={{
+                                        endAdornment:
+                                            <IconTextPopover
+                                                msg={"This is the email clients will see in order to contact you."}
+                                                icon={HelpOutlineIcon}
+                                            />
+                                    }}
+                                    inputProps={{
+                                        autoComplete: 'new-password', // disable autocomplete and autofill
+                                    }}
+                                />
+                            </Box>
+                            : null
+                        }
+                        <Divider style={{ margin: '40px 0 10px', backgroundColor: theme.palette.primary.dark, }} />
                         <Controls.TextField
                             variant={textFieldVariant}
                             label="Profession or service type"
@@ -413,7 +496,7 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
                             InputProps={{
                                 endAdornment:
                                     <IconTextPopover
-                                        msg={"The type of service you proviode, or your profession. Example: Plumber or plumbing"}
+                                        msg={"The type of service you provide, or your profession. Example: Plumber or plumbing"}
                                         icon={HelpOutlineIcon}
                                     />
                             }}
@@ -447,18 +530,22 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
                                 />
                             </Box>
                             <Box className={classes.searchTermList}>
-                                {formFieldValues.searchTerms.map((serachTerm, index) => {
-                                    return (
-                                        <DeletableListItem
-                                            item={serachTerm}
-                                            key={index}
-                                            index={index}
-                                            stateFieldName="searchTerms"
-                                            state={formFieldValues}
-                                            setState={setFormFieldValues}
-                                        />
-                                    );
-                                })}
+                                {formFieldValues.searchTerms.length !== 0 ?
+                                    formFieldValues.searchTerms.map((searchTerm, index) => {
+                                        return (
+                                            <DeletableListItem
+                                                item={searchTerm}
+                                                key={index}
+                                                index={index}
+                                                stateFieldName="searchTerms"
+                                                state={formFieldValues}
+                                                setState={setFormFieldValues}
+                                            />
+                                        );
+                                    })
+                                    :
+                                    <Typography>No search terms. Add search terms using the field above.</Typography>
+                                }
                             </Box>
                         </Box>
                         <Typography className={classes.sectionTitle} variant="h5">Work Skills Summary</Typography>

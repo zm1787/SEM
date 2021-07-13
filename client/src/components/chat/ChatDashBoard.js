@@ -130,6 +130,7 @@ export default function ChatDashBoard({ location }) {
     // send message setup
     const [message, setMessage] = useState("")
     const auth = useSelector((store) => store.auth)
+    const mode = useSelector((store) => store.mode)
     const socket = useSelector((store) => store.socket)
     const storeActiveChat = useSelector((store) => store.activeChat)
 
@@ -160,11 +161,19 @@ export default function ChatDashBoard({ location }) {
         <div className="chat-parent-grid">
             <div className="contact-list-child-grid">
                 <div className="contact-list-header">
-                    <Typography variant="h4">Contacts</Typography>
+                    {mode === "seeker" && <Typography variant="h4">Contacts</Typography>}
+                    {mode === "business" && <Typography variant="h4">Clients</Typography>}
                 </div>
                 <div className="contact-list">
-                    {auth.user ?
-                        auth.user.friends.map((friend, index) => {
+                    {auth.user && mode === "seeker" ?
+                        auth.user.contacts.businesses.map((friend, index) => {
+                            return (
+                                <Contact key={index} friend={friend} activeChat={activeChat} setActiveChat={setActiveChat} auth={auth} />
+                            )
+                        })
+                        :
+                        auth.user && mode === "business" ?
+                        auth.user.contacts.clients.map((friend, index) => {
                             return (
                                 <Contact key={index} friend={friend} activeChat={activeChat} setActiveChat={setActiveChat} auth={auth} />
                             )
@@ -181,13 +190,17 @@ export default function ChatDashBoard({ location }) {
             </div>
             <div className="current-chat-grid">
                 <div className="current-chat-header">
-                    <Typography variant="h5">Chatting with {activeChat.friendName}</Typography>
+                    <Typography variant="h5">Chatting with {activeChat.friendName} {/*mode === "seeker" ? `from ${activeChat}`*/}</Typography>
                 </div>
                 <div className="current-chat-display">
+                    
                     {!arrayIsEmpty(storeActiveChat.messages) ?
                         <ActiveChat messages={storeActiveChat.messages} />
                         :
+                        storeActiveChat.id !== "" ? 
                         <h4>This chat is empty. Send a Message to start chatting!</h4>
+                        :
+                        <h4>Please select a chat.</h4>
                     }
                 </div>
                 <form className="current-chat-form" onSubmit={e => sendMessage(e)}>

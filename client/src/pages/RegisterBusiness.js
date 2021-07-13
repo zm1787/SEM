@@ -24,6 +24,7 @@ const initialValues = {
     country: "",
     subdivision: {},
     phoneNumber: "",
+    email: "",
     serviceType: "",
     searchTerms: [],
     wageType: "contract",
@@ -94,12 +95,19 @@ export default function RegisterBusiness() {
         if (e.key === 'Enter') return;
         dispatch(clearErrors()); // clear server errors
         const {
+            // Section display controls (bool switches)
+            displayAddressFields,
+            displayEmailFieldRequired,
+            displayPhoneNumberFieldRequired,
+
+            // Information fields
             businessName,
             streetAddress,
             city,
             country,
             subdivision,
             phoneNumber,
+            email,
             serviceType,
             searchTerms,
             wageType,
@@ -126,6 +134,10 @@ export default function RegisterBusiness() {
         }
 
         const newBusiness = {
+            hasAddress: displayAddressFields,
+            hasEmail: displayEmailFieldRequired,
+            hasPhoneNumber: displayPhoneNumberFieldRequired,
+
             businessName,
             address: {
                 streetAddress,
@@ -135,6 +147,7 @@ export default function RegisterBusiness() {
                 country,
             },
             phoneNumber,
+            email,
             serviceType,
             searchTerms,
             businessDescription,
@@ -149,7 +162,7 @@ export default function RegisterBusiness() {
             newBusiness.hourlyWage = wage;
         }
 
-        // console.log("New Business Info: ", newBusiness);
+        console.log("New Business Info: ", newBusiness);
         // console.log("Selected Tier: ", selectedTier);
         // console.log("Credit Card Information: ", creditCardState);
 

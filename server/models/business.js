@@ -14,33 +14,38 @@ export const businessSchema = mongoose.Schema({
     address: { 
         streetAddress: { 
             type: String,
-            required: true
+            required: false
         },
         city: {
             type: String,
-            required: true
+            required: false
         },
         subdivisionName: { 
             type: String,
-            required: true
+            required: false
         },
         subdivisionCode: { 
             type: String,
-            required: true
+            required: false
         },
         country: { 
             type: String,
-            required: true
+            required: false
         },
         full: { 
             type: String,
-            required: true
+            required: false
         },
     },
 
     phoneNumber: {
         type: String,
-        required: true
+        required: false
+    },
+
+    email: {
+        type: String,
+        required: false
     },
 
     serviceType: {

@@ -56,6 +56,7 @@ export const startSocketServer = (server) => {
                 io.to(onlineUsers[data.sender_id]).emit('message-from-server', { message: "You're already friends with this user." })
                 return;
             }
+            
 
             // Create new notification if not already exists
             var newNotification = await saveNotification(data);

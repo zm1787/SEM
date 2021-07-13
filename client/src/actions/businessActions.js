@@ -34,7 +34,7 @@ export const registerBusiness = (newBusinessInfo) => async (dispatch, getState) 
         dispatch({ type: REGISTER_BUSINESS });
         const { data } = await api.registerBusiness(body, tokenConfig(getState));
         dispatch({ type: REGISTER_BUSINESS_SUCCESS, payload: data });
-        history.push("/myBusinesses");
+        history.push("/my-business-list");
     } catch (error) {
         if (error.response !== undefined) {
             dispatch(returnErrors(error.response.data, error.response.status, 'REGISTER_BUSINESS_FAIL'));

@@ -6,8 +6,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        margin: theme.spacing(5),
-        padding: theme.spacing(3),
+        //margin: theme.spacing(5),
+        //padding: theme.spacing(3),
+        display: 'flex',
+        justifyContent: 'space-evenly',
+        flexWrap: 'wrap',
     }
 }))
 

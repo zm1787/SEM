@@ -5,7 +5,7 @@ import Message from '../models/message.js';
 import mongoose from 'mongoose';
 
 export const saveNotification = async (data) => {
-    const { sender_id, receiver_id, type, senderName } = data;
+    const { sender_id, receiver_id, type, senderName, businessName } = data;
 
     // Request validation
     if(!sender_id) {
@@ -30,6 +30,7 @@ export const saveNotification = async (data) => {
         type,
         senderName,
         sender_id,
+        businessName,
         receiver_id,
     });
 
@@ -62,54 +63,64 @@ export const addNewFriendPair = async (request) => {
     // Return values
     let friends = {}
 
-    // Add friend to sender's list of friends
+    // Add friend to sender's (client's) list of friends
     var conditions = {
         _id: request.sender_id,
-        'friends.friend_id': { $ne: request.receiver_id }
+        //'friends.friend_id': { $ne: request.receiver_id },
+        'contacts.businesses.contact_id': { $ne: request.receiver_id },
     };
-    var newFriend1 = {
-        friend_id: request.receiver_id,
+    var provider = {
+        //friend_id: request.receiver_id,
+        contact_id: request.receiver_id,
+        businessName: request.businessName,
         name: request.receiverName,
     }
+    console.log(provider)
     var update = {
-        $addToSet: { friends: newFriend1 },
+        //$addToSet: { friends: provider },
+        $addToSet: { 'contacts.businesses': provider },
     };
 
     const user1 = await User.findOneAndUpdate(conditions, update, { new: true });
     
-    // Add friend to receiver's list of friends
+    // Add friend to receiver's (busniness provider's) list of friends
     conditions = {
         _id: request.receiver_id,
-        'friends.friend_id': { $ne: request.sender_id }
+        //'friends.friend_id': { $ne: request.sender_id },
+        'contacts.clients.contact_id': { $ne: request.sender_id },
     };
-    var newFriend2 = {
-        friend_id: request.sender_id,
+    var client = {
+        //friend_id: request.sender_id,
+        contact_id: request.sender_id,
         name: request.senderName,
     }
     
     update = {
-        $addToSet: { friends: newFriend2 },
+        //$addToSet: { friends: client },
+        $addToSet: { 'contacts.clients': client },
         $pull: { notifications: { _id: new mongoose.Types.ObjectId(request._id) } } // Remove notification from list.
     };
     
     const user2 = await User.findOneAndUpdate(conditions, update, { new: true } );
     
-    friends.sendersNewFriend = newFriend1
-    friends.receiversNewFriend = newFriend2
+    friends.sendersNewFriend = provider
+    friends.receiversNewFriend = client
     
+    const chat = await createChat(request.sender_id, request.receiver_id);
+
     return friends;
 }
 
-export const createChat = async (user1_id, user2_id) => {
+export const createChat = async (client_id, provider_id) => {
     const newChat = new Chat();
     newChat.save();
 
     // Save new chat id in both users
     await User.findOneAndUpdate(
-        { "_id": user1_id, "friends.friend_id": user2_id },
+        { "_id": client_id, "contacts.businesses.contact_id": provider_id },
         { 
             "$set": {
-                "friends.$.chat_id": newChat._id
+                "contacts.businesses.$.chat_id": newChat._id
             }
         },
         {
@@ -127,10 +138,10 @@ export const createChat = async (user1_id, user2_id) => {
     );
 
     await User.findOneAndUpdate(
-        { "_id": user2_id, "friends.friend_id": user1_id },
+        { "_id": provider_id, "contacts.clients.contact_id": client_id },
         { 
             "$set": {
-                "friends.$.chat_id": newChat._id
+                "contacts.clients.$.chat_id": newChat._id
             }
         },
         {

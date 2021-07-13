@@ -64,11 +64,28 @@ const authReducer = (state = initialState, action) => {
             }
 
         case ADD_FRIEND:
-            return {
-                ...state,
-                user: {
-                    ...state.user,
-                    friends: [...state.user.friends, action.payload]
+            if(action.payload.businessName) {
+                // if new friend has business name, it's a business
+                return {
+                    ...state,
+                    user: {
+                        ...state.user,
+                        contacts: {
+                            businesses: [...state.user.friends, action.payload]
+                        }
+                    }
+                }
+            }
+            else {
+                // if new friend has no business name, it's a client
+                return {
+                    ...state,
+                    user: {
+                        ...state.user,
+                        contacts: {
+                            clients: [...state.user.friends, action.payload]
+                        }
+                    }
                 }
             }
             

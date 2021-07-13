@@ -9,9 +9,14 @@ import Stripe from 'stripe';
 export const registerBusiness = async (req, res) => {
     try {
         const {
+            hasAddress,
+            hasEmail,
+            hasPhoneNumber,
+
             businessName,
             address,
             phoneNumber,
+            email,
             serviceType,
             searchTerms,
             businessDescription,
@@ -22,12 +27,17 @@ export const registerBusiness = async (req, res) => {
         } = req.body;
 
         // Validation
+        if ((hasAddress && (!address.country || !address.city || !address.subdivisionName || !address.streetAddress))) {
+            return res.status(400).json({ msg: 'Please make sure the business address section is correctly filled or uncheck the "I want to advertise an address" checkbox.' });
+        }
+        if ((!phoneNumber && hasPhoneNumber)) {
+            return res.status(400).json({ msg: 'Please add a phone number or uncheck the "I want to advertise my phone number" checkbox.' });
+        }
+        if ((!email && hasEmail)) {
+            return res.status(400).json({ msg: 'Please add an email address or uncheck the "I want to advertise my email address" checkbox.' });
+        }
+
         if (!businessName
-            || !address.country
-            || !address.city
-            || !address.subdivisionName
-            || !address.streetAddress
-            || !phoneNumber
             || !serviceType
             || !selectedTier
             || !businessDescription
@@ -36,7 +46,6 @@ export const registerBusiness = async (req, res) => {
         ) {
             return res.status(400).json({ msg: "Please make sure all fields in the form have been correctly filled before signing up a business." });
         }
-
 
         const fullAddress = `${address.streetAddress}, ${address.city}, ${address.subdivisionCode}, ${address.country}`;
         const existingBusiness = await Business.findOne({ name: businessName, 'address.full': fullAddress });
@@ -48,10 +57,6 @@ export const registerBusiness = async (req, res) => {
             return res.status(400).json({ msg: "Please read and agree to the Terms of Service." });
         }
 
-        // Validate Payment?
-
-        // Verify and set membership level (bronze, silver, gold)
-
         const newBusiness = new Business({
             name: businessName,
             address: {
@@ -60,6 +65,7 @@ export const registerBusiness = async (req, res) => {
             },
             owner: req.user, // Add userID to owners
             phoneNumber,
+            email,
             serviceType,
             keySearchTerms: [...searchTerms],
             description: businessDescription,
@@ -91,11 +97,11 @@ export const myBusinesses = async (req, res) => {
     try {
         // Find all objecs that follows/fits the User model
         const user = await User.findById(req.user).select('businesses');
-        
+
         console.log(user.businesses)
 
         const businesses = await Business.find({
-            '_id': { $in: user.businesses}
+            '_id': { $in: user.businesses }
         }).select('_id name')
 
         console.log(businesses)
@@ -124,7 +130,7 @@ export const fetchBusinessDetails = async (req, res) => {
 
 export const getNearbyBusinesses = async (req, res) => {
     try {
-        let businesses = await Business.find({ $or:[{'address.city': "Dieppe"}, {'address.city': "Moncton"}] }).lean()
+        let businesses = await Business.find(/*{ $or: [{ 'address.city': "Dieppe" }, { 'address.city': "Moncton" }] }*/).lean()
 
         var user;
         for (const business of businesses) {

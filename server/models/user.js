@@ -51,13 +51,12 @@ const userSchema = mongoose.Schema({
         required: true,
     },
 
-    profession: String,
-
     businesses: [mongoose.Schema.Types.ObjectId],
 
     notifications: [Notification],
 
-    // List of contacts and id of chat for that contact
+    // ########################################################################
+    // TO BE REMOVED AFTER "contacts" IS FULLY FUNCTIONNAL
     friends: [{
         friend_id: {
             type: mongoose.Schema.Types.ObjectId,
@@ -69,28 +68,46 @@ const userSchema = mongoose.Schema({
         },
         chat_id: mongoose.Schema.Types.ObjectId,
     }],
+    // ########################################################################
 
-    clients: [{
-        client_id: {
-            type: mongoose.Schema.Types.ObjectId,
-            required: true,
-        },
-        name: {
-            type: String,
-            required: true,
-        },
-        chat_id: mongoose.Schema.Types.ObjectId,
-    }],
+    contacts: {
+        businesses: [{
+            contact_id: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true,
+            },
+            businessName: {
+                type: String,
+                required: true,
+            },
+            name: {
+                type: String,
+                required: true,
+            },
+            chat_id: mongoose.Schema.Types.ObjectId,
+        }],
+        clients: [{
+            contact_id: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true,
+            },
+            name: {
+                type: String,
+                required: true,
+            },
+            chat_id: mongoose.Schema.Types.ObjectId,
+        }],
+    },
 
-    contactRequestsReceived: [{
-        contact_id: mongoose.Schema.Types.ObjectId,
-        status: String,
-    }],
+    // contactRequestsReceived: [{
+    //     contact_id: mongoose.Schema.Types.ObjectId,
+    //     status: String,
+    // }],
 
-    contactRequestsSent: [{
-        contact_id: mongoose.Schema.Types.ObjectId,
-        status: String,
-    }],
+    // contactRequestsSent: [{
+    //     contact_id: mongoose.Schema.Types.ObjectId,
+    //     status: String,
+    // }],
 
     createdAt: {
         type: Date,

@@ -1,9 +1,9 @@
 import React from 'react'
-import { Checkbox as MuiCheckbox, Divider, FormControlLabel as MuiFormControlLabel, withStyles } from '@material-ui/core';
+import { Checkbox as MuiCheckbox, FormControlLabel as MuiFormControlLabel, withStyles } from '@material-ui/core';
 
 const FormControlLabel = withStyles(theme => ({
     root: {
-        marginLeft: theme.spacing(4),
+        //marginLeft: theme.spacing(4),
     },
 }))(MuiFormControlLabel);
 
