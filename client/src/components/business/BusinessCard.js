@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import {
     Card,
     CardMedia,
@@ -96,11 +97,19 @@ export default function BusinessCard({ business }) {
                         {business.phoneNumber && <Typography color="textSecondary" variant="body1"><PhoneIcon /> {business.phoneNumber}</Typography>}
                     </div>
                 </CardContent>
-                <CardActions className={classes.messageButtonContainer} >
-                    <Button variant="outlined" size="small" color="primary" onClick={onSendFriendRequest}>
-                        Message with S.E.M
-                    </Button>
-                </CardActions>
+                {business.hasScheduleApp ?
+                    <div>
+                        <CardActions className={classes.messageButtonContainer} >
+                            <Link  to={{ pathname: business.linkToSchedule }} target="_blank" rel="noopener noreferrer" >
+                                <Button variant="outlined" size="small" color="primary" >
+                                    Schedule appointment
+                                </Button>
+                            </Link>
+                        </CardActions>
+                    </div>
+                    :
+                    null
+                }
             </Card>
         </div >
     )

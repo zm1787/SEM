@@ -13,6 +13,9 @@ export const registerBusiness = async (req, res) => {
             hasEmail,
             hasPhoneNumber,
 
+            hasScheduleApp,
+            linkToSchedule,
+
             businessName,
             address,
             phoneNumber,
@@ -24,6 +27,7 @@ export const registerBusiness = async (req, res) => {
             hourlyWage,
             policyChecked,
             selectedTier,
+            
         } = req.body;
 
         // Validation
@@ -35,6 +39,9 @@ export const registerBusiness = async (req, res) => {
         }
         if ((!email && hasEmail)) {
             return res.status(400).json({ msg: 'Please add an email address or uncheck the "I want to advertise my email address" checkbox.' });
+        }
+        if ((!linkToSchedule && hasScheduleApp)) {
+            return res.status(400).json({ msg: 'Please add a link to your scheduling application page or uncheck the "I want to advertise my email address" checkbox.' });
         }
 
         if (!businessName
@@ -71,6 +78,8 @@ export const registerBusiness = async (req, res) => {
             description: businessDescription,
             wageType,
             hourlyWage,
+            hasScheduleApp,
+            linkToSchedule,
             selectedTier,
         });
 
@@ -81,7 +90,7 @@ export const registerBusiness = async (req, res) => {
         );
 
         // Save new business in business collection
-        newBusiness.save();
+        await newBusiness.save();
 
         res.json({
             business: newBusiness,
@@ -98,13 +107,13 @@ export const myBusinesses = async (req, res) => {
         // Find all objecs that follows/fits the User model
         const user = await User.findById(req.user).select('businesses');
 
-        console.log(user.businesses)
+        console.log("\n\nuser.businesses:", user.businesses)
 
         const businesses = await Business.find({
-            '_id': { $in: user.businesses }
+            _id: { $in: user.businesses }
         }).select('_id name')
 
-        console.log(businesses)
+        console.log("\nbusinesses:", businesses)
 
         // Return status 200 (Ok), and .json array of found user object in database to front-end
         res.status(200).json(businesses);
@@ -125,6 +134,22 @@ export const fetchBusinessDetails = async (req, res) => {
         res.status(200).json(selectedBusiness);
     } catch (error) {
         res.status(404).json({ msg: error.message });
+    }
+}
+
+export const updateBusiness = async (req, res) => {
+    try {
+        const { id: _id } = req.params; 
+        const business = req.body;
+
+        if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No business with that id')
+
+        const updatedBusiness = await Business.findByIdAndUpdate(_id, { ...business, _id }, { new: true });
+
+        console.log(updatedBusiness)
+        res.json(updatedBusiness);
+    } catch (error) {
+        res.status(500).json({ msg: error.message });
     }
 }
 

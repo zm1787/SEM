@@ -65,6 +65,17 @@ export const businessSchema = mongoose.Schema({
     
     hourlyWage: {
         type: String,
+        equired: false,
+    },
+
+    hasScheduleApp: {
+        type: Boolean,
+        required: true,
+    },
+    
+    linkToSchedule: {
+        type: String,
+        required: false,
     },
 
     keySearchTerms: [String],

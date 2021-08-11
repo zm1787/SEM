@@ -104,7 +104,7 @@ export default function MyBusinessList() {
                         businesses.map((business, index) => {
                             return (
                                 <Link className={classes.logoTextLink}
-                                    key={business._id} 
+                                    key={index} 
                                     to={{
                                         pathname: '/view-my-business',
                                         state: {
@@ -112,7 +112,7 @@ export default function MyBusinessList() {
                                         }
                                     }}
                                 >
-                                    <Typography key={business._id} variant="body1" className={classes.businessItem}>{business.name}</Typography>
+                                    <Typography key={index} variant="body1" className={classes.businessItem}>{business.name}</Typography>
                                 </Link>
                             );
                         })

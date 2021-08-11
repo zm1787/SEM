@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { makeStyles, TextField, Box, InputAdornment, Typography, Divider } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+import { makeStyles, TextField, Box, InputAdornment, Typography, Divider, Button } from '@material-ui/core';
 import EditButton from './EditButton';
 import CancelButton from './CancelButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Controls from '../../controls';
 import WagesRadio from '../registerForm/WagesRadio';
 import DeletableListItem from '../registerForm/DeletableListItem';
+
+import { updateBusinesses } from '../../../actions/businessActions';
 
 import { useForm } from '../../useForm';
 
@@ -20,6 +22,11 @@ const useStyles = makeStyles(theme => ({
         textAlign: 'center',
         //backgroundColor: theme.palette.background.nav,
         borderBottom: `1px solid ${theme.palette.primary.main}`,
+    },
+    endBtnsFlexContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
     },
     flexContainer: {
         display: 'flex',
@@ -49,6 +56,41 @@ const useStyles = makeStyles(theme => ({
         marginTop: "15px",
         marginBottom: "20px",
     },
+    wageContainer: {
+        display: 'flex',
+        alignItems: 'flex-end',
+    },
+    searchTermsFieldAndButtonContainer: {
+        marginTop: "15px",
+        display: 'flex',
+        alignItems: 'center',
+        marginBottom: '15px',
+    },
+    searchTermsFieldDiv: {
+        marginRight: '5px',
+    },
+    addButton: {
+        height: '50px',
+    },
+    descriptionBox: {
+        padding: '10px',
+        marginTop: '20px',
+        //border: `1px solid ${theme.palette.primary.main}`,
+        backgroundColor: `${theme.palette.background.darkest}`,
+        borderRadius: '15px'
+    },
+    businessDescription: {
+        '& .MuiInputBase-root': {
+            width: '100%',
+            //borderRadius: '28px',
+        },
+    },
+    descriptionField: {
+        width: '100%',
+        '& input:focus': {
+            outline: 'none',
+        },
+    },
 }))
 
 function isEmptyOrSpaces(str) {
@@ -58,13 +100,41 @@ function isEmptyOrSpaces(str) {
 const SelectedBusiness = () => {
     const classes = useStyles();
     const businessStore = useSelector((store) => store.business);
+    const dispatch = useDispatch();
 
     const [editMode, setEditMode] = useState(false);
 
     const initialValues = {
+        searchTerms: [],
+        streetAddress: "",
+        city: "",
+        subdivision: "",
+        country: "",
         wageType: "",
+        hourlyWage: "",
+        name: "",
+        phoneNumber: "",
+        email: "",
+        serviceType: "",
+        description: "",
+        selectedTier: "",
     }
-    const initialManagedErrors = {}
+
+    const initialManagedErrors = {
+        searchTerms: "",
+        streetAddress: "",
+        city: "",
+        subdivision: "",
+        country: "",
+        wageType: "",
+        hourlyWage: "",
+        name: "",
+        phoneNumber: "",
+        email: "",
+        serviceType: "",
+        description: "",
+        selectedTier: "",
+    }
 
     const {
         formFieldValues: business,
@@ -82,11 +152,8 @@ const SelectedBusiness = () => {
     useEffect(() => {
         if (businessStore.businessDetails) {
             const data = {
-                hourlyWage: "",
                 ...businessStore.businessDetails,
-                keySearchTerms: undefined,
-                address: undefined,
-                searchTerms: businessStore.businessDetails.keySearchTerms,
+                searchTerms: JSON.parse(JSON.stringify(businessStore.businessDetails.keySearchTerms)), // Get a copy of the array, not reference.
                 streetAddress: businessStore.businessDetails.address.streetAddress,
                 city: businessStore.businessDetails.address.city,
                 subdivision: businessStore.businessDetails.address.subdivisionName,
@@ -153,22 +220,56 @@ const SelectedBusiness = () => {
 
     const onCancelEdit = () => {
         // Reset business state
-        setBusiness({
+        const data = {
             ...businessStore.businessDetails,
-            address: undefined,
+            searchTerms: businessStore.businessDetails.keySearchTerms,
             streetAddress: businessStore.businessDetails.address.streetAddress,
             city: businessStore.businessDetails.address.city,
             subdivision: businessStore.businessDetails.address.subdivisionName,
             country: businessStore.businessDetails.address.country,
+        }
+        delete data.keySearchTerms;
+        delete data.address;
+        setBusiness({
+            ...data
         })
         // Toggle mode
         setEditMode(!editMode)
     }
 
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        //console.log(business)
+
+        // data cleaning (matching business schema)
+        const newBusiness = {
+            ...business,
+            address: { 
+                streetAddress: business.streetAddress,
+                city: business.city,
+                subdivisionName: business.subdivision,
+                //subdivisionCode: business.subdivisionCode, // TODO
+                country: business.country,
+                full: `${business.streetAddress}, ${business.city}, ${business.subdivision}, ${business.country}`,
+            },
+            keySearchTerms: business.searchTerms,
+        }
+
+        delete newBusiness.streetAddress
+        delete newBusiness.city
+        delete newBusiness.subdivision
+        delete newBusiness.country
+        delete newBusiness.searchTerms
+        console.log("newBusiness", newBusiness)
+
+        await dispatch(updateBusinesses(newBusiness));
+        toggleMode();
+    }
+
     return (
         <div className={classes.root}>
             {business ?
-                <form>
+                <form onSubmit={ (e) => onSubmit(e)}>
                     <h2 className={classes.title}>{business.name}</h2>
                     <div className={classes.infoContainer}>
                         {business.streetAddress &&
@@ -179,7 +280,7 @@ const SelectedBusiness = () => {
                                         className={classes.textField}
                                         variant="outlined"
                                         name="streetAddress"
-                                        defaultValue={business.streetAddress}
+                                        //defaultValue={business.streetAddress}
                                         value={business.streetAddress}
                                         onChange={onInputChange}
                                         inputProps={{
@@ -199,7 +300,7 @@ const SelectedBusiness = () => {
                                         className={classes.textField}
                                         variant="outlined"
                                         name="city"
-                                        defaultValue={business.city}
+                                        //defaultValue={business.city}
                                         value={business.city}
                                         onChange={onInputChange}
                                         inputProps={{
@@ -219,7 +320,7 @@ const SelectedBusiness = () => {
                                         className={classes.textField}
                                         variant="outlined"
                                         name="subdivision"
-                                        defaultValue={business.subdivision}
+                                        //defaultValue={business.subdivision}
                                         value={business.subdivision}
                                         onChange={onInputChange}
                                         inputProps={{
@@ -239,7 +340,7 @@ const SelectedBusiness = () => {
                                         className={classes.textField}
                                         variant="outlined"
                                         name="country"
-                                        defaultValue={business.country}
+                                        //defaultValue={business.country}
                                         value={business.country}
                                         onChange={onInputChange}
                                         inputProps={{
@@ -260,7 +361,7 @@ const SelectedBusiness = () => {
                                         className={classes.textField}
                                         variant="outlined"
                                         name="serviceType"
-                                        defaultValue={business.serviceType}
+                                        //defaultValue={business.serviceType}
                                         value={business.serviceType}
                                         onChange={onInputChange}
                                         inputProps={{
@@ -280,7 +381,7 @@ const SelectedBusiness = () => {
                                         className={classes.textField}
                                         variant="outlined"
                                         name="phoneNumber"
-                                        defaultValue={business.phoneNumber}
+                                        //defaultValue={business.phoneNumber}
                                         value={business.phoneNumber}
                                         onChange={onInputChange}
                                         inputProps={{
@@ -300,7 +401,7 @@ const SelectedBusiness = () => {
                                         className={classes.textField}
                                         variant="outlined"
                                         name="email"
-                                        defaultValue={business.email}
+                                        //defaultValue={business.email}
                                         value={business.email}
                                         onChange={onInputChange}
                                         inputProps={{
@@ -315,56 +416,58 @@ const SelectedBusiness = () => {
                         {editMode ?
                             <>
                                 <Divider className={classes.Ymargins} />
-                                <WagesRadio
-                                    name="wageType"
-                                    radioValue={business.wageType}
-                                    formFieldValues={business}
-                                    setFormFieldValues={setBusiness}
-                                />
-                                {
-                                    business.wageType === "hourly" &&
-                                    <>
-                                        <Box className={classes.wageMoneyField}>
-                                            <TextField
-                                                variant="outlined"
-                                                name="wage"
-                                                value={business.hourlyWage}
-                                                placeholder="0.00"
-                                                onChange={(e) => onMoneyFieldKeyPressed(e)}
-                                                onBlur={(e) => {
-                                                    if (e.target.value !== "") {
-                                                        // format
-                                                        setBusiness({
-                                                            ...business,
-                                                            hourlyWage: parseFloat(e.target.value).toFixed(2)
-                                                        });
-                                                        setManagedErrors({
-                                                            ...managedErrors,
-                                                            hourlyWage: "",
-                                                        })
-                                                    }
-                                                    else {
-                                                        setManagedErrors({
-                                                            ...managedErrors,
-                                                            hourlyWage: "Please enter a wage amount.",
-                                                        })
-                                                    }
-                                                    // validate
+                                <Box className={classes.wageContainer}>
+                                    <WagesRadio
+                                        name="wageType"
+                                        radioValue={business.wageType}
+                                        formFieldValues={business}
+                                        setFormFieldValues={setBusiness}
+                                    />
+                                    {
+                                        business.wageType === "hourly" &&
+                                        <>
+                                            <Box className={classes.wageMoneyField}>
+                                                <TextField
+                                                    variant="outlined"
+                                                    name="hourlyWage"
+                                                    value={business.hourlyWage}
+                                                    placeholder="0.00"
+                                                    onChange={(e) => onMoneyFieldKeyPressed(e)}
+                                                    onBlur={(e) => {
+                                                        if (e.target.value !== "") {
+                                                            // format
+                                                            setBusiness({
+                                                                ...business,
+                                                                hourlyWage: parseFloat(e.target.value).toFixed(2)
+                                                            });
+                                                            setManagedErrors({
+                                                                ...managedErrors,
+                                                                hourlyWage: "",
+                                                            })
+                                                        }
+                                                        else {
+                                                            setManagedErrors({
+                                                                ...managedErrors,
+                                                                hourlyWage: "Please enter a wage amount.",
+                                                            })
+                                                        }
+                                                        // validate
 
-                                                }}
-                                                inputProps={{
-                                                    autoComplete: 'new-password', // disable autocomplete and autofill
-                                                }}
-                                                InputProps={{
-                                                    startAdornment: <InputAdornment position="start"><Typography className={classes.moneySign}>$</Typography></InputAdornment>,
-                                                }}
-                                            />
-                                        </Box>
-                                        {managedErrors.wage && (
-                                            <DisplayError msg={managedErrors.wage} styles={classes.fieldErrorMsg} />
-                                        )}
-                                    </>
-                                }
+                                                    }}
+                                                    inputProps={{
+                                                        autoComplete: 'new-password', // disable autocomplete and autofill
+                                                    }}
+                                                    InputProps={{
+                                                        startAdornment: <InputAdornment position="start"><Typography className={classes.moneySign}>$</Typography></InputAdornment>,
+                                                    }}
+                                                />
+                                            </Box>
+                                            {managedErrors.wage && (
+                                                <DisplayError msg={managedErrors.wage} styles={classes.fieldErrorMsg} />
+                                            )}
+                                        </>
+                                    }
+                                </Box>
                                 <Divider className={classes.Ymargins} />
                             </>
                             :
@@ -385,20 +488,9 @@ const SelectedBusiness = () => {
                                     <h5 style={{ display: 'inline' }}>Contract</h5>
                                 </div>
                         }
-                        <h5 className={classes.info}>
-                            Key Search Terms: {business.searchTerms && business.searchTerms.map((term, index) => {
-                                if (index + 1 !== business.searchTerms.length)
-                                    return (
-                                        <span className={classes.capitalize} key={index}>{term + ", "} </span>
-                                    );
-                                else
-                                    return (
-                                        <span className={classes.capitalize} key={index}>{term} </span>
-                                    );
-                            })}
-                        </h5>
-                        {business.searchTerms &&
+                        {business.searchTerms && editMode ?
                             <Box className={classes.searchTermsOuterContainer}>
+                                <Typography color="textSecondary">Search Terms</Typography>
                                 <Box className={classes.searchTermsFieldAndButtonContainer}>
                                     <Box className={classes.searchTermsFieldDiv}>
                                         <TextField
@@ -411,6 +503,7 @@ const SelectedBusiness = () => {
                                     <Controls.Button className={classes.addButton}
                                         onClick={(e) => onClickAdd(e)}
                                         text="Add"
+                                        size="small"
                                     />
                                 </Box>
                                 <Box className={classes.searchTermList}>
@@ -432,21 +525,68 @@ const SelectedBusiness = () => {
                                     }
                                 </Box>
                             </Box>
+                            :
+                            <>
+                                <h5 className={classes.info} style={{ display: 'inline' }}>Search Terms:</h5>
+                                <h5 style={{ display: 'inline' }}>
+                                    {business.searchTerms && business.searchTerms.map((term, index) => {
+                                        if (index + 1 !== business.searchTerms.length)
+                                            return (
+                                                <span className={classes.capitalize} key={index}>{term + ", "} </span>
+                                            );
+                                        else
+                                            return (
+                                                <span className={classes.capitalize} key={index}>{term} </span>
+                                            );
+                                    })}
+                                </h5>
+                            </>
                         }
-                        <h5 className={classes.info}>{business.description}</h5>
-                        <h5 className={`${classes.info} ${classes.capitalize}`}>Tier: {business.selectedTier}</h5>
+                        <Divider className={classes.Ymargins} />
+                        {editMode ?
+                            <>
+                                <h5 className={classes.info} style={{ display: 'inline' }}>Description</h5>
+                                <Box className={classes.descriptionBox}>
+                                    <TextField
+                                        className={classes.descriptionField}
+                                        variant="outlined"
+                                        name="description"
+                                        multiline
+                                        //rowsMax={6}
+                                        rows={3}
+                                        value={business.description}
+                                        onChange={onInputChange}
+                                        inputProps={{
+                                            autoComplete: 'new-password', // disable autocomplete and autofill
+                                        }}
+                                    />
+                                </Box>
+                            </>
+                            :
+                            <>
+                                <h5 >Description</h5>
+                                <Box className={classes.descriptionBox}>
+                                    <Typography variant='body1'>{business.description}</Typography>
+                                </Box>
+                            </>
+                        }
+                        <Divider className={classes.Ymargins} />
+                        {/* <h5 className={`${classes.info} ${classes.capitalize}`}>Tier: {business.selectedTier}</h5> */}
                         <div>
                             {editMode ?
-                                <CancelButton toggleMode={onCancelEdit} />
+                                <Box className={classes.endBtnsFlexContainer}>
+                                    <CancelButton toggleMode={onCancelEdit} />
+                                    <Button style={{marginLeft: 20}} color="primary" variant="contained" type="submit" size="medium">Submit Changes</Button>
+                                </Box>
                                 :
                                 <EditButton toggleMode={toggleMode} />
                             }
                         </div>
-                        <div>
+                        {/* <div>
                             <Controls.Button
                                 text="Upgrade Business Tier"
                             />
-                        </div>
+                        </div> */}
                     </div>
                 </form>
                 :

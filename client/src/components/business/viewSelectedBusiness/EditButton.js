@@ -16,7 +16,7 @@ const EditButton = ({ toggleMode }) => {
             className={classes.button}
             variant="contained"
             color="secondary"
-            size="small"
+            size="medium"
             onClick={toggleMode}
             startIcon={<EditIcon />}
         >

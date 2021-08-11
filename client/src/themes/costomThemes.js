@@ -75,7 +75,7 @@ export const darkBlue = {
 
         background: {
             default: '#1a2632',
-            darkest: '#1a2632',
+            darkest: '#121b23',
 
             field: '#354b64',
 

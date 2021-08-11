@@ -21,7 +21,7 @@ export default function BusinessCardsList() {
 
     return (
         <div className={classes.root}>
-            { businessStore.nearbyBusinesses &&
+            { businessStore.nearbyBusinesses.length !== 0 && auth.user &&
                 businessStore.nearbyBusinesses.map((business) => {
                     return (
                         business.owner._id !== auth.user._id ?

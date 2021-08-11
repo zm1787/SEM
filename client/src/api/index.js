@@ -17,6 +17,8 @@ export const registerBusiness = (newBusiness, config) => axios.post(`${businessU
 export const fetchMyBusinesses = (config) => axios.get(`${businessUrl}/myBusinesses`, config); 
 export const getNearbyBusinesses = (config) => axios.get(`${businessUrl}/getNearbyBusinesses`, config); 
 export const fetchBusinessDetails = (businessID, config) => axios.get(`${businessUrl}/fetchBusinessDetails/${businessID}`, config); 
+export const updateBusinesses = (id, updatedBusinesses, config) => axios.patch(`${businessUrl}/${id}`, updatedBusinesses, config)
+
 
 // CHAT
 export const fetchChat = (friend_id, config) => {

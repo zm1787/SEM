@@ -12,6 +12,10 @@ import {
     FETCH_MY_BUSINESSES,
     FETCH_MY_BUSINESSES_SUCCESS,
 
+    UPDATE_BUSINESSES,
+    UPDATE_BUSINESSES_FAIL,
+    UPDATE_BUSINESSES_SUCCESS,
+
     GET_NEARBY_BUSINESSES,
     GET_NEARBY_BUSINESSES_FAIL,
     GET_NEARBY_BUSINESSES_SUCCESS,
@@ -33,17 +37,20 @@ const initialState = {
 
 const businessReducer = (state = initialState, action) => {
     switch (action.type) {
+        case UPDATE_BUSINESSES:
         case FETCH_BUSINESS_DETAILS:
             return {
                 ...state,
                 businessDetailsIsLoading: true
             };
+        case UPDATE_BUSINESSES_SUCCESS:
         case FETCH_BUSINESS_DETAILS_SUCCESS:
             return {
                 ...state,
                 businessDetailsIsLoading: false,
                 businessDetails: action.payload,
             };
+        case UPDATE_BUSINESSES_FAIL:
         case FETCH_BUSINESS_DETAILS_FAIL:
             return {
                 ...state,
@@ -60,10 +67,14 @@ const businessReducer = (state = initialState, action) => {
                 businessDetailsIsLoading: true
             };
         case REGISTER_BUSINESS_SUCCESS:
+            // const newBusiness = {
+            //     ...action.payload
+            // }
             return {
                 ...state,
                 businessDetails: action.payload,
                 businessDetailsIsLoading: false,
+                myBusinessList: [...state.myBusinessList, action.payload]
             };
         case REGISTER_BUSINESS_FAIL:
             return {
@@ -75,8 +86,6 @@ const businessReducer = (state = initialState, action) => {
             return {
                 ...state,
             }
-
-
 
 
         case FETCH_MY_BUSINESSES:

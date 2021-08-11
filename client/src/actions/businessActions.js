@@ -1,15 +1,19 @@
 import {
-    REGISTER_BUSINESS_SUCCESS,
-    REGISTER_BUSINESS_FAIL,
     REGISTER_BUSINESS,
+    REGISTER_BUSINESS_FAIL,
+    REGISTER_BUSINESS_SUCCESS,
 
     FETCH_BUSINESS_DETAILS,
     FETCH_BUSINESS_DETAILS_FAIL,
     FETCH_BUSINESS_DETAILS_SUCCESS,
 
-    FETCH_MY_BUSINESSES_FAIL,
     FETCH_MY_BUSINESSES,
+    FETCH_MY_BUSINESSES_FAIL,
     FETCH_MY_BUSINESSES_SUCCESS,
+
+    UPDATE_BUSINESSES,
+    UPDATE_BUSINESSES_FAIL,
+    UPDATE_BUSINESSES_SUCCESS,
 
     GET_NEARBY_BUSINESSES,
     GET_NEARBY_BUSINESSES_FAIL,
@@ -48,6 +52,7 @@ export const registerBusiness = (newBusinessInfo) => async (dispatch, getState) 
 
 export const fetchMyBusinesses = () => async (dispatch, getState) => {
     try {
+        console.log("Fetch Businesses called")
         dispatch({ type: FETCH_MY_BUSINESSES });
         const { data } = await api.fetchMyBusinesses(tokenConfig(getState));
         dispatch({ type: FETCH_MY_BUSINESSES_SUCCESS, payload: data });
@@ -55,6 +60,23 @@ export const fetchMyBusinesses = () => async (dispatch, getState) => {
         if (error.response !== undefined) {
             dispatch(returnErrors(error.response.data, error.response.status, FETCH_MY_BUSINESSES_FAIL));
             dispatch({ type: FETCH_MY_BUSINESSES_FAIL });
+        }
+        else {
+            console.log(error);
+        }
+    }
+}
+
+export const updateBusinesses = (newBusiness) => async (dispatch, getState) => {
+    try {
+        console.log('Sending ')
+        dispatch({ type: UPDATE_BUSINESSES });
+        const { data } = await api.updateBusinesses(newBusiness._id, newBusiness, tokenConfig(getState));
+        dispatch({ type: UPDATE_BUSINESSES_SUCCESS, payload: data });
+    } catch (error) {
+        if (error.response !== undefined) {
+            dispatch(returnErrors(error.response.data, error.response.status, UPDATE_BUSINESSES_FAIL));
+            dispatch({ type: UPDATE_BUSINESSES_FAIL });
         }
         else {
             console.log(error);

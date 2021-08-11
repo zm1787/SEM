@@ -11,13 +11,18 @@ import { useForm } from '../components/useForm';
 
 // Redux and actions
 import { useDispatch, useSelector } from 'react-redux';
-import {registerBusiness} from '../actions/businessActions';
+import { registerBusiness } from '../actions/businessActions';
 import { clearErrors } from '../actions/errorActions';
 
 // Material UI
 import { makeStyles } from '@material-ui/core';
 
 const initialValues = {
+    displayAddressFields: false,
+    displayEmailFieldRequired: false,
+    displayPhoneNumberFieldRequired: false,
+    displayCalendarLinkRequired: false,
+
     businessName: "",
     streetAddress: "",
     city: "",
@@ -30,6 +35,7 @@ const initialValues = {
     wageType: "contract",
     wage: "",
     businessDescription: "",
+    calendarLink: "",
     policyChecked: false,
 }
 
@@ -99,6 +105,7 @@ export default function RegisterBusiness() {
             displayAddressFields,
             displayEmailFieldRequired,
             displayPhoneNumberFieldRequired,
+            displayCalendarLinkRequired,
 
             // Information fields
             businessName,
@@ -113,6 +120,7 @@ export default function RegisterBusiness() {
             wageType,
             wage,
             businessDescription,
+            calendarLink,
             policyChecked,
         } = formFieldValues;
 
@@ -137,6 +145,7 @@ export default function RegisterBusiness() {
             hasAddress: displayAddressFields,
             hasEmail: displayEmailFieldRequired,
             hasPhoneNumber: displayPhoneNumberFieldRequired,
+            hasScheduleApp: displayCalendarLinkRequired,
 
             businessName,
             address: {
@@ -151,6 +160,7 @@ export default function RegisterBusiness() {
             serviceType,
             searchTerms,
             businessDescription,
+            linkToSchedule: calendarLink,
             wageType,
             policyChecked,
             selectedTier,

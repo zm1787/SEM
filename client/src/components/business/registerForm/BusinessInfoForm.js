@@ -312,89 +312,89 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
                             />
                         </Box>
                         {formFieldValues.displayAddressFields ?
-                                    <Box className={classes.addressSection}>
-                                        <Controls.TextField
-                                            variant={textFieldVariant}
-                                            label="Street Address of Business"
-                                            name="streetAddress"
-                                            value={formFieldValues.streetAddress}
-                                            onChange={onInputChange}
-                                            inputProps={{
-                                                autoComplete: 'new-password', // disable autocomplete and autofill
+                            <Box className={classes.addressSection}>
+                                <Controls.TextField
+                                    variant={textFieldVariant}
+                                    label="Street Address of Business"
+                                    name="streetAddress"
+                                    value={formFieldValues.streetAddress}
+                                    onChange={onInputChange}
+                                    inputProps={{
+                                        autoComplete: 'new-password', // disable autocomplete and autofill
+                                    }}
+                                />
+                                <Controls.TextField
+                                    variant={textFieldVariant}
+                                    label="City"
+                                    name="city"
+                                    value={formFieldValues.city}
+                                    onChange={onInputChange}
+                                    inputProps={{
+                                        autoComplete: 'new-password', // disable autocomplete and autofill
+                                    }}
+                                />
+                                <Grid container className={classes.multiTxtFieldContainer} spacing={0}>
+                                    <Grid item className={classes.multiTxtField2}>
+                                        <Controls.DropdownPicker
+                                            id="country-dropdown"
+                                            variant="outlined"
+                                            options={COUNTRIES}
+                                            getOptionLabel={(option) => option.country}
+                                            inputValue={formFieldValues.country}
+                                            onInputChange={(event, newInputValue) => {
+                                                setFormFieldValues({
+                                                    ...formFieldValues,
+                                                    subdivision: {}
+                                                });
+                                                setFormFieldValues({
+                                                    ...formFieldValues,
+                                                    country: newInputValue
+                                                });
                                             }}
+                                            renderInput={(params) =>
+                                                <TextField
+                                                    {...params}
+                                                    label="Country"
+                                                    variant="outlined"
+                                                    inputProps={{
+                                                        ...params.inputProps,
+                                                        autoComplete: 'new-password', // disable autocomplete and autofill
+                                                    }}
+                                                />
+                                            }
                                         />
-                                        <Controls.TextField
-                                            variant={textFieldVariant}
-                                            label="City"
-                                            name="city"
-                                            value={formFieldValues.city}
-                                            onChange={onInputChange}
-                                            inputProps={{
-                                                autoComplete: 'new-password', // disable autocomplete and autofill
+
+                                    </Grid>
+                                    <Grid item className={classes.multiTxtField2}>
+                                        <Controls.DropdownPicker
+                                            id="subdivision-dropdown"
+                                            variant="outlined"
+                                            options={formFieldValues.country === "United States" ? US_STATES : CANADIAN_PROVINCES}
+                                            getOptionLabel={(option) => option.name}
+                                            getOptionSelected={(option, value) => option.name === value.name}
+                                            onChange={(event, newValue) => {
+                                                setFormFieldValues({
+                                                    ...formFieldValues,
+                                                    subdivision: newValue
+                                                });
                                             }}
+                                            renderInput={(params) =>
+                                                <TextField
+                                                    {...params}
+                                                    label={formFieldValues.country === "United States" ? "State" : "Province/Territory"}
+                                                    variant="outlined"
+
+                                                    inputProps={{
+                                                        ...params.inputProps,
+                                                        autoComplete: 'new-password', // disable autocomplete and autofill
+                                                    }}
+                                                />
+                                            }
                                         />
-                                        <Grid container className={classes.multiTxtFieldContainer} spacing={0}>
-                                            <Grid item className={classes.multiTxtField2}>
-                                                <Controls.DropdownPicker
-                                                    id="country-dropdown"
-                                                    variant="outlined"
-                                                    options={COUNTRIES}
-                                                    getOptionLabel={(option) => option.country}
-                                                    inputValue={formFieldValues.country}
-                                                    onInputChange={(event, newInputValue) => {
-                                                        setFormFieldValues({
-                                                            ...formFieldValues,
-                                                            subdivision: {}
-                                                        });
-                                                        setFormFieldValues({
-                                                            ...formFieldValues,
-                                                            country: newInputValue
-                                                        });
-                                                    }}
-                                                    renderInput={(params) =>
-                                                        <TextField
-                                                            {...params}
-                                                            label="Country"
-                                                            variant="outlined"
-                                                            inputProps={{
-                                                                ...params.inputProps,
-                                                                autoComplete: 'new-password', // disable autocomplete and autofill
-                                                            }}
-                                                        />
-                                                    }
-                                                />
+                                    </Grid>
 
-                                            </Grid>
-                                            <Grid item className={classes.multiTxtField2}>
-                                                <Controls.DropdownPicker
-                                                    id="subdivision-dropdown"
-                                                    variant="outlined"
-                                                    options={formFieldValues.country === "United States" ? US_STATES : CANADIAN_PROVINCES}
-                                                    getOptionLabel={(option) => option.name}
-                                                    getOptionSelected={(option, value) => option.name === value.name}
-                                                    onChange={(event, newValue) => {
-                                                        setFormFieldValues({
-                                                            ...formFieldValues,
-                                                            subdivision: newValue
-                                                        });
-                                                    }}
-                                                    renderInput={(params) =>
-                                                        <TextField
-                                                            {...params}
-                                                            label={formFieldValues.country === "United States" ? "State" : "Province/Territory"}
-                                                            variant="outlined"
-
-                                                            inputProps={{
-                                                                ...params.inputProps,
-                                                                autoComplete: 'new-password', // disable autocomplete and autofill
-                                                            }}
-                                                        />
-                                                    }
-                                                />
-                                            </Grid>
-
-                                        </Grid>
-                                    </Box>
+                                </Grid>
+                            </Box>
                             : null
                         }
                         <Divider style={{ margin: '40px 0 10px', backgroundColor: theme.palette.primary.dark, }} />
@@ -548,6 +548,7 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
                                 }
                             </Box>
                         </Box>
+                        <Divider style={{ margin: '40px 0 10px', backgroundColor: theme.palette.primary.dark, }} />
                         <Typography className={classes.sectionTitle} variant="h5">Work Skills Summary</Typography>
                         <Controls.TextField className={classes.businessDescription}
                             variant={textFieldVariant}
@@ -573,6 +574,7 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
                             }}
                         />
                     </Box>
+                    <Divider style={{ margin: '40px 0 25px', backgroundColor: theme.palette.primary.dark, }} />
                     <Box className={classes.flexContainer}>
                         <Box className={classes.wagesType}>
                             <WagesRadio
@@ -627,14 +629,42 @@ export default function RegisterSpecialistForm({ formFieldValues, setFormFieldVa
                             </>
                         }
                     </Box>
-                    <Box>
-                        {/* <Controls.Checkbox className={classes.checkbox}
-                            checked={formFieldValues.policyChecked}
-                            onChange={onInputChange}
-                            name="policyChecked"
-                            color="secondary"
-                            label="I agree to the Terms of Service"
-                        /> */}
+                    <Divider style={{ margin: '25px 0 25px', backgroundColor: theme.palette.primary.dark, }} />
+                    <Box className={classes.scheduleSection}>
+                        <Typography className={classes.sectionTitle} variant="h5">Scheduling</Typography>
+                        <Box className={classes.sectionToggleCheckbox}>
+                            <Controls.Checkbox
+                                checked={formFieldValues.displayCalendarLinkRequired}
+                                onChange={onInputChange}
+                                name="displayCalendarLinkRequired"
+                                color="secondary"
+                                label="I want to add a link to my appointment scheduling application"
+                            />
+                        </Box>
+                        {formFieldValues.displayCalendarLinkRequired ?
+                            <Box className={classes.textFieldsCell}>
+                                <Controls.TextField
+                                    variant={textFieldVariant}
+                                    //label="Link To Work Schedule"
+                                    name="calendarLink"
+                                    type="text"
+                                    value={formFieldValues.calendarLink}
+                                    onChange={onInputChange}
+                                    placeholder="https://www.my-scheduling-app.com/"
+                                    InputProps={{
+                                        endAdornment:
+                                            <IconTextPopover
+                                                msg={"This is the link clients will get redirected to for appointment scheduling."}
+                                                icon={HelpOutlineIcon}
+                                            />
+                                    }}
+                                    inputProps={{
+                                        autoComplete: 'new-password', // disable autocomplete and autofill
+                                    }}
+                                />
+                            </Box>
+                            : null
+                        }
                     </Box>
                     <div>
                         <Controls.Button className={classes.nextButton}

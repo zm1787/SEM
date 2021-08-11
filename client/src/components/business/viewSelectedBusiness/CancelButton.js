@@ -20,8 +20,7 @@ const CancelButton = ({ toggleMode }) => {
         <Button
             className={classes.button}
             variant="contained"
-            color="error"
-            size="small"
+            size="medium"
             onClick={toggleMode}
             startIcon={<CloseIcon />}
         >

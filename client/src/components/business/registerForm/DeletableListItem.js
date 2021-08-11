@@ -5,7 +5,7 @@ import CloseIcon from '@material-ui/icons/Close'; // basic x button
 import CancelIcon from '@material-ui/icons/Cancel'; // filled look x button
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'; // outlined look x button
 
-import {Chip} from '@material-ui/core';
+import { Chip } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -80,6 +80,6 @@ export default function DeletableListItem({ stateFieldName, item, index, state, 
             deleteIcon={<CancelIcon />}
             variant="outlined"
             color="primary"
-      />
+        />
     )
 }
